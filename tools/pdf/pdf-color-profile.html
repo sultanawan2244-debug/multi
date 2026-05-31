@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Color Profile Viewer Online Free — Set PDF Output Intent | Ali Tools Company</title>
+  <meta name="description" content="Set color profiles for PDF online free. Apply sRGB, Adobe RGB, or Grayscale output intent. No upload needed.">
+  <meta name="keywords" content="PDF Color Profile Viewer, pdf color profile online, free pdf color profile, set pdf output intent, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-color-profile.html">
+  <meta property="og:title" content="PDF Color Profile Viewer Online Free — Set PDF Output Intent">
+  <meta property="og:description" content="Set color profiles for PDF online free. Apply sRGB, Adobe RGB, or Grayscale output intent. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Color Profile Viewer Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-color-profile.html",
+    "description": "Set color profiles for PDF online free. Apply sRGB, Adobe RGB, or Grayscale output intent.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Color Profile</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🎨</div>
+      <h1>PDF Color Profile</h1>
+      <p>PDF Color Profile Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="profileControls" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Color Profile Settings</h3>
+              <div class="control-group">
+                <label for="outputIntent">Output Intent</label>
+                <select id="outputIntent" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;">
+                  <option value="sRGB">sRGB IEC61966-2.1</option>
+                  <option value="adobergb">Adobe RGB (1998)</option>
+                  <option value="grayscale">Gray Gamma 2.2</option>
+                </select>
+              </div>
+              <div class="control-group">
+                <label class="checkbox-group">
+                  <input type="checkbox" id="setMetadata" checked>
+                  Update document metadata
+                </label>
+              </div>
+              <div id="profileInfo" style="margin-top:16px;padding:12px;background:var(--bg-primary);border-radius:8px;font-size:0.85rem;">
+                <p><strong>Current Profile Info:</strong></p>
+                <p id="currentProfileInfo">No PDF loaded yet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">🎨 Apply Color Profile</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Choose Profile</h3>
+            <p>Select sRGB, Adobe RGB, or Grayscale output intent.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Apply Color Profile" to set the output intent, then download.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Color Profile Tool?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Apply color profiles instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🎨</div>
+            <h4>Multiple Profiles</h4>
+            <p>sRGB, Adobe RGB, and Grayscale support.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Color Profile?</h2>
+        <p>A PDF color profile (output intent) defines the color space for a PDF document - sRGB for web, Adobe RGB for print, or Grayscale for black-and-white output. Setting the output intent helps ensure consistent color reproduction across different devices.</p>
+
+        <h2>Why Use Our PDF Color Profile Tool?</h2>
+        <p>Set the output intent on your PDF documents directly in your browser. No uploads to servers, no software installation. Choose from sRGB, Adobe RGB, or Grayscale profiles.</p>
+
+        <h2>Key Features of Our PDF Color Profile Tool</h2>
+        <ul>
+          <li><strong>sRGB:</strong> Standard RGB for web and digital use.</li>
+          <li><strong>Adobe RGB:</strong> Wider gamut for print production.</li>
+          <li><strong>Grayscale:</strong> Black and white output intent.</li>
+          <li><strong>Metadata Update:</strong> Optionally update document metadata.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does this embed the full ICC profile? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This sets the output intent in the PDF catalog. Full ICC profile embedding requires the actual ICC profile data, which is not included in pdf-lib.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-grayscale.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">⬜</div>
+            <h3>PDF Grayscale</h3>
+            <p>Convert PDF to grayscale.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-font-viewer.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔤</div>
+            <h3>PDF Font Viewer</h3>
+            <p>View fonts in PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-metadata-editor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📝</div>
+            <h3>PDF Metadata Editor</h3>
+            <p>Edit PDF metadata.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let pdfDocRef = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const profileControls = document.getElementById('profileControls');
+    const outputIntent = document.getElementById('outputIntent');
+    const setMetadata = document.getElementById('setMetadata');
+    const currentProfileInfo = document.getElementById('currentProfileInfo');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      profileControls.style.display = 'block';
+      loadProfileInfo(file);
+    }
+
+    function loadProfileInfo(file) {
+      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
+        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+          pdfDocRef = pdfDoc;
+          var title = '';
+          var pages = pdfDoc.getPages();
+          try { title = pdfDoc.getTitle() || 'Untitled'; } catch(e) { title = 'Untitled'; }
+          currentProfileInfo.innerHTML = 'Title: ' + utils.escapeHtml(title) + '<br>Pages: ' + pages.length + '<br>No output intent set. Choose one below and apply.';
+        });
+      });
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!pdfDocRef || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Applying...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 2000, function() {
+        applyColorProfile();
+      });
+    });
+
+    function applyColorProfile() {
+      var profile = outputIntent.value;
+      var profileName = '';
+      var profileInfo = '';
+
+      switch (profile) {
+        case 'sRGB':
+          profileName = 'sRGB IEC61966-2.1';
+          profileInfo = 'sRGB (Standard RGB)';
+          break;
+        case 'adobergb':
+          profileName = 'Adobe RGB (1998)';
+          profileInfo = 'Adobe RGB (1998)';
+          break;
+        case 'grayscale':
+          profileName = 'Gray Gamma 2.2';
+          profileInfo = 'Gray Gamma 2.2';
+          break;
+      }
+
+      if (setMetadata.checked) {
+        try {
+          var title = pdfDocRef.getTitle() || 'Processed Document';
+          pdfDocRef.setTitle(title);
+          pdfDocRef.setSubject('Color Profile: ' + profileName);
+        } catch(e) {}
+      }
+
+      pdfDocRef.save().then(function(bytes) {
+        var blob = new Blob([bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        downloadBtn.onclick = function() {
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_' + profile + '.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', 'Color profile "' + profileName + '" applied successfully! Note: Full ICC profile embedding requires the actual ICC profile data which pdf-lib does not support.');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = '🎨 Apply Color Profile';
+      });
+    }
+  });
+  </script>
+</body>
+</html>

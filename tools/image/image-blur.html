@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Blur Effect Online Free — Blur Images Instantly | Ali Tools Company</title>
+  <meta name="description" content="Apply blur effects to images online free. Box blur, Gaussian blur, pixelate, and more. Blur PNG, JPG, WebP, and GIF images. No upload needed, works in browser.">
+  <meta name="keywords" content="image blur, blur image online, photo blur, Gaussian blur, pixelate image, blur effect, image blurring tool">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-blur.html">
+  <meta property="og:title" content="Image Blur Effect Online Free — Blur Images Instantly">
+  <meta property="og:description" content="Blur images online free with multiple blur types. Box blur, Gaussian blur, pixelate. 100% browser-based, no upload.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Blur Effect Online Free",
+    "url": "https://alitoolscompany.com/tools/image/image-blur.html",
+    "description": "Free online browser-based image blur tool. Apply box blur, Gaussian blur, pixelation to images without uploading.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Image Blur</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🌫️</div>
+      <h1>Image Blur Effect</h1>
+      <p>Blur Images Online Free — Box Blur, Gaussian Blur, Pixelate — Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop an image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="tool-controls" id="toolControls" style="display:none;">
+            <div class="control-group">
+              <label for="blurType">Blur Type</label>
+              <select id="blurType">
+                <option value="box">Box Blur</option>
+                <option value="gaussian">Gaussian Blur</option>
+                <option value="pixelate">Pixelate</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="blurRadius">Blur Radius: <span id="radiusValue" style="font-weight:700;color:var(--primary);">5</span></label>
+              <div class="range-slider">
+                <input type="range" id="blurRadius" min="1" max="30" value="5">
+              </div>
+            </div>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">Preview</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <p style="font-size:0.82rem;color:var(--gray-600);margin-bottom:8px;">Original</p>
+                <img id="originalPreview" alt="Original image preview">
+              </div>
+              <div style="flex:1;min-width:200px;">
+                <p style="font-size:0.82rem;color:var(--gray-600);margin-bottom:8px;">Blurred</p>
+                <img id="blurredPreview" alt="Blurred image preview">
+              </div>
+            </div>
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="blurBtn">🌫️ Apply Blur</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Blurred Image</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Blur an Image</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Image</h3>
+            <p>Drag & drop your image or click to browse. Supports PNG, JPG, WebP, GIF, and BMP.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Choose Blur</h3>
+            <p>Select box blur, Gaussian blur, or pixelate, and adjust the radius.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Apply Blur" to preview, then download your blurred image.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Image Blur Tool?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Blur images instantly in your browser with optimized pixel processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your images never leave your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🎨</div>
+            <h4>Multiple Types</h4>
+            <p>Choose from box blur, Gaussian blur, and pixelation effects.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start blurring immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is an Image Blur Effect?</h2>
+        <p>An image blur effect softens or obscures details in a digital image by averaging pixel values with their neighbors. Different blur algorithms produce different visual results: box blur averages pixels in a rectangular neighborhood, creating a uniform softening; Gaussian blur uses a weighted average based on the Gaussian distribution, producing a smoother, more natural-looking blur; pixelate replaces groups of pixels with a single average color, creating a mosaic effect. Our free online image blur tool processes all effects directly in your browser, ensuring your images remain private while delivering professional-quality results.</p>
+
+        <h2>Why Use Our Image Blur Tool?</h2>
+        <p>Blurring is essential for many image editing tasks. You might need to blur sensitive information like faces, license plates, or personal data in screenshots or photos for privacy. Or you might want to create artistic background blur effects, simulate depth of field, or pixelate parts of an image for censorship. Our tool provides three blur types with adjustable radius for precise control. Since everything runs locally in your browser, you get instant results with complete privacy no matter the content of your images.</p>
+
+        <h2>Key Features of Our Image Blur Tool</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Three Blur Types:</strong> Box blur, Gaussian blur, and pixelation effects.</li>
+          <li><strong>Adjustable Radius:</strong> Control blur intensity from subtle (1) to extreme (30).</li>
+          <li><strong>Instant Preview:</strong> See original and blurred images side by side before downloading.</li>
+          <li><strong>Multiple Formats:</strong> Blur PNG, JPEG, WebP, GIF, and BMP images.</li>
+          <li><strong>No Watermark:</strong> Your blurred images are clean and free of watermarks.</li>
+        </ul>
+
+        <h2>Use Cases for Image Blur Tool</h2>
+        <p>Our image blur tool serves many important purposes: privacy advocates blur faces and identifying details in screenshots; journalists censor sensitive information in documents; photographers create background blur (bokeh) effects; designers soften image edges for compositing; web developers create blurred overlay effects for UI; social media managers pixelate inappropriate content; and artists use blur for creative effects. The pixelate option is particularly useful for creating mosaic-style censorship or artistic effects.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What is the difference between box blur and Gaussian blur? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Box blur averages all pixels within a square neighborhood equally, creating a uniform but slightly blocky softening effect. Gaussian blur uses a weighted average based on the Gaussian bell curve, giving more influence to closer pixels and producing a smoother, more natural-looking blur. Gaussian blur is generally preferred for most applications.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I blur only a specific part of an image? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Currently, our tool applies blur to the entire image. For selective blurring (e.g., blurring a face while keeping the background sharp), you would need an editor with selection tools. However, we are exploring region-specific blur for future updates.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What blur radius should I use for privacy protection? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">For obscuring text or faces, a radius of 10-15 is usually sufficient to make details unrecognizable. For pixelating sensitive information, the pixelate option with radius 5-10 works well. Larger radii create stronger blur but may make the image unusable for other purposes.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does blurring reduce image file size? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Blurring can slightly reduce file size because smooth areas compress more efficiently than detailed ones. However, the primary purpose of our tool is visual effect, not compression. The file size impact is typically minimal.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to blur sensitive images online? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser, your images never leave your computer. No data is transmitted to any server, making it completely safe for blurring sensitive images containing personal or confidential information.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-sharpener.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔪</div>
+            <h3>Image Sharpener</h3>
+            <p>Sharpen and enhance image details.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-grayscale.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">⚫</div>
+            <h3>Image Grayscale</h3>
+            <p>Convert images to black and white.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-brightness-contrast.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">☀️</div>
+            <h3>Brightness & Contrast</h3>
+            <p>Adjust image brightness and contrast.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let originalImage = null;
+    let originalDataUrl = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const toolControls = document.getElementById('toolControls');
+    const toolActions = document.getElementById('toolActions');
+    const previewArea = document.getElementById('previewArea');
+    const originalPreview = document.getElementById('originalPreview');
+    const blurredPreview = document.getElementById('blurredPreview');
+    const blurType = document.getElementById('blurType');
+    const blurRadius = document.getElementById('blurRadius');
+    const radiusValue = document.getElementById('radiusValue');
+    const blurBtn = document.getElementById('blurBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid file type.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      toolControls.style.display = 'block';
+      toolActions.style.display = 'flex';
+      downloadBtn.style.display = 'none';
+
+      utils.loadImage(file).then(function(result) {
+        originalImage = result.image;
+        originalDataUrl = result.dataUrl;
+        originalPreview.src = originalDataUrl;
+        originalPreview.style.display = 'block';
+        previewArea.classList.add('show');
+      }).catch(function() {
+        utils.showError('errorContainer', 'Failed to load image. The file may be corrupted or unsupported.');
+      });
+    }
+
+    blurRadius.addEventListener('input', function() {
+      radiusValue.textContent = this.value;
+    });
+
+    function applyBoxBlur(data, w, h, radius) {
+      var copy = new Uint8ClampedArray(data);
+      for (var y = 0; y < h; y++) {
+        for (var x = 0; x < w; x++) {
+          var r = 0, g = 0, b = 0, count = 0;
+          for (var dy = -radius; dy <= radius; dy++) {
+            for (var dx = -radius; dx <= radius; dx++) {
+              var nx = x + dx, ny = y + dy;
+              if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+                var idx = (ny * w + nx) * 4;
+                r += copy[idx];
+                g += copy[idx + 1];
+                b += copy[idx + 2];
+                count++;
+              }
+            }
+          }
+          var idx = (y * w + x) * 4;
+          data[idx] = r / count;
+          data[idx + 1] = g / count;
+          data[idx + 2] = b / count;
+        }
+      }
+    }
+
+    function applyPixelate(data, w, h, size) {
+      for (var y = 0; y < h; y += size) {
+        for (var x = 0; x < w; x += size) {
+          var r = 0, g = 0, b = 0, count = 0;
+          for (var dy = 0; dy < size && y + dy < h; dy++) {
+            for (var dx = 0; dx < size && x + dx < w; dx++) {
+              var idx = ((y + dy) * w + (x + dx)) * 4;
+              r += data[idx];
+              g += data[idx + 1];
+              b += data[idx + 2];
+              count++;
+            }
+          }
+          r /= count; g /= count; b /= count;
+          for (var dy2 = 0; dy2 < size && y + dy2 < h; dy2++) {
+            for (var dx2 = 0; dx2 < size && x + dx2 < w; dx2++) {
+              var idx2 = ((y + dy2) * w + (x + dx2)) * 4;
+              data[idx2] = r;
+              data[idx2 + 1] = g;
+              data[idx2 + 2] = b;
+            }
+          }
+        }
+      }
+    }
+
+    blurBtn.addEventListener('click', function() {
+      if (!originalImage || isProcessing) return;
+
+      isProcessing = true;
+      blurBtn.disabled = true;
+      blurBtn.textContent = '⏳ Applying Blur...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 1000, function() {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = originalImage.width;
+          canvas.height = originalImage.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(originalImage, 0, 0);
+
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const bType = blurType.value;
+          const radius = parseInt(blurRadius.value);
+
+          if (bType === 'gaussian') {
+            ctx.filter = 'blur(' + radius + 'px)';
+            ctx.drawImage(originalImage, 0, 0);
+          } else if (bType === 'box') {
+            applyBoxBlur(imageData.data, canvas.width, canvas.height, radius);
+            ctx.putImageData(imageData, 0, 0);
+          } else if (bType === 'pixelate') {
+            applyPixelate(imageData.data, canvas.width, canvas.height, radius);
+            ctx.putImageData(imageData, 0, 0);
+          }
+
+          var dataUrl = canvas.toDataURL('image/png');
+          blurredPreview.src = dataUrl;
+          blurredPreview.style.display = 'block';
+
+          downloadBtn.onclick = function() {
+            var originalName = fileInput.files && fileInput.files[0] ? fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
+            utils.triggerDownload(dataUrl, originalName + '_blurred.png');
+          };
+
+          downloadBtn.style.display = 'inline-flex';
+          utils.hideProgress('progressBar');
+          utils.showSuccess('fileInfoContainer', 'Blur applied successfully!');
+        } catch (err) {
+          utils.showError('errorContainer', 'Error applying blur: ' + err.message);
+        }
+
+        isProcessing = false;
+        blurBtn.disabled = false;
+        blurBtn.textContent = '🌫️ Apply Blur';
+      });
+    });
+  });
+  </script>
+</body>
+</html>

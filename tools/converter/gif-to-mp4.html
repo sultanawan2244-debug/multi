@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIF to MP4 Converter Online Free — Convert Animated GIFs to Video | Ali Tools Company</title>
+  <meta name="description" content="Convert GIF to MP4 online free. Transform animated GIFs to WebM video format. No upload needed.">
+  <meta name="keywords" content="GIF to MP4 Converter, video converter, online converter, file conversion">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/converter/gif-to-mp4.html">
+  <meta property="og:title" content="GIF to MP4 Converter Online Free — Convert Animated GIFs to Video">
+  <meta property="og:description" content="Convert GIF to MP4 online free. Transform animated GIFs to WebM video format. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "GIF to MP4 Converter Online Free",
+    "url": "https://alitoolscompany.com/tools/converter/gif-to-mp4.html",
+    "description": "Convert GIF to MP4 online free. Transform animated GIFs to WebM video format. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../converter-tools.html">Converter Tools</a> &gt; <span>GIF to MP4 Converter</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🎬</div>
+      <h1>GIF to MP4 Converter</h1>
+      <p>Convert GIF to Video Online Free — Transform Instantly in Your Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".gif,image/gif" class="file-input" hidden aria-label="Choose a GIF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop your GIF file here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: GIF files</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group">
+            <label for="durationInput">Recording Duration (seconds)</label>
+            <input type="number" id="durationInput" min="1" max="30" value="5" style="padding:8px 12px;border:2px solid var(--gray-300);border-radius:8px;width:100%;font-size:1rem;">
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Convert to Video</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download WebM Video</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Your GIF</h3>
+            <p>Drag & drop your animated GIF or click to browse. Supports all standard GIF files.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Set Duration</h3>
+            <p>Choose how many seconds of animation to capture as video.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Convert to Video" to record, then download your WebM video file.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our GIF to MP4 Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Convert GIFs to video instantly using canvas capture and MediaRecorder.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your files never leave your device. 100% private local processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🎬</div>
+            <h4>Video Output</h4>
+            <p>Get a playable WebM video file that's smaller and smoother than the original GIF.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start converting immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is GIF to MP4 Converter?</h2>
+        <p>GIF to MP4 Converter is a free online tool that transforms animated GIF files into WebM video format. GIFs are limited to 256 colors and produce large file sizes, while WebM video offers better compression, true color support, and more efficient playback. Our tool captures GIF frames by rendering them to a canvas and recording the output with the MediaRecorder API, all within your browser. Your files are never uploaded to any server.</p>
+
+        <h2>Why Use Our GIF to MP4 Converter?</h2>
+        <p>Converting animated GIFs to video format reduces file size significantly while improving visual quality. WebM video supports millions of colors versus GIF's 256-color limit, and video codecs provide much better compression. Our browser-based approach means your files remain private and are processed instantly with no server interaction.</p>
+
+        <h2>Key Features of Our GIF to MP4 Converter</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Canvas Capture:</strong> Renders GIF frames to canvas and records with the MediaRecorder API.</li>
+          <li><strong>WebM Output:</strong> Produces VP8/VP9 encoded WebM video for broad compatibility.</li>
+          <li><strong>Adjustable Duration:</strong> Control how many seconds of the GIF animation to capture.</li>
+          <li><strong>Preserves Animation:</strong> Captures the full animated sequence of your GIF.</li>
+          <li><strong>No Limits:</strong> Convert GIFs of any size (within browser memory limits).</li>
+        </ul>
+
+        <h2>Use Cases for GIF to MP4 Converter</h2>
+        <p>Our GIF to MP4 Converter is perfect for web developers who want to replace heavy GIFs with lightweight video, social media managers creating video content from GIFs, designers converting animated assets for web use, and anyone who wants to share animated content with better quality and smaller file sizes. WebM video can be embedded directly in websites using the HTML5 video tag.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Why can't I download MP4 directly? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The MediaRecorder API outputs WebM format by default. WebM offers excellent quality and is supported by all modern browsers. The file can be played in any browser or converted to MP4 using other tools.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Will the video quality be better than the GIF? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">WebM video supports true color (millions of colors) compared to GIF's 256-color limit. However, the quality depends on the original GIF content and the recording settings.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How long can the video be? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">You can set the duration from 1 to 30 seconds. The default is 5 seconds, which covers most animated GIFs.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to convert sensitive files? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. All processing happens in your browser — your files never leave your computer.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I use this on mobile? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Our tool is fully responsive and works on all devices including smartphones and tablets.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="video-to-gif.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🖼️</div>
+            <h3>Video to GIF</h3>
+            <p>Create animated GIFs from video.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="mp4-to-mp3.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🎬</div>
+            <h3>MP4 to MP3</h3>
+            <p>Extract audio from video files.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="mp3-to-wav.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🎵</div>
+            <h3>MP3 to WAV</h3>
+            <p>Convert MP3 to uncompressed WAV.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <style>
+    #captureCanvas { display: none; }
+  </style>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const durationInput = document.getElementById('durationInput');
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.match(/image\/gif/) && !file.name.match(/\.gif$/i)) {
+        utils.showError('errorContainer', 'Please select a valid GIF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+    }
+
+    function setupDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      downloadBtn.onclick = function() {
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      downloadBtn.style.display = 'inline-flex';
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'Conversion complete! Click download to save.');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'Convert to Video';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = 'Recording...';
+      downloadBtn.style.display = 'none';
+      utils.simulateProgress('progressBar', 3000, function() {});
+
+      var duration = parseInt(durationInput.value) || 5;
+      var img = new Image();
+      var objectUrl = URL.createObjectURL(loadedFile);
+
+      img.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        var ctx = canvas.getContext('2d');
+
+        var supportedMime = 'video/webm;codecs=vp9';
+        if (!MediaRecorder.isTypeSupported(supportedMime)) {
+          supportedMime = 'video/webm;codecs=vp8';
+        }
+        if (!MediaRecorder.isTypeSupported(supportedMime)) {
+          supportedMime = 'video/webm';
+        }
+        if (!MediaRecorder.isTypeSupported(supportedMime)) {
+          supportedMime = 'video/mp4';
+        }
+
+        var stream = canvas.captureStream(10);
+        var recorder = new MediaRecorder(stream, { mimeType: supportedMime });
+        var chunks = [];
+        recorder.ondataavailable = function(e) {
+          if (e.data.size > 0) chunks.push(e.data);
+        };
+        recorder.onstop = function() {
+          var ext = supportedMime.indexOf('mp4') !== -1 ? '.mp4' : '.webm';
+          var blob = new Blob(chunks, { type: supportedMime });
+          URL.revokeObjectURL(objectUrl);
+          setupDownload(blob, loadedFile.name.replace(/\.[^.]+$/, '') + ext);
+          progressBar.querySelector('.progress-fill').style.width = '100%';
+          setTimeout(function() { utils.hideProgress('progressBar'); }, 500);
+        };
+        recorder.onerror = function() {
+          utils.showError('errorContainer', 'Recording failed. Try a shorter duration or different browser.');
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Convert to Video';
+          utils.hideProgress('progressBar');
+        };
+
+        recorder.start();
+        var startTime = performance.now();
+        var durationMs = duration * 1000;
+
+        function drawLoop() {
+          ctx.drawImage(img, 0, 0);
+          if (performance.now() - startTime < durationMs) {
+            requestAnimationFrame(drawLoop);
+          } else {
+            recorder.stop();
+          }
+        }
+        drawLoop();
+      };
+
+      img.onerror = function() {
+        utils.showError('errorContainer', 'Failed to load GIF file. The file may be corrupted.');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = 'Convert to Video';
+        utils.hideProgress('progressBar');
+        URL.revokeObjectURL(objectUrl);
+      };
+
+      img.src = objectUrl;
+    });
+  });
+  </script>
+</body>
+</html>

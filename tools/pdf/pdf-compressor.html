@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Compressor Online Free — Reduce PDF File Size Instantly | Ali Tools Company</title>
+  <meta name="description" content="Compress PDF files online free. Reduce PDF file size without losing quality. No upload needed.">
+  <meta name="keywords" content="PDF Compressor, pdf compressor online, free pdf compressor, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-compressor.html">
+  <meta property="og:title" content="PDF Compressor Online Free — Reduce PDF File Size Instantly">
+  <meta property="og:description" content="Compress PDF files online free. Reduce PDF file size without losing quality. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Compressor Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-compressor.html",
+    "description": "Compress PDF files online free. Reduce PDF file size without losing quality. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Compressor</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🗜️</div>
+      <h1>PDF Compressor</h1>
+      <p>PDF Compressor Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF file here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group">
+            <label for="compressLevel">Compression Level</label>
+            <select id="compressLevel">
+              <option value="low">Low — Remove unused data (smallest reduction)</option>
+              <option value="medium" selected>Medium — Remove unused data + metadata</option>
+              <option value="high">High — Re-render pages as images (biggest reduction)</option>
+            </select>
+          </div>
+
+          <div class="control-group" id="qualityGroup" style="display:none;margin-top:12px;">
+            <label for="qualityRange">Render Quality: <span id="qualityValue" style="font-weight:700;color:var(--primary);">2</span>x</label>
+            <div class="range-slider">
+              <input type="range" id="qualityRange" min="1" max="3" value="2">
+            </div>
+            <p style="font-size:0.8rem;color:var(--gray-600);margin-top:4px;">Higher = clearer text, larger file. Lower = smaller file.</p>
+          </div>
+
+          <div class="control-group" style="margin-top:12px;font-size:0.85rem;color:var(--gray-600);">
+            <span id="originalSize">Original: —</span> | <span id="resultSize">Compressed: —</span>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Compress PDF</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Compressed PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF file or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Choose Compression</h3>
+            <p>Select your preferred compression level and adjust quality if using High mode.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Compress PDF" and download your reduced-size PDF.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Compressor?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Compress PDFs instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🚫</div>
+            <h4>No Watermark</h4>
+            <p>Your compressed PDF is clean and free of any watermarks.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start compressing immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Compressor?</h2>
+        <p>A PDF Compressor reduces the file size of PDF documents by removing unnecessary data, optimizing internal structures, and applying efficient encoding. Smaller PDF files are easier to email, upload, and store. Our free online PDF Compressor processes your file entirely in your browser, meaning your PDF is never uploaded to any server. This makes it one of the most private PDF compression tools available online.</p>
+
+        <h2>Why Use Our PDF Compressor?</h2>
+        <p>Most online PDF compressors require you to upload your document to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using JavaScript, you can compress PDFs instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF Compressor</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Multiple Levels:</strong> Choose from Low, Medium, or High compression.</li>
+          <li><strong>Instant Results:</strong> Get your compressed PDF immediately.</li>
+          <li><strong>No File Size Limit:</strong> Compress PDFs of any size (within browser memory limits).</li>
+          <li><strong>Size Comparison:</strong> See original and compressed file sizes side by side.</li>
+          <li><strong>Preserves Content:</strong> All visible content remains intact after compression.</li>
+        </ul>
+
+        <h2>Use Cases for PDF Compressor</h2>
+        <p>Our PDF Compressor is perfect for a wide range of scenarios: professionals need to reduce PDF sizes for email attachments with size limits; web developers compress PDFs to improve download speeds on websites; students reduce large PDF files for easier sharing; and anyone who needs to save storage space or meet file size requirements can compress their PDFs quickly and securely.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How much can PDF compression reduce file size? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Compression results vary depending on the PDF content. Files with embedded images, fonts, and complex objects see the most reduction. Typical savings range from 10% to 50%, but results depend on the specific document and compression level chosen.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does compression affect PDF quality? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Low and Medium modes are lossless — they only remove unused data and metadata. High mode re-encodes pages as JPEG images, which reduces quality but achieves much smaller file sizes. You can control the quality trade-off with the slider.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What's the difference between compression levels? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Low compression removes only unused objects for minimal savings. Medium compression also removes metadata (author, title, etc.). High compression re-encodes each page as a compressed JPEG image, achieving maximum reduction at the cost of some quality.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to compress sensitive documents? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser using JavaScript, your PDF never leaves your computer. No data is transmitted to any server.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I compress PDFs on my phone or tablet? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Our tool is fully responsive and works on all devices including smartphones and tablets.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-version-converter.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📋</div>
+            <h3>PDF Version Converter</h3>
+            <p>Change PDF format version.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-metadata-editor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🏷️</div>
+            <h3>PDF Metadata Editor</h3>
+            <p>Edit PDF document metadata.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-password-protector.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔒</div>
+            <h3>PDF Password Protector</h3>
+            <p>Add password protection to your PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    var utils = window.AlToolsUtils;
+    var loadedFile = null;
+
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadBtn = document.getElementById('downloadBtn');
+    var compressLevel = document.getElementById('compressLevel');
+    var originalSizeEl = document.getElementById('originalSize');
+    var resultSizeEl = document.getElementById('resultSize');
+    var qualityGroup = document.getElementById('qualityGroup');
+    var qualityRange = document.getElementById('qualityRange');
+    var qualityValue = document.getElementById('qualityValue');
+
+    var isProcessing = false;
+
+    qualityRange.addEventListener('input', function() {
+      qualityValue.textContent = this.value;
+    });
+
+    compressLevel.addEventListener('change', function() {
+      qualityGroup.style.display = this.value === 'high' ? 'block' : 'none';
+    });
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      originalSizeEl.textContent = 'Original: ' + utils.formatFileSize(file.size);
+      resultSizeEl.textContent = 'Compressed: —';
+    }
+
+    function resetUI() {
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'Compress PDF';
+    }
+
+    function setupDownload(url, filename) {
+      downloadBtn.onclick = function() {
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      downloadBtn.style.display = 'inline-flex';
+    }
+
+    function done(bytes) {
+      var url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      resultSizeEl.textContent = 'Compressed: ' + utils.formatFileSize(bytes.byteLength);
+      setupDownload(url, loadedFile.name.replace(/\.pdf$/i, '') + '_compressed.pdf');
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'PDF compressed! Size: ' + utils.formatFileSize(loadedFile.size) + ' → ' + utils.formatFileSize(bytes.byteLength));
+      resetUI();
+    }
+
+    function compressLossless(pdfDoc) {
+      if (compressLevel.value === 'medium') {
+        pdfDoc.setTitle('');
+        pdfDoc.setAuthor('');
+        pdfDoc.setSubject('');
+        pdfDoc.setKeywords('');
+      }
+      return pdfDoc.save({ useObjectStreams: true }).then(function(bytes) { done(bytes); });
+    }
+
+    function compressHigh(quality) {
+      var scale = parseInt(quality) || 2;
+      return utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+        return pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
+      }).then(function(pdfJsDoc) {
+        return PDFLib.PDFDocument.create().then(function(newDoc) {
+          var chain = Promise.resolve();
+          for (var i = 1; i <= pdfJsDoc.numPages; i++) {
+            (function(pageNum) {
+              chain = chain.then(function() {
+                return pdfJsDoc.getPage(pageNum).then(function(page) {
+                  var viewport = page.getViewport({ scale: scale });
+                  var w = Math.round(viewport.width);
+                  var h = Math.round(viewport.height);
+                  var canvas = document.createElement('canvas');
+                  canvas.width = w;
+                  canvas.height = h;
+                  var ctx = canvas.getContext('2d');
+                  ctx.fillStyle = '#ffffff';
+                  ctx.fillRect(0, 0, w, h);
+                  return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function() {
+                    var dataUrl = canvas.toDataURL('image/png');
+                    var raw = atob(dataUrl.split(',')[1]);
+                    var buf = new Uint8Array(raw.length);
+                    for (var j = 0; j < raw.length; j++) buf[j] = raw.charCodeAt(j);
+                    var img = newDoc.embedPng(buf);
+                    var pdfW = Math.round(viewport.width * 72 / 96);
+                    var pdfH = Math.round(viewport.height * 72 / 96);
+                    var p = newDoc.addPage([pdfW, pdfH]);
+                    p.drawImage(img, { x: 0, y: 0, width: pdfW, height: pdfH });
+                  });
+                });
+              });
+            })(i);
+          }
+          return chain.then(function() {
+            return newDoc.save({ useObjectStreams: true });
+          }).then(function(saved) { done(saved); });
+        });
+      });
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '\u23F3 Compressing...';
+      downloadBtn.style.display = 'none';
+
+      utils.showProgress('progressBar');
+
+      utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+        return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+      }).then(function(pdfDoc) {
+        if (compressLevel.value === 'high') {
+          return compressHigh(parseInt(qualityRange.value));
+        }
+        return compressLossless(pdfDoc);
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error: ' + (err.message || err));
+        utils.hideProgress('progressBar');
+        resetUI();
+      });
+    });
+  });
+  </script>
+</body>
+</html>

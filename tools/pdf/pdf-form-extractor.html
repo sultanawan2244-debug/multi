@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Form Extractor Online Free — Extract Form Field Data | Ali Tools Company</title>
+  <meta name="description" content="Extract form field data from PDF online free. Read AcroForm field names and values. No upload needed.">
+  <meta name="keywords" content="PDF Form Extractor, pdf form extractor online, free pdf form extractor, extract pdf form data, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-form-extractor.html">
+  <meta property="og:title" content="PDF Form Extractor Online Free — Extract Form Field Data">
+  <meta property="og:description" content="Extract form field data from PDF online free. Read AcroForm field names and values. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Form Extractor Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-form-extractor.html",
+    "description": "Extract form field data from PDF online free. Read AcroForm field names and values.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Form Extractor</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📊</div>
+      <h1>PDF Form Extractor</h1>
+      <p>PDF Form Extractor Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents with AcroForms</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="formResults" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Extracted Form Fields</h3>
+              <div id="formDataTable"></div>
+              <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+                <button class="btn btn-primary" id="downloadJsonBtn">⬇️ Download as JSON</button>
+                <button class="btn btn-secondary" id="downloadCsvBtn">⬇️ Download as CSV</button>
+              </div>
+            </div>
+            <div id="noFormFieldsExtract" style="display:none;background:#fff3cd;border-radius:12px;padding:20px;margin-top:16px;">
+              <p style="color:#856404;">This PDF does not contain any AcroForm fields or the form data could not be read.</p>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Extract Form Data</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF Form</h3>
+            <p>Drag & drop your PDF with AcroForm fields or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Extract Data</h3>
+            <p>Click "Extract Form Data" to read all form fields and their values.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download Results</h3>
+            <p>View extracted data in a table. Download as JSON or CSV.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Form Extractor?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Extract form data instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">📊</div>
+            <h4>Multiple Formats</h4>
+            <p>Download as JSON or CSV for further processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Form Extractor?</h2>
+        <p>A PDF Form Extractor reads interactive form fields (AcroForms) from PDF documents and displays their names, types, and current values. It's useful for auditing form data, migrating information between systems, or simply viewing what data is stored in a fillable PDF.</p>
+
+        <h2>Why Use Our PDF Form Extractor?</h2>
+        <p>Our tool runs entirely in your browser with no server uploads. Extract all form field data instantly and download it in JSON or CSV format for use in spreadsheets or other applications.</p>
+
+        <h2>Key Features of Our PDF Form Extractor</h2>
+        <ul>
+          <li><strong>Field Names:</strong> Extracts all form field names from the PDF.</li>
+          <li><strong>Field Values:</strong> Reads current values of each field.</li>
+          <li><strong>JSON Export:</strong> Download data in JSON format.</li>
+          <li><strong>CSV Export:</strong> Download data in CSV format for spreadsheets.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What form types are supported? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">AcroForm fields including text fields, checkboxes, radio buttons, and dropdowns are supported. XFA forms are not supported.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I edit the extracted data? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This tool extracts data for viewing and export. Use our PDF Form Filler tool to edit form field values.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-form-filler.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📝</div>
+            <h3>PDF Form Filler</h3>
+            <p>Fill PDF form fields interactively.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-metadata-editor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📋</div>
+            <h3>PDF Metadata Editor</h3>
+            <p>Edit PDF metadata and properties.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-to-json.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📄</div>
+            <h3>PDF to JSON</h3>
+            <p>Convert PDF content to JSON format.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let extractedData = [];
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const formResults = document.getElementById('formResults');
+    const formDataTable = document.getElementById('formDataTable');
+    const noFormFieldsExtract = document.getElementById('noFormFieldsExtract');
+    const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+    const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      formResults.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Extracting...';
+
+      utils.simulateProgress('progressBar', 1500, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              extractFormData(pdfDoc);
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Extract Form Data';
+        }
+      });
+    });
+
+    function extractFormData(pdfDoc) {
+      extractedData = [];
+      try {
+        var form = pdfDoc.getForm();
+        var fields = form.getFields();
+
+        for (var i = 0; i < fields.length; i++) {
+          var field = fields[i];
+          var name = '';
+          var value = '';
+          var type = 'Unknown';
+
+          try { name = field.getName(); } catch(e) { name = 'Field ' + (i + 1); }
+          try { value = field.getText(); } catch(e) { value = ''; }
+
+          var cn = field.constructor.name;
+          if (cn.indexOf('CheckBox') > -1) type = 'CheckBox';
+          else if (cn.indexOf('RadioButton') > -1) type = 'RadioButton';
+          else if (cn.indexOf('Dropdown') > -1) type = 'Dropdown';
+          else if (cn.indexOf('TextField') > -1) type = 'TextField';
+          else if (cn.indexOf('Button') > -1) type = 'Button';
+          else type = 'Unknown';
+
+          extractedData.push({ name: name, type: type, value: value });
+        }
+      } catch (err) {}
+
+      formResults.style.display = 'block';
+
+      if (extractedData.length === 0) {
+        formDataTable.innerHTML = '';
+        noFormFieldsExtract.style.display = 'block';
+        utils.hideProgress('progressBar');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = 'Extract Form Data';
+        return;
+      }
+
+      noFormFieldsExtract.style.display = 'none';
+
+      var html = '<table style="width:100%;border-collapse:collapse;">';
+      html += '<thead><tr style="background:var(--primary);color:#fff;">';
+      html += '<th style="padding:10px;text-align:left;">#</th>';
+      html += '<th style="padding:10px;text-align:left;">Field Name</th>';
+      html += '<th style="padding:10px;text-align:left;">Type</th>';
+      html += '<th style="padding:10px;text-align:left;">Value</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var j = 0; j < extractedData.length; j++) {
+        var d = extractedData[j];
+        var bgColor = j % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
+        html += '<tr style="background:' + bgColor + ';">';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + (j + 1) + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + utils.escapeHtml(d.name) + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + d.type + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + utils.escapeHtml(d.value) + '</td>';
+        html += '</tr>';
+      }
+
+      html += '</tbody></table>';
+      html += '<p style="margin-top:12px;font-weight:600;">Total Fields: ' + extractedData.length + '</p>';
+      formDataTable.innerHTML = html;
+
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'Extracted ' + extractedData.length + ' form field(s).');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'Extract Form Data';
+    }
+
+    downloadJsonBtn.addEventListener('click', function() {
+      if (extractedData.length === 0) return;
+      var json = JSON.stringify(extractedData, null, 2);
+      var blob = new Blob([json], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_form_data.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    downloadCsvBtn.addEventListener('click', function() {
+      if (extractedData.length === 0) return;
+      var csv = 'Field Name,Type,Value\n';
+      for (var i = 0; i < extractedData.length; i++) {
+        var d = extractedData[i];
+        csv += '"' + d.name.replace(/"/g, '""') + '","' + d.type + '","' + d.value.replace(/"/g, '""') + '"\n';
+      }
+      var blob = new Blob([csv], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_form_data.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+  </script>
+</body>
+</html>

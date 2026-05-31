@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 to Image Converter Online Free | Ali Tools Company</title>
+  <meta name="description" content="Convert Base64 strings to images online free. Decode base64 data URIs back to PNG, JPG, WebP, and GIF images. No upload needed, works in browser.">
+  <meta name="keywords" content="base64 to image, base64 decoder, convert base64 to image, base64 to PNG, base64 image decoder, data URI to image">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/base64-to-image.html">
+  <meta property="og:title" content="Base64 to Image Converter Online Free">
+  <meta property="og:description" content="Convert Base64 strings back to images online free. Decode base64 to PNG, JPG, WebP, GIF instantly in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Base64 to Image Converter Online Free",
+    "url": "https://alitoolscompany.com/tools/image/base64-to-image.html",
+    "description": "Free online browser-based base64 to image converter. Decode base64 strings to PNG, JPG, WebP, GIF without uploading.",
+    "applicationCategory": "DeveloperUtilities",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Base64 to Image</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🖼️</div>
+      <h1>Base64 to Image Converter</h1>
+      <p>Convert Base64 Strings to Images Online Free — Decode Data URIs Instantly</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="tool-controls" id="inputSection">
+            <div class="control-group">
+              <label for="base64Input">Paste Base64 String or Data URI</label>
+              <textarea id="base64Input" rows="6" placeholder="Paste your base64 string here... (e.g., data:image/png;base64,iVBORw... or just iVBORw...)" style="width:100%;padding:12px;border:1px solid var(--border-color);border-radius:8px;font-family:monospace;font-size:0.82rem;resize:vertical;"></textarea>
+            </div>
+          </div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">Decoded Image</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <img id="decodedPreview" alt="Decoded image preview" style="max-width:100%;max-height:400px;">
+                <p id="noImageMsg" style="color:var(--gray-500);margin-top:16px;">Paste a base64 string and click "Decode" to see the image.</p>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:0.85rem;color:var(--gray-600);">
+              <span id="imageInfo">Image info will appear here</span>
+            </div>
+          </div>
+          <div class="tool-actions" id="toolActions">
+            <button class="btn btn-primary" id="decodeBtn">🖼️ Decode & Preview</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Image</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Convert Base64 to Image</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Paste Base64</h3>
+            <p>Copy and paste your base64 string or data URI into the text area.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Decode</h3>
+            <p>Click "Decode & Preview" to convert the base64 string back into an image.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Preview the decoded image, then download it to your device.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Base64 to Image Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Decode base64 to images instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your data never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🔄</div>
+            <h4>Flexible Input</h4>
+            <p>Accepts both full data URIs and raw base64 strings.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start decoding immediately with zero registration.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is Base64 to Image Conversion?</h2>
+        <p>Base64 to image conversion is the process of decoding a Base64-encoded string back into its original binary image format, reconstructing the visual image file. This is the reverse operation of image to Base64 encoding. Base64 strings are commonly used to embed images directly in HTML, CSS, or JavaScript code as data URIs. Our free online Base64 to Image converter processes all decoding entirely in your browser, ensuring your data remains private while producing clean, downloadable image files in PNG, JPEG, WebP, or GIF formats.</p>
+
+        <h2>Why Use Our Base64 to Image Converter?</h2>
+        <p>Developers frequently encounter Base64-encoded images in API responses, database exports, or embedded code snippets. Our tool makes it simple to extract and view these images without writing any code. Simply paste the Base64 string or data URI, click decode, and preview the image immediately. You can then download the decoded image as a proper image file. Since all processing happens locally in your browser, there are no privacy concerns or file size limits. The tool intelligently detects whether you pasted a full data URI or a raw Base64 string, handling both cases seamlessly.</p>
+
+        <h2>Key Features of Our Base64 to Image Converter</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Flexible Input:</strong> Accepts full data URIs (data:image/...) and raw Base64 strings.</li>
+          <li><strong>Instant Preview:</strong> See the decoded image immediately after clicking decode.</li>
+          <li><strong>Download:</strong> Save the decoded image as a proper image file.</li>
+          <li><strong>Format Detection:</strong> Automatically detects the image format from the Base64 string.</li>
+          <li><strong>No File Limits:</strong> Decode Base64 strings of any length (within browser memory limits).</li>
+          <li><strong>Clean Interface:</strong> Simple, focused tool with no clutter or distractions.</li>
+        </ul>
+
+        <h2>Use Cases for Base64 to Image Converter</h2>
+        <p>Our Base64 to Image converter is valuable for many scenarios: web developers extracting images from inline data URIs in HTML or CSS; mobile developers decoding images from API responses; database administrators viewing images stored as Base64 text in databases; security researchers examining embedded images in suspicious files; students learning about data encoding; QA testers verifying image data in applications; and anyone who receives a Base64 image string through email or messaging and needs to view or save the actual image.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How do I know if a string is Base64 encoded? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Base64 strings consist of characters A-Z, a-z, 0-9, +, /, and usually end with = or == padding. A data URI starts with "data:image/..." followed by the format and ";base64,". Our tool accepts both formats and will decode them automatically.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I convert a Base64 string without the data URI prefix? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes. Our tool automatically detects whether your input includes the "data:image/...;base64," prefix. If it is missing, we add it automatically based on the decoded image format. Just paste the raw Base64 string and click decode.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What image formats are supported for output? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">You can download the decoded image as PNG, JPEG, WebP, or GIF. The tool detects the original format from the Base64 data and offers the appropriate download options.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is Base64 to image conversion safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all decoding happens entirely in your browser using JavaScript, the Base64 data never leaves your computer. No data is transmitted to any server, making it completely safe for any content.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is the maximum Base64 string length I can decode? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">There is no artificial limit. The maximum length depends on your browser's available memory. Most modern browsers can handle Base64 strings corresponding to image files up to 100MB or more.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-to-base64.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔢</div>
+            <h3>Image to Base64</h3>
+            <p>Convert images to base64 encoding.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-format-converter.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>Format Converter</h3>
+            <p>Convert between image formats instantly.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-resizer.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📏</div>
+            <h3>Image Resizer</h3>
+            <p>Resize images to exact dimensions.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    const base64Input = document.getElementById('base64Input');
+    const errorContainer = document.getElementById('errorContainer');
+    const previewArea = document.getElementById('previewArea');
+    const decodedPreview = document.getElementById('decodedPreview');
+    const noImageMsg = document.getElementById('noImageMsg');
+    const imageInfo = document.getElementById('imageInfo');
+    const decodeBtn = document.getElementById('decodeBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    let currentImageDataUrl = '';
+    let isProcessing = false;
+
+    decodeBtn.addEventListener('click', function() {
+      if (isProcessing) return;
+
+      const input = base64Input.value.trim();
+      if (!input) {
+        utils.showError('errorContainer', 'Please paste a Base64 string or data URI.');
+        return;
+      }
+
+      isProcessing = true;
+      decodeBtn.disabled = true;
+      decodeBtn.textContent = '⏳ Decoding...';
+      downloadBtn.style.display = 'none';
+      errorContainer.innerHTML = '';
+
+      utils.simulateProgress('progressBar', 500, function() {
+        try {
+          let dataUrl = input;
+          if (!input.startsWith('data:')) {
+            var mimeMatch = input.match(/^data:([a-zA-Z0-9\/\+]+);base64,/);
+            if (input.match(/^[A-Za-z0-9+\/=]+$/)) {
+              var pngSig = '/9j/';
+              if (input.substring(0, 4) === 'iVBOR') {
+                dataUrl = 'data:image/png;base64,' + input;
+              } else if (input.substring(0, 4) === '/9j/') {
+                dataUrl = 'data:image/jpeg;base64,' + input;
+              } else if (input.substring(0, 4) === 'R0lG') {
+                dataUrl = 'data:image/gif;base64,' + input;
+              } else if (input.substring(0, 4) === 'UklGR') {
+                dataUrl = 'data:image/webp;base64,' + input;
+              } else {
+                dataUrl = 'data:image/png;base64,' + input;
+              }
+            }
+          }
+
+          decodedPreview.onload = function() {
+            imageInfo.textContent = 'Dimensions: ' + decodedPreview.naturalWidth + 'x' + decodedPreview.naturalHeight;
+            downloadBtn.style.display = 'inline-flex';
+            utils.hideProgress('progressBar');
+            utils.showSuccess('errorContainer', 'Base64 decoded successfully!');
+          };
+
+          decodedPreview.onerror = function() {
+            utils.showError('errorContainer', 'Invalid Base64 string. Please check your input and try again.');
+            isProcessing = false;
+            decodeBtn.disabled = false;
+            decodeBtn.textContent = '🖼️ Decode & Preview';
+          };
+
+          decodedPreview.src = dataUrl;
+          decodedPreview.style.display = 'block';
+          noImageMsg.style.display = 'none';
+          previewArea.classList.add('show');
+          currentImageDataUrl = dataUrl;
+
+          downloadBtn.onclick = function() {
+            var ext = 'png';
+            var mimeMatch = dataUrl.match(/^data:image\/([a-zA-Z0-9]+);/);
+            if (mimeMatch) {
+              var mimeExt = mimeMatch[1].replace('jpeg', 'jpg');
+              if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].indexOf(mimeExt) !== -1) {
+                ext = mimeExt;
+              }
+            }
+            utils.triggerDownload(dataUrl, 'decoded_image.' + ext);
+          };
+        } catch (err) {
+          utils.showError('errorContainer', 'Error decoding Base64: ' + err.message);
+        }
+
+        isProcessing = false;
+        decodeBtn.disabled = false;
+        decodeBtn.textContent = '🖼️ Decode & Preview';
+      });
+    });
+  });
+  </script>
+</body>
+</html>

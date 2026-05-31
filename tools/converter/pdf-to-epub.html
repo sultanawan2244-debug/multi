@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF to EPUB Converter Online Free — Convert PDF to Ebook Instantly | Ali Tools Company</title>
+  <meta name="description" content="Convert PDF to EPUB online free. Transform PDF documents to ebook format directly in your browser. No upload needed.">
+  <meta name="keywords" content="PDF to EPUB Converter, converter, online converter, file conversion">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/converter/pdf-to-epub.html">
+  <meta property="og:title" content="PDF to EPUB Converter Online Free — Convert PDF to Ebook Instantly">
+  <meta property="og:description" content="Convert PDF to EPUB online free. Transform PDF documents to ebook format. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF to EPUB Converter Online Free",
+    "url": "https://alitoolscompany.com/tools/converter/pdf-to-epub.html",
+    "description": "Convert PDF to EPUB online free. Transform PDF documents to ebook format. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../converter-tools.html">Converter Tools</a> &gt; <span>PDF to EPUB Converter</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">??</div>
+      <h1>PDF to EPUB Converter</h1>
+      <p>Convert PDF to EPUB Free - Instantly in Your Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop your PDF file here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Convert</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">Download EPUB</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Your PDF File</h3>
+            <p>Drag & drop your PDF document or click to browse. Supports PDF format.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Convert to EPUB</h3>
+            <p>Click "Convert" to create an EPUB ebook from your PDF content.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Convert" to process, then download your converted file instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF to EPUB Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Convert PDF to EPUB instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your files never leave your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🚫</div>
+            <h4>No Watermark</h4>
+            <p>Your converted EPUB is clean and free of any watermarks.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start processing immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF to EPUB Converter?</h2>
+        <p>A PDF to EPUB Converter is a tool that transforms PDF documents into EPUB ebook format. EPUB is the standard format for digital ebooks, supported by most ereaders and reading apps. Our free online converter extracts text from your PDF using pdf.js and creates a properly structured EPUB file with one chapter per page — all directly in your browser without uploading files to any server.</p>
+
+        <h2>Why Use Our PDF to EPUB Converter?</h2>
+        <p>Most online PDF to EPUB Converters require you to upload your files to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using JavaScript, you can convert PDF files of any size instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF to EPUB Converter</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Full Page Extraction:</strong> Extracts text from ALL pages of your PDF document.</li>
+          <li><strong>Proper EPUB Structure:</strong> Creates valid EPUB with mimetype, container, OPF manifest, NCX navigation, and XHTML chapters.</li>
+          <li><strong>No Limits:</strong> Process PDF files of any size (within browser memory limits).</li>
+          <li><strong>No Sign-Up:</strong> Start converting immediately with zero registration required.</li>
+        </ul>
+
+        <h2>Use Cases for PDF to EPUB Converter</h2>
+        <p>Our PDF to EPUB Converter is perfect for a wide range of scenarios: readers convert PDF documents to EPUB format for ereaders like Kindle and Kobo; students convert PDF textbooks for reading on mobile devices; researchers archive PDF content in the standard ebook format; and anyone who prefers reading documents on their favorite ebook reader app.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How does PDF to EPUB conversion work? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Our tool uses pdf.js to extract text from every page of your PDF. It then creates a valid EPUB file using JSZip, building the EPUB structure: mimetype, container.xml, content.opf, toc.ncx, and XHTML chapter files — one per PDF page.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Will images and formatting be preserved? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This tool extracts the text content from PDF files. Images, tables, charts, and complex formatting are not included in the EPUB output. The result is a text-based ebook with one chapter per page.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is PDF to EPUB conversion free? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, completely free. There are no hidden costs, no premium tiers, and no credit card required. All processing happens locally in your browser with no server uploads.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to convert sensitive PDF documents? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser using JavaScript, your files never leave your computer. No data is transmitted to any server. This makes it completely safe for sensitive or confidential documents.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What ereaders support EPUB? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">EPUB is the standard ebook format supported by most ereaders and apps, including Apple Books, Google Play Books, Kobo, Adobe Digital Editions, Calibre, and many others. Note that Amazon Kindle uses a different format (MOBI/AZW3).</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-cropper.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">✂️</div>
+            <h3>Image Cropper</h3>
+            <p>Crop images with custom aspect ratios.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-compressor.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🗜️</div>
+            <h3>Image Compressor</h3>
+            <p>Compress images without losing quality.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-format-converter.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>Format Converter</h3>
+            <p>Convert between image formats instantly.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid file type.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+    }
+
+    function setupDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      downloadBtn.onclick = function() {
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      downloadBtn.style.display = 'inline-flex';
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'Conversion complete! Click download to save.');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'Convert';
+    }
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = 'Converting...';
+      downloadBtn.style.display = 'none';
+      utils.simulateProgress('progressBar', 3000, function() {
+        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+          var data = new Uint8Array(buffer);
+          return pdfjsLib.getDocument({ data: data }).promise.then(function(pdf) {
+            var numPages = pdf.numPages;
+            var pagePromises = [];
+            for (var i = 1; i <= numPages; i++) {
+              pagePromises.push(pdf.getPage(i).then(function(page) {
+                return page.getTextContent().then(function(textContent) {
+                  return textContent.items.map(function(item) { return item.str; }).join(' ');
+                });
+              }));
+            }
+            return Promise.all(pagePromises).then(function(pageTexts) {
+              var zip = new JSZip();
+              zip.file('mimetype', 'application/epub+zip');
+              zip.folder('META-INF').file('container.xml', '<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>');
+              var chapterFiles = pageTexts.map(function(text, idx) {
+                var num = idx + 1;
+                var body = '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Page ' + num + '</title></head><body><h1>Page ' + num + '</h1><p>' + text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p></body></html>';
+                var filename = 'chapter' + num + '.xhtml';
+                zip.folder('OEBPS').file(filename, body);
+                return { id: 'chapter' + num, href: filename };
+              });
+              var manifest = chapterFiles.map(function(f) {
+                return '<item id="' + f.id + '" href="' + f.href + '" media-type="application/xhtml+xml"/>';
+              }).join('');
+              var spine = chapterFiles.map(function(f) {
+                return '<itemref idref="' + f.id + '"/>';
+              }).join('');
+              var opf = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="bookid"><metadata><dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Converted Document</dc:title><dc:language xmlns:dc="http://purl.org/dc/elements/1.1/">en</dc:language></metadata><manifest><item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>' + manifest + '</manifest><spine toc="ncx">' + spine + '</spine></package>';
+              zip.folder('OEBPS').file('content.opf', opf);
+              var ncx = '<?xml version="1.0"?><!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd"><ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1"><head><meta name="dtb:uid" content="bookid"/></head><docTitle><text>Converted Document</text></docTitle><navMap>' + chapterFiles.map(function(f, idx) { return '<navPoint id="' + f.id + '" playOrder="' + (idx + 1) + '"><navLabel><text>Page ' + (idx + 1) + '</text></navLabel><content src="' + f.href + '"/></navPoint>'; }).join('') + '</navMap></ncx>';
+              zip.folder('OEBPS').file('toc.ncx', ncx);
+              return zip.generateAsync({ type: 'blob', mimeType: 'application/epub+zip' }).then(function(blob) {
+                setupDownload(blob, loadedFile.name.replace(/\.[^.]+$/, '') + '.epub');
+              });
+            });
+          });
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Convert';
+        });
+      });
+    });
+  });
+  </script>
+</body>
+</html>
+
+

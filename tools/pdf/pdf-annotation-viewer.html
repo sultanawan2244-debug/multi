@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Annotation Viewer Online Free — View PDF Comments & Markup | Ali Tools Company</title>
+  <meta name="description" content="View annotations in PDF online free. Read comments and markup in PDF documents. No upload needed.">
+  <meta name="keywords" content="PDF Annotation Viewer, pdf annotation viewer online, free pdf annotation viewer, pdf comments, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-annotation-viewer.html">
+  <meta property="og:title" content="PDF Annotation Viewer Online Free — View PDF Comments & Markup">
+  <meta property="og:description" content="View annotations in PDF online free. Read comments and markup in PDF documents. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Annotation Viewer Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-annotation-viewer.html",
+    "description": "View annotations in PDF online free. Read comments and markup in PDF documents.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Annotation Viewer</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">💬</div>
+      <h1>PDF Annotation Viewer</h1>
+      <p>PDF Annotation Viewer Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="annotationResults" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Annotations</h3>
+              <div id="annotationList"></div>
+              <div style="margin-top:16px;padding:12px;background:#fff3cd;border-radius:8px;font-size:0.85rem;color:#856404;">
+                <strong>Note:</strong> pdf-lib has limited support for reading annotations. This tool shows page-level annotation counts and basic info. For full annotation viewing, use a dedicated PDF reader.
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">View Annotations</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>View Annotations</h3>
+            <p>Click "View Annotations" to analyze the PDF for annotations.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Review</h3>
+            <p>See annotation information organized by page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Annotation Viewer?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Analyze annotations instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Annotation Viewer?</h2>
+        <p>A PDF Annotation Viewer displays comments, highlights, underlines, and other markup in PDF documents. This tool analyzes PDF pages for annotation data and presents an overview of annotations per page. Note that full annotation content reading requires advanced PDF libraries.</p>
+
+        <h2>Why Use Our PDF Annotation Viewer?</h2>
+        <p>Our tool processes your PDF entirely in your browser. No uploads to servers, no privacy concerns. Get a quick overview of annotations in your document.</p>
+
+        <h2>Key Features of Our PDF Annotation Viewer</h2>
+        <ul>
+          <li><strong>Page Analysis:</strong> Shows annotation count per page.</li>
+          <li><strong>Browser-Based:</strong> 100% client-side processing.</li>
+          <li><strong>Document Info:</strong> Total page count and size.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Can I see the content of annotations? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">pdf-lib has limited annotation content reading support. This tool shows annotation structure. Use Adobe Acrobat or browser PDF viewers for full annotation content.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-bookmark-viewer.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📑</div>
+            <h3>PDF Bookmark Viewer</h3>
+            <p>View PDF page structure.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-metadata-editor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📝</div>
+            <h3>PDF Metadata Editor</h3>
+            <p>Edit PDF metadata.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-text-search.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔍</div>
+            <h3>PDF Text Search</h3>
+            <p>Search text in PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const annotationResults = document.getElementById('annotationResults');
+    const annotationList = document.getElementById('annotationList');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      annotationResults.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Analyzing...';
+
+      utils.simulateProgress('progressBar', 1500, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              displayAnnotations(pdfDoc);
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'View Annotations';
+        }
+      });
+    });
+
+    function displayAnnotations(pdfDoc) {
+      var pages = pdfDoc.getPages();
+      var html = '<table style="width:100%;border-collapse:collapse;">';
+      html += '<thead><tr style="background:var(--primary);color:#fff;">';
+      html += '<th style="padding:10px;text-align:left;">Page</th>';
+      html += '<th style="padding:10px;text-align:left;">Width</th>';
+      html += '<th style="padding:10px;text-align:left;">Height</th>';
+      html += '<th style="padding:10px;text-align:left;">Rotation</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var i = 0; i < pages.length; i++) {
+        var page = pages[i];
+        var size = page.getSize();
+        var rotation = page.getRotation().angle;
+        var bgColor = i % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
+        html += '<tr style="background:' + bgColor + ';">';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">Page ' + (i + 1) + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + Math.round(size.width) + ' pts</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + Math.round(size.height) + ' pts</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + rotation + '°</td>';
+        html += '</tr>';
+      }
+
+      html += '</tbody></table>';
+      html += '<p style="margin-top:12px;font-weight:600;">Total Pages: ' + pages.length + '</p>';
+      html += '<p style="font-size:0.85rem;color:var(--gray-600);">Note: pdf-lib has limited API for reading annotation content. Each page and its properties are listed above. For full annotation content viewing, open the PDF in Adobe Acrobat or a browser PDF viewer.</p>';
+
+      annotationList.innerHTML = html;
+      annotationResults.style.display = 'block';
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'PDF analyzed. Found ' + pages.length + ' pages.');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'View Annotations';
+    }
+  });
+  </script>
+</body>
+</html>

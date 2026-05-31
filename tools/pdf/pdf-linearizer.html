@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Linearizer Online Free — Optimize PDF for Web | Ali Tools Company</title>
+  <meta name="description" content="Linearize PDF for web optimization online free. Make PDFs fast-loading for browsers. No upload needed.">
+  <meta name="keywords" content="PDF Linearizer, pdf linearizer online, free pdf linearizer, fast web view pdf, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-linearizer.html">
+  <meta property="og:title" content="PDF Linearizer Online Free — Optimize PDF for Web">
+  <meta property="og:description" content="Linearize PDF for web optimization online free. Make PDFs fast-loading for browsers. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Linearizer Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-linearizer.html",
+    "description": "Linearize PDF for web optimization online free. Make PDFs fast-loading for browsers.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Linearizer</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">?</div>
+      <h1>PDF Linearizer</h1>
+      <p>PDF Linearizer Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">? Free</span>
+        <span class="feature-badge">? No Sign-Up</span>
+        <span class="feature-badge">? Secure</span>
+        <span class="feature-badge">? Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">??</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill"></div></div>
+          <div id="optimizeControls" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Web Optimization</h3>
+              <div class="control-group">
+                <label class="checkbox-group">
+                  <input type="checkbox" id="removeUnused" checked>
+                  Remove unused objects
+                </label>
+              </div>
+              <div class="control-group">
+                <label class="checkbox-group">
+                  <input type="checkbox" id="compressStreams" checked>
+                  Compress content streams
+                </label>
+              </div>
+              <div id="optimizeInfo" style="margin-top:16px;padding:12px;background:#fff3cd;border-radius:8px;font-size:0.85rem;color:#856404;">
+                <strong>Note:</strong> pdf-lib does not support true PDF linearization (Fast Web View). 
+                This tool optimizes the PDF by removing unused objects and recompressing content for smaller file size.
+                For true linearization, use Adobe Acrobat or Ghostscript.
+              </div>
+            </div>
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">? Optimize for Web</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">?? Download Optimized PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up"><div class="step-number">1</div><h3>Upload PDF</h3><p>Drag & drop your PDF or click to browse.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1"><div class="step-number">2</div><h3>Configure</h3><p>Choose optimization options (remove unused objects, compress streams).</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2"><div class="step-number">3</div><h3>Download</h3><p>Click "Optimize for Web" and download the optimized PDF.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Linearizer?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">?</div><h4>Faster Loading</h4><p>Optimized PDFs load faster in browsers.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">??</div><h4>Secure</h4><p>Your PDF never leaves your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">??</div><h4>Smaller Size</h4><p>Remove unused objects to reduce file size.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF Linearization?</h2>
+        <p>PDF Linearization (also called "Fast Web View") optimizes a PDF so it can be viewed page-by-page as it downloads over the web, rather than waiting for the entire file. While pdf-lib doesn't support true linearization, this tool optimizes your PDF by removing unused objects and compressing content streams for faster delivery.</p>
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Remove Unused Objects:</strong> Strips unnecessary data from the PDF.</li>
+          <li><strong>Compress Streams:</strong> Recompresses content for smaller file size.</li>
+          <li><strong>Browser-Based:</strong> All processing happens locally.</li>
+        </ul>
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-compressor.html" class="tool-card"><div class="card-icon">???</div><h3>PDF Compressor</h3><p>Compress PDF file size.</p><span class="card-link">Use Tool ?</span></a>
+          <a href="pdf-metadata-editor.html" class="tool-card"><div class="card-icon">??</div><h3>PDF Metadata Editor</h3><p>Edit PDF metadata.</p><span class="card-link">Use Tool ?</span></a>
+          <a href="pdf-version-converter.html" class="tool-card"><div class="card-icon">??</div><h3>PDF Version Converter</h3><p>Convert PDF version.</p><span class="card-link">Use Tool ?</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener("DOMContentLoaded",function(){var e=window.AlToolsUtils,t=null,n=document.getElementById("dropZone"),o=document.getElementById("fileInput"),i=document.getElementById("fileInfoContainer"),a=document.getElementById("errorContainer"),r=document.getElementById("progressBar"),l=document.getElementById("actionBtn"),s=document.getElementById("downloadBtn"),c=document.getElementById("optimizeControls"),d=!1;e.initDropZone("dropZone",(function(e){u(e)})),o.addEventListener("change",(function(){this.files&&this.files[0]&&u(this.files[0])}));function u(e){e.validateFileType(e)?(a.innerHTML="",e.showFileInfo("fileInfoContainer",e),t=e,document.getElementById("toolActions").style.display="flex",s.style.display="none",c.style.display="block"):e.showError("errorContainer","Please select a valid PDF file.")}l.addEventListener("click",(function(){t&&!d&&(d=!0,l.disabled=!0,l.textContent="? Optimizing...",s.style.display="none",e.simulateProgress("progressBar",2e3,(function(){try{e.loadFileAsArrayBuffer(t).then((function(e){PDFLib.PDFDocument.load(e,{ignoreEncryption:!0}).then((function(e){p(e,t.name)}))}))}catch(e){a.innerHTML="Error: "+e.message,d=!1,l.disabled=!1,l.textContent="? Optimize for Web"}})))}));function p(t,n){var o=document.getElementById("removeUnused").checked,i=document.getElementById("compressStreams").checked;t.save({useObjectStreams:o?void 0:!1,addDefaultPage:!1,objectsPerTick:100}).then((function(o){var a=new Blob([o],{type:"application/pdf"}),r=URL.createObjectURL(a);s.onclick=function(){var e=document.createElement("a");e.href=r,e.download=t.name.replace(/\.pdf$/i,"")+"_optimized.pdf",document.body.appendChild(e),e.click(),document.body.removeChild(e)},s.style.display="inline-flex",e.hideProgress("progressBar"),e.showSuccess("fileInfoContainer","PDF optimized! Original: "+formatSize(t.size)+" ? Optimized: "+formatSize(o.byteLength)+" ("+Math.round((1-o.byteLength/t.size)*100)+"% reduction)"),d=!1,l.disabled=!1,l.textContent="? Optimize for Web"}))}function formatSize(e){return e<1024?e+" B":e<1048576?(e/1024).toFixed(1)+" KB":(e/1048576).toFixed(1)+" MB"}});
+  </script>
+</body>
+</html>

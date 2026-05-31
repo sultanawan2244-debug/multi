@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.5, minimum-scale=0.5">
+    <title>Came-Scanner – AI Document Scanner | Ali Tools Company</title>
+    <meta name="description" content="AI-powered document scanner. Scan, enhance, crop, and export documents as PDF or images. Free online tool, works in your browser.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="canonical" href="https://alitoolscompany.com/tools/scan/camera-scanner.html">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/tool-page.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #main-content {
+            padding-top: 72px !important;
+        }
+        #main-content .tool-page-hero {
+            padding-top: 28px !important;
+            padding-bottom: 32px !important;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="header"></div>
+    <main id="main-content">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <div class="container">
+                <a href="../index.html">Home</a> &gt; <span>Camera Scanner</span>
+            </div>
+        </nav>
+        <section class="tool-page-hero scroll-animate fade-in-up">
+            <div class="tool-page-icon">📷</div>
+            <h1>Came-Scanner</h1>
+            <p>AI-Powered Document Scanner — Scan, Enhance, Crop &amp; Export as PDF or Image</p>
+            <div class="feature-badges" style="justify-content:center;">
+                <span class="feature-badge">✅ Free</span>
+                <span class="feature-badge">✅ No Sign-Up</span>
+                <span class="feature-badge">✅ Secure</span>
+                <span class="feature-badge">✅ Fast</span>
+            </div>
+        </section>
+        <section class="tool-interface">
+            <div class="container">
+                <div class="app-wrapper">
+                    <div class="app-container">
+                        <button class="scroll-top" id="scrollTopBtn" title="Back to top">⬆</button>
+                        <div class="card" id="uploadCard">
+                            <div class="upload-area" id="uploadArea">
+                                <span class="upload-icon">📷</span>
+                                <div class="upload-text">Tap or drop a photo here</div>
+                                <div class="upload-subtext">JPG · PNG · WEBP · HEIC — Mobile &amp; DSLR</div>
+                                <input type="file" id="fileInput" accept="image/*" capture="environment" multiple>
+                            </div>
+                            <div class="upload-actions">
+                                <button class="upload-action-btn" id="singleFileBtn">📄 Select Single File</button>
+                                <button class="upload-action-btn" id="folderBtn">📁 Select Folder</button>
+                            </div>
+                            <input type="file" id="fileInputSingle" accept="image/*" multiple style="display:none">
+                        </div>
+                        <div class="card preview-section" id="previewCard">
+                            <div>
+                                <div class="section-label">View &amp; Tools</div>
+                                <div class="toolbar-row" id="toolbarRow">
+                                    <button class="tool-btn active-tool" data-view="scanned">✨ Scanned</button>
+                                    <button class="tool-btn" data-view="original">📱 Original</button>
+                                    <button class="tool-btn" data-view="compare">🔍 Compare</button>
+                                    <button class="tool-btn" id="cropModeBtn" data-view="crop">✂️ Crop</button>
+                                    <div class="tool-sep"></div>
+                                    <button class="tool-btn tool-sm" id="autoCropBtn">🪄 Auto Crop</button>
+                                    <button class="tool-btn ai-btn tool-sm" id="aiEnhanceBtn">🤖 AI Enhance</button>
+                                    <button class="tool-btn accent-btn tool-sm" id="autoAdjustBtn2">🔧 Auto</button>
+                                    <button class="tool-btn apply-crop-btn tool-sm" id="applyCropBtn" style="display:none;">✅ Apply Crop</button>
+                                </div>
+                            </div>
+                            <div class="image-outer" id="imageOuter">
+                                <img id="displayImage" src="" alt="Preview" style="display:none;">
+                                <div class="compare-wrapper" id="compareWrapper">
+                                    <img id="compareOriginal" class="compare-original" src="">
+                                    <img id="compareProcessed" class="compare-processed" src="">
+                                    <div class="compare-divider" id="compareDivider"></div>
+                                </div>
+                                <div class="spinner-overlay" id="spinnerOverlay"><div class="spinner"></div></div>
+                                <div class="corner-handle tl" id="cornerTL"></div>
+                                <div class="corner-handle tr" id="cornerTR"></div>
+                                <div class="corner-handle bl" id="cornerBL"></div>
+                                <div class="corner-handle br" id="cornerBR"></div>
+                            </div>
+                            <div>
+                                <div class="section-label">Filters</div>
+                                <div class="preset-chips" id="presetChips">
+                                    <span class="preset-label">Presets:</span>
+                                    <button class="preset-chip active-preset" data-preset="magic">🪄 Magic Clean</button>
+                                    <button class="preset-chip" data-preset="bw">⬛ B&amp;W Doc</button>
+                                    <button class="preset-chip" data-preset="warm">🌅 Warm Paper</button>
+                                    <button class="preset-chip" data-preset="cool">❄️ Cool White</button>
+                                    <button class="preset-chip" data-preset="contrast">💪 High Contrast</button>
+                                    <button class="preset-chip" data-preset="soft">🌸 Soft Glow</button>
+                                    <button class="preset-chip" data-preset="shadowless">🌤️ Shadow Less</button>
+                                    <button class="preset-chip" data-preset="cleandoc">🧼 Clean Doc</button>
+                                    <button class="preset-chip" data-preset="vintage">📜 Vintage</button>
+                                    <button class="preset-chip" data-preset="coolblue">💧 Cool Blue</button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="section-label">Adjust</div>
+                                <div class="sliders-grid">
+                                    <div class="control-group"><label>🔆 Whitening <span class="val" id="thresholdVal">60%</span></label><input type="range" id="thresholdSlider" min="15" max="95" value="60"></div>
+                                    <div class="control-group"><label>🌓 Contrast <span class="val" id="contrastVal">28%</span></label><input type="range" id="contrastSlider" min="0" max="65" value="28"></div>
+                                    <div class="control-group"><label>💡 Brightness <span class="val" id="brightnessVal">8%</span></label><input type="range" id="brightnessSlider" min="-25" max="45" value="8"></div>
+                                    <div class="control-group"><label>🌑 Shadow Lift <span class="val" id="shadowVal">20%</span></label><input type="range" id="shadowSlider" min="0" max="100" value="20"></div>
+                                    <div class="control-group"><label>✨ Sharpness <span class="val" id="sharpenVal">35%</span></label><input type="range" id="sharpenSlider" min="0" max="80" value="35"></div>
+                                    <div class="control-group"><label>🎚️ Saturation <span class="val" id="saturationVal">10%</span></label><input type="range" id="saturationSlider" min="-50" max="50" value="10"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="section-label">Actions</div>
+                                <div class="btn-row">
+                                    <button class="btn btn-warning" id="autoAdjustBtn">🤖 Auto Analyze</button>
+                                    <button class="btn btn-outline" id="applyToAllBtn">🔗 Apply to All</button>
+                                    <button class="btn btn-outline" id="rotateBtn">↩️ Rotate 90°</button>
+                                    <button class="btn btn-outline" id="undoBtn" disabled>↩ Undo</button>
+                                    <button class="btn btn-success" id="pdfBtn">📕 Save PDF</button>
+                                    <button class="btn btn-zip" id="zipAllBtn">📦 Download All ZIP</button>
+                                    <button class="btn btn-primary" id="downloadBtn">💾 Download JPG</button>
+                                    <button class="btn btn-danger" id="resetBtn">🗑️ New</button>
+                                    <button class="btn btn-primary" id="saveAllJpegBtn">🖼️ Save All JPEG</button>
+                                    <button class="btn btn-primary" id="saveAllPngBtn">🔲 Save All PNG</button>
+                                    <button class="btn btn-outline" id="downloadAllBtn">📥 Download All</button>
+                                    <button class="btn btn-warning" id="bestFilterAllBtn">🏆 Best Filter All</button>
+                                </div>
+                            </div>
+                            <div class="page-strip" id="pageStrip"><div class="add-page-btn" id="addPageBtn" title="Add page">+</div></div>
+                            <div class="info-bar"><span>📐 <span id="infoRes">—</span></span><span>📏 <span id="infoSize">—</span></span><span>🕐 <span id="infoTime">—</span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="toast" id="toast"></div>
+    </main>
+    <div id="footer"></div>
+    <script src="js/header.js" defer></script>
+    <script src="js/footer.js" defer></script>
+    <script src="js/animations.js" defer></script>
+    <script src="js/tool-utils.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

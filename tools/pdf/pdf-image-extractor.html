@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Image Extractor Online Free — Extract Images from PDF | Ali Tools Company</title>
+  <meta name="description" content="Extract images from PDF files online free. View and download all embedded images from any PDF document. No upload needed.">
+  <meta name="keywords" content="PDF Image Extractor, extract images from pdf, pdf to images, free pdf image extractor">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-image-extractor.html">
+  <meta property="og:title" content="PDF Image Extractor Online Free — Extract Images from PDF">
+  <meta property="og:description" content="Extract images from PDF files online free. View and download embedded images. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Image Extractor Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-image-extractor.html",
+    "description": "Extract images from PDF files online free. View and download embedded images.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  </head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Image Extractor</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🖼️</div>
+      <h1>PDF Image Extractor</h1>
+      <p>Extract and download all embedded images from any PDF document. View previews and download individual images.</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="controlsContainer" style="display:none;">
+            <div class="control-group">
+              <label>Extracted Images</label>
+              <div id="imagesContainer" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:8px;">
+                <p style="color:var(--gray-500);text-align:center;padding:20px;">Loading images...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn" style="display:none;">Extract Images</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download All as ZIP</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. All processing stays in your browser.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Extract Images</h3>
+            <p>Images are automatically extracted and displayed as previews with download buttons.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Download individual images or use the "Download All" button to save them all at once.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Image Extractor?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Extract images instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs or premium tiers.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">👁️</div>
+            <h4>Preview</h4>
+            <p>See image previews before downloading.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start immediately with zero registration.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, works without internet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF Image Extraction?</h2>
+        <p>PDF image extraction pulls out all embedded images from a PDF document so you can save them individually. Our tool uses PDF.js to render each page and extract images using canvas operations. All processing happens in your browser — your files never leave your computer.</p>
+
+        <h2>Why Use Our PDF Image Extractor?</h2>
+        <p>Online image extractors typically require uploading documents. Our tool keeps everything private in your browser. No uploads, no data caps, completely free.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing.</li>
+          <li><strong>Image Previews:</strong> See thumbnails of extracted images.</li>
+          <li><strong>Individual Download:</strong> Save each image separately.</li>
+          <li><strong>No Limits:</strong> Extract images from documents of any size.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>Perfect for: recovering images from old PDF documents; extracting photos from PDF portfolios; saving infographics and charts from reports; reusing diagrams from technical manuals; and archiving images embedded in PDF files.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What image formats are extracted? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Images are extracted as PNG format via canvas rendering. This provides the best quality for most use cases.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I extract images from scanned PDFs? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, each page of the PDF is rendered to canvas, so even scanned pages are captured as images that you can download.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is my document safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. All processing happens in your browser. Your files never leave your computer.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-grayscale.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">⚫</div>
+            <h3>Grayscale Converter</h3>
+            <p>Convert PDF to grayscale.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-background-color.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🎨</div>
+            <h3>Background Color</h3>
+            <p>Change PDF page background.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-crop.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">✂️</div>
+            <h3>PDF Cropper</h3>
+            <p>Crop PDF pages.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    var extractedImages = [];
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    var controlsContainer = document.getElementById('controlsContainer');
+    var imagesContainer = document.getElementById('imagesContainer');
+
+    let isProcessing = false;
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      controlsContainer.style.display = 'block';
+      document.getElementById('toolActions').style.display = 'flex';
+      actionBtn.style.display = 'none';
+      downloadBtn.style.display = 'none';
+
+      extractImages(file);
+    }
+
+    async function extractImages(file) {
+      try {
+        var buffer = await utils.loadFileAsArrayBuffer(file);
+        var pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
+        var totalPages = pdf.numPages;
+        extractedImages = [];
+
+        imagesContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">Extracting images from ' + totalPages + ' page(s)...</p>';
+
+        for (var i = 1; i <= totalPages; i++) {
+          var page = await pdf.getPage(i);
+          var viewport = page.getViewport({ scale: 2 });
+          var canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          var ctx = canvas.getContext('2d');
+
+          await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+          var dataURL = canvas.toDataURL('image/png');
+          extractedImages.push({
+            dataURL: dataURL,
+            pageNum: i,
+            width: viewport.width,
+            height: viewport.height,
+          });
+        }
+
+        displayImages();
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', extractedImages.length + ' image(s) extracted from ' + totalPages + ' page(s).');
+      } catch (err) {
+        utils.showError('errorContainer', 'Error extracting images: ' + err.message);
+      }
+    }
+
+    function displayImages() {
+      if (extractedImages.length === 0) {
+        imagesContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">No images found in this PDF.</p>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < extractedImages.length; i++) {
+        var img = extractedImages[i];
+        html += '<div style="border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;background:var(--white);">';
+        html += '<div style="padding:8px;font-size:0.8rem;color:var(--gray-600);border-bottom:1px solid var(--gray-100);">Page ' + img.pageNum + ' &middot; ' + img.width + 'x' + img.height + '</div>';
+        html += '<img src="' + img.dataURL + '" alt="Page ' + img.pageNum + '" style="width:100%;display:block;aspect-ratio:' + img.width + '/' + img.height + ';object-fit:contain;background:#f5f5f5;">';
+        html += '<div style="padding:8px;">';
+        html += '<button class="btn btn-sm download-single" data-idx="' + i + '" style="width:100%;padding:6px;border:1px solid var(--primary);border-radius:8px;background:var(--primary);color:white;cursor:pointer;font-size:0.85rem;">⬇️ Download</button>';
+        html += '</div></div>';
+      }
+      imagesContainer.innerHTML = html;
+
+      var singleBtns = imagesContainer.querySelectorAll('.download-single');
+      for (var j = 0; j < singleBtns.length; j++) {
+        singleBtns[j].addEventListener('click', function() {
+          var idx = parseInt(this.getAttribute('data-idx'));
+          var img = extractedImages[idx];
+          var link = document.createElement('a');
+          link.href = img.dataURL;
+          link.download = 'page_' + img.pageNum + '.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      }
+
+      downloadBtn.style.display = 'inline-flex';
+      downloadBtn.textContent = '⬇️ Download All as ZIP';
+      downloadBtn.onclick = downloadAllAsZip;
+    }
+
+    function downloadAllAsZip() {
+      try {
+        var zip = new JSZip();
+        for (var i = 0; i < extractedImages.length; i++) {
+          var img = extractedImages[i];
+          var byteString = atob(img.dataURL.split(',')[1]);
+          var ab = new ArrayBuffer(byteString.length);
+          var ia = new Uint8Array(ab);
+          for (var j = 0; j < byteString.length; j++) {
+            ia[j] = byteString.charCodeAt(j);
+          }
+          zip.file('page_' + img.pageNum + '.png', ab);
+        }
+
+        zip.generateAsync({ type: 'blob' }).then(function(content) {
+          var url = URL.createObjectURL(content);
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = 'extracted_images.zip';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        });
+      } catch (e) {
+        utils.showError('errorContainer', 'ZIP download failed. Try downloading individually.');
+      }
+    }
+  });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</body>
+</html>

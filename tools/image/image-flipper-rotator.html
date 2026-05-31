@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Flipper Rotator Online Free | Ali Tools Company</title>
+  <meta name="description" content="Flip and rotate images online free. Mirror horizontally, vertically, or rotate by 90°, 180°, 270°. No upload needed, 100% browser-based image flipper rotator.">
+  <meta name="keywords" content="image flipper, image rotator, flip image online, rotate image, mirror image, flip photo, rotate photo online free">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-flipper-rotator.html">
+  <meta property="og:title" content="Image Flipper Rotator Online Free">
+  <meta property="og:description" content="Flip and rotate images online free. Mirror horizontally or vertically, rotate 90°/180°/270°. Browser-based.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Flipper Rotator Online Free",
+    "url": "https://alitoolscompany.com/tools/image/image-flipper-rotator.html",
+    "description": "Free online browser-based image flipper and rotator. Flip horizontally, vertically, or rotate images without uploading.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Image Flipper Rotator</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🔄</div>
+      <h1>Image Flipper & Rotator</h1>
+      <p>Flip and Rotate Images Online Free — Mirror, Rotate 90°/180°/270°, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop an image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="tool-controls" id="toolControls" style="display:none;">
+            <div class="control-group">
+              <label>Flip Options</label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+                <button class="btn btn-outline" id="flipHorizontalBtn">↔ Flip Horizontal</button>
+                <button class="btn btn-outline" id="flipVerticalBtn">↕ Flip Vertical</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label>Rotate Options</label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+                <button class="btn btn-outline" id="rotateLeftBtn">↺ Rotate Left (90°)</button>
+                <button class="btn btn-outline" id="rotateRightBtn">↻ Rotate Right (90°)</button>
+                <button class="btn btn-outline" id="rotate180Btn">↕ Rotate 180°</button>
+              </div>
+            </div>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">Preview</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <p style="font-size:0.82rem;color:var(--gray-600);margin-bottom:8px;">Original</p>
+                <img id="originalPreview" alt="Original image preview">
+              </div>
+              <div style="flex:1;min-width:200px;">
+                <p style="font-size:0.82rem;color:var(--gray-600);margin-bottom:8px;">Transformed</p>
+                <img id="transformedPreview" alt="Transformed image preview">
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:0.85rem;color:var(--gray-600);">
+              <span id="dimensions">Dimensions: —</span>
+            </div>
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Transformed Image</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Flip or Rotate an Image</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Image</h3>
+            <p>Drag & drop your image or click to browse. Supports PNG, JPG, WebP, GIF, and BMP.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Apply Transform</h3>
+            <p>Click flip horizontal, flip vertical, or rotate by 90°, 180°, or 270°.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Preview the result and download your transformed image instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Image Flipper & Rotator?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Apply transformations instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your images never leave your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🔄</div>
+            <h4>All Transforms</h4>
+            <p>Flip horizontally/vertically, rotate 90°/180°/270°.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start transforming immediately with zero registration.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is an Image Flipper and Rotator?</h2>
+        <p>An image flipper and rotator is a tool that lets you change the orientation of a digital image by mirroring it (flipping) or turning it around a central axis (rotating). Flipping creates a mirror image either horizontally (left becomes right) or vertically (top becomes bottom). Rotating turns the image by a specified angle, typically 90, 180, or 270 degrees. Our free online tool processes all transformations directly in your browser using the HTML5 Canvas API, ensuring your images remain private and processing is instantaneous.</p>
+
+        <h2>Why Use Our Image Flipper & Rotator?</h2>
+        <p>Many image editors make flipping and rotating cumbersome with complex interfaces or require uploading files to servers. Our tool simplifies the process to just a few clicks. Upload your image, choose the transform you need, and download the result instantly. Whether you need to correct a photo taken upside-down, create a mirror image for a design project, or rotate a scanned document to the correct orientation, our tool handles it with zero fuss. Since everything runs locally, there are no file size limits, no privacy concerns, and no waiting for uploads.</p>
+
+        <h2>Key Features of Our Image Flipper & Rotator</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Horizontal Flip:</strong> Mirror images left-to-right instantly.</li>
+          <li><strong>Vertical Flip:</strong> Mirror images top-to-bottom instantly.</li>
+          <li><strong>Rotation Options:</strong> Rotate 90° left, 90° right, or 180° with one click.</li>
+          <li><strong>Instant Preview:</strong> See original and transformed images side by side.</li>
+          <li><strong>Dimension Display:</strong> View updated image dimensions after each transform.</li>
+          <li><strong>No Limits:</strong> Transform images of any resolution or file size.</li>
+        </ul>
+
+        <h2>Use Cases for Image Flipper & Rotator</h2>
+        <p>Our image flipper and rotator is useful for many applications: photographers correct the orientation of photos taken at odd angles; graphic designers create mirrored assets for symmetrical designs; web developers flip icons and UI elements for right-to-left language layouts; social media managers adjust image orientation for platform requirements; content creators rotate screenshots to the correct viewing angle; and anyone who needs to quickly correct or creatively transform an image without launching heavy editing software.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does flipping or rotating reduce image quality? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No, flipping and rotating do not reduce image quality. These are lossless geometric transformations that simply rearrange existing pixels. Unlike resizing or compressing, no pixel data is discarded or interpolated, so the image quality remains identical to the original.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is the difference between flipping and rotating? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Flipping creates a mirror image by reversing pixels along a horizontal or vertical axis. Rotating turns the entire image around its center point by a specified angle. For example, flipping a text image makes it unreadable, while rotating a sideways photo makes it upright.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I flip or rotate animated GIFs? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Our tool supports static image formats. Animated GIFs will be processed as static images, preserving only the first frame. For animated GIF manipulation, we recommend using specialized GIF editing tools.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How do I rotate a photo that is upside down? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Simply upload the photo and click the "Rotate 180°" button. This will turn the image completely upside-right. If the photo is sideways, use "Rotate Left (90°)" or "Rotate Right (90°)" to correct the orientation.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is this tool safe to use on mobile devices? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, our tool is fully responsive and works on all devices including smartphones and tablets. The button-based interface is touch-friendly, and all processing happens locally on your device.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-cropper.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">✂️</div>
+            <h3>Image Cropper</h3>
+            <p>Crop images with custom aspect ratios.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-resizer.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📏</div>
+            <h3>Image Resizer</h3>
+            <p>Resize images to exact dimensions.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-format-converter.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>Format Converter</h3>
+            <p>Convert between image formats instantly.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let originalImage = null;
+    let currentImage = null;
+    let currentDataUrl = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const toolControls = document.getElementById('toolControls');
+    const toolActions = document.getElementById('toolActions');
+    const previewArea = document.getElementById('previewArea');
+    const originalPreview = document.getElementById('originalPreview');
+    const transformedPreview = document.getElementById('transformedPreview');
+    const dimensions = document.getElementById('dimensions');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    utils.initDropZone('dropZone', handleFile);
+
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid file type.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      toolControls.style.display = 'block';
+      toolActions.style.display = 'flex';
+      downloadBtn.style.display = 'none';
+
+      utils.loadImage(file).then(function(result) {
+        originalImage = result.image;
+        currentImage = result.image;
+        originalPreview.src = result.dataUrl;
+        originalPreview.style.display = 'block';
+        previewArea.classList.add('show');
+        updateDimensions();
+      }).catch(function() {
+        utils.showError('errorContainer', 'Failed to load image. The file may be corrupted or unsupported.');
+      });
+    }
+
+    function updateDimensions() {
+      if (currentImage) {
+        dimensions.textContent = 'Dimensions: ' + currentImage.width + 'x' + currentImage.height;
+      }
+    }
+
+    function applyTransform(transformFn) {
+      if (!currentImage) return;
+
+      utils.simulateProgress('progressBar', 300, function() {
+        try {
+          var result = transformFn(currentImage);
+          currentImage = result.image;
+          transformedPreview.src = result.dataUrl;
+          transformedPreview.style.display = 'block';
+          updateDimensions();
+
+          downloadBtn.onclick = function() {
+            var originalName = fileInput.files && fileInput.files[0] ? fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
+            utils.triggerDownload(result.dataUrl, originalName + '_transformed.png');
+          };
+          downloadBtn.style.display = 'inline-flex';
+          utils.hideProgress('progressBar');
+        } catch (err) {
+          utils.showError('errorContainer', 'Error applying transform: ' + err.message);
+        }
+      });
+    }
+
+    document.getElementById('flipHorizontalBtn').addEventListener('click', function() {
+      applyTransform(function(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext('2d');
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(img, 0, 0);
+        return { image: img, dataUrl: canvas.toDataURL('image/png') };
+      });
+    });
+
+    document.getElementById('flipVerticalBtn').addEventListener('click', function() {
+      applyTransform(function(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext('2d');
+        ctx.translate(0, canvas.height);
+        ctx.scale(1, -1);
+        ctx.drawImage(img, 0, 0);
+        return { image: img, dataUrl: canvas.toDataURL('image/png') };
+      });
+    });
+
+    document.getElementById('rotateLeftBtn').addEventListener('click', function() {
+      applyTransform(function(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.height;
+        canvas.height = img.width;
+        var ctx = canvas.getContext('2d');
+        ctx.translate(0, canvas.height);
+        ctx.rotate(-Math.PI / 2);
+        ctx.drawImage(img, 0, 0);
+        var newImg = new Image();
+        newImg.src = canvas.toDataURL('image/png');
+        return { image: newImg, dataUrl: canvas.toDataURL('image/png') };
+      });
+    });
+
+    document.getElementById('rotateRightBtn').addEventListener('click', function() {
+      applyTransform(function(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.height;
+        canvas.height = img.width;
+        var ctx = canvas.getContext('2d');
+        ctx.translate(canvas.width, 0);
+        ctx.rotate(Math.PI / 2);
+        ctx.drawImage(img, 0, 0);
+        var newImg = new Image();
+        newImg.src = canvas.toDataURL('image/png');
+        return { image: newImg, dataUrl: canvas.toDataURL('image/png') };
+      });
+    });
+
+    document.getElementById('rotate180Btn').addEventListener('click', function() {
+      applyTransform(function(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext('2d');
+        ctx.translate(canvas.width, canvas.height);
+        ctx.rotate(Math.PI);
+        ctx.drawImage(img, 0, 0);
+        return { image: img, dataUrl: canvas.toDataURL('image/png') };
+      });
+    });
+  });
+  </script>
+</body>
+</html>

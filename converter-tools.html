@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converter Tools — Free Online File Converter | Ali Tools Company</title>
+  <meta name="description" content="40 free online converter tools: convert between Word, PDF, Excel, CSV, JSON, XML, HTML, Markdown, images, audio, video, and more. 100% free, no sign-up.">
+  <meta name="keywords" content="file converter, online converter, convert PDF to Word, convert image, document converter, free converter">
+  <link rel="canonical" href="https://alitoolscompany.com/converter-tools.html">
+  <meta property="og:title" content="Free Online Converter Tools — Ali Tools Company">
+  <meta property="og:description" content="40 free file converter tools. Convert documents, images, audio, video, and data formats.">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <section class="category-hero">
+      <div class="cat-icon">🔄</div>
+      <h1 class="scroll-animate fade-in-up">Converter Tools</h1>
+      <p class="scroll-animate fade-in-up stagger-delay-1">40 free online file converter tools — convert documents, images, audio, video, and data formats. All processing happens locally in your browser.</p>
+    </section>
+
+    <section class="category-filters">
+      <div class="container">
+        <input type="text" class="category-search" id="categorySearch" placeholder="Search converter tools..." aria-label="Search converter tools">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="document">Document</button>
+          <button class="filter-tab" data-filter="data">Data</button>
+          <button class="filter-tab" data-filter="image">Image</button>
+          <button class="filter-tab" data-filter="media">Media</button>
+          <button class="filter-tab" data-filter="other">Other</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools-section">
+      <div class="container">
+        <div class="tools-grid" id="allToolsGrid">
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up">Free Online Converter Tools — Convert Files Without Uploading</h2>
+        <p class="scroll-animate fade-in-up">Ali Tools Company offers 40 powerful file converter tools that run entirely in your browser. Unlike other online converters that require uploading your files to external servers, every tool processes your files locally. Your documents, images, and media never leave your device, ensuring complete privacy.</p>
+        <p class="scroll-animate fade-in-up stagger-delay-1">Our converter tools cover document conversions (Word to PDF, PDF to Word, HTML to PDF, Markdown to HTML), data format conversions (JSON to CSV, CSV to JSON, XML to JSON, YAML to JSON), image conversions (SVG to PNG, PNG to SVG), media conversions (MP4 to MP3, WAV to MP3, Video to GIF), and more specialized conversions (SRT to VTT, TSV to CSV, QR to Text). All conversions happen instantly with no file size limits.</p>
+      </div>
+    </section>
+
+    <section class="faq-section">
+      <div class="container">
+        <h2 style="margin-bottom:24px;">Frequently Asked Questions</h2>
+        <div class="faq-item scroll-animate fade-in-up">
+          <button class="faq-question">Are the converter tools really free? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, every converter tool is completely free with no hidden costs, subscriptions, or usage limits.</div>
+        </div>
+        <div class="faq-item scroll-animate fade-in-up stagger-delay-1">
+          <button class="faq-question">Do you keep my files after conversion? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No, your files are processed entirely in your browser and never uploaded to any server. Nothing is stored.</div>
+        </div>
+        <div class="faq-item scroll-animate fade-in-up stagger-delay-2">
+          <button class="faq-question">What formats do you support? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">We support Word, PDF, Excel, CSV, JSON, XML, YAML, HTML, Markdown, SVG, PNG, MP4, MP3, WAV, GIF, SRT, VTT, TSV, and more.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tools = [
+      { name: 'Word to PDF', desc: 'Convert Word documents to PDF', icon: '📝', slug: 'word-to-pdf', tags: ['document'] },
+      { name: 'PDF to Word', desc: 'Convert PDF to Word document', icon: '📄', slug: 'pdf-to-word', tags: ['document'] },
+      { name: 'Excel to CSV', desc: 'Convert Excel to CSV', icon: '📊', slug: 'excel-to-csv', tags: ['data'] },
+      { name: 'CSV to Excel', desc: 'Convert CSV to Excel', icon: '📊', slug: 'csv-to-excel', tags: ['data'] },
+      { name: 'PPTX to PDF', desc: 'Convert PowerPoint to PDF', icon: '📽️', slug: 'pptx-to-pdf', tags: ['document'] },
+      { name: 'PDF to PPTX', desc: 'Convert PDF to PowerPoint', icon: '📄', slug: 'pdf-to-pptx', tags: ['document'] },
+      { name: 'HTML to PDF', desc: 'Convert HTML to PDF', icon: '🌐', slug: 'html-to-pdf', tags: ['document'] },
+      { name: 'Markdown to HTML', desc: 'Convert Markdown to HTML', icon: '📝', slug: 'markdown-to-html', tags: ['document'] },
+      { name: 'HTML to Markdown', desc: 'Convert HTML to Markdown', icon: '🌐', slug: 'html-to-markdown', tags: ['document'] },
+      { name: 'JSON to CSV', desc: 'Convert JSON to CSV', icon: '📦', slug: 'json-to-csv', tags: ['data'] },
+      { name: 'CSV to JSON', desc: 'Convert CSV to JSON', icon: '📋', slug: 'csv-to-json', tags: ['data'] },
+      { name: 'JSON to XML', desc: 'Convert JSON to XML', icon: '📦', slug: 'json-to-xml', tags: ['data'] },
+      { name: 'XML to JSON', desc: 'Convert XML to JSON', icon: '📄', slug: 'xml-to-json', tags: ['data'] },
+      { name: 'YAML to JSON', desc: 'Convert YAML to JSON', icon: '📋', slug: 'yaml-to-json', tags: ['data'] },
+      { name: 'JSON to YAML', desc: 'Convert JSON to YAML', icon: '📦', slug: 'json-to-yaml', tags: ['data'] },
+      { name: 'XML to CSV', desc: 'Convert XML to CSV', icon: '📄', slug: 'xml-to-csv', tags: ['data'] },
+      { name: 'CSV to XML', desc: 'Convert CSV to XML', icon: '📋', slug: 'csv-to-xml', tags: ['data'] },
+      { name: 'TXT to PDF', desc: 'Convert text to PDF', icon: '📄', slug: 'txt-to-pdf', tags: ['document'] },
+      { name: 'PDF to TXT', desc: 'Convert PDF to text', icon: '📄', slug: 'pdf-to-txt', tags: ['document'] },
+      { name: 'RTF to DOCX', desc: 'Convert RTF to DOCX', icon: '📝', slug: 'rtf-to-docx', tags: ['document'] },
+      { name: 'DOCX to HTML', desc: 'Convert DOCX to HTML', icon: '📝', slug: 'docx-to-html', tags: ['document'] },
+      { name: 'HTML to DOCX', desc: 'Convert HTML to DOCX', icon: '🌐', slug: 'html-to-docx', tags: ['document'] },
+      { name: 'EPUB to PDF', desc: 'Convert EPUB to PDF', icon: '📚', slug: 'epub-to-pdf', tags: ['document'] },
+      { name: 'PDF to EPUB', desc: 'Convert PDF to EPUB', icon: '📄', slug: 'pdf-to-epub', tags: ['document'] },
+      { name: 'ODS to XLSX', desc: 'Convert ODS to Excel', icon: '📊', slug: 'ods-to-xlsx', tags: ['data'] },
+      { name: 'ODT to DOCX', desc: 'Convert ODT to Word', icon: '📝', slug: 'odt-to-docx', tags: ['document'] },
+      { name: 'PPTX to Images', desc: 'Convert PPTX to images', icon: '🖼️', slug: 'pptx-to-images', tags: ['document'] },
+      { name: 'Images to PPTX', desc: 'Convert images to PPTX', icon: '🖼️', slug: 'images-to-pptx', tags: ['document'] },
+      { name: 'SVG to PNG', desc: 'Convert SVG to PNG', icon: '✏️', slug: 'svg-to-png', tags: ['image'] },
+      { name: 'PNG to SVG', desc: 'Convert PNG to SVG', icon: '🖼️', slug: 'png-to-svg', tags: ['image'] },
+      { name: 'MP4 to MP3', desc: 'Extract audio from MP4', icon: '🎬', slug: 'mp4-to-mp3', tags: ['media'] },
+      { name: 'WAV to MP3', desc: 'Convert WAV to MP3', icon: '🎵', slug: 'wav-to-mp3', tags: ['media'] },
+      { name: 'MP3 to WAV', desc: 'Convert MP3 to WAV', icon: '🎵', slug: 'mp3-to-wav', tags: ['media'] },
+      { name: 'Video to GIF', desc: 'Convert video to GIF', icon: '🎞️', slug: 'video-to-gif', tags: ['media'] },
+      { name: 'GIF to MP4', desc: 'Convert GIF to MP4', icon: '🎞️', slug: 'gif-to-mp4', tags: ['media'] },
+      { name: 'SRT to VTT', desc: 'Convert subtitles to WebVTT', icon: '📜', slug: 'srt-to-vtt', tags: ['media'] },
+      { name: 'VTT to SRT', desc: 'Convert WebVTT to SRT', icon: '📜', slug: 'vtt-to-srt', tags: ['media'] },
+      { name: 'TSV to CSV', desc: 'Convert TSV to CSV', icon: '📋', slug: 'tsv-to-csv', tags: ['data'] },
+      { name: 'CSV to TSV', desc: 'Convert CSV to TSV', icon: '📋', slug: 'csv-to-tsv', tags: ['data'] },
+      { name: 'QR to Text', desc: 'Decode QR codes to text', icon: '📱', slug: 'qr-to-text', tags: ['other'] },
+      { name: 'Text to QR', desc: 'Generate QR codes from text', icon: '📱', slug: 'text-to-qr', tags: ['other'] }
+    ];
+
+    const grid = document.getElementById('allToolsGrid');
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function renderTools() {
+      grid.innerHTML = '';
+      const filtered = tools.filter(function(t) {
+        const f = currentFilter === 'all' || t.tags.includes(currentFilter);
+        const s = !searchQuery || t.name.toLowerCase().includes(searchQuery) || t.desc.toLowerCase().includes(searchQuery);
+        return f && s;
+      });
+      filtered.forEach(function(tool, index) {
+        const card = document.createElement('div');
+        card.className = 'tool-card scroll-animate fade-in-up stagger-delay-' + ((index % 8) + 1);
+        card.innerHTML = '<div class="card-icon convert-icon">' + tool.icon + '</div><h3>' + tool.name + '</h3><p>' + tool.desc + '</p><a href="tools/converter/' + tool.slug + '.html" class="card-link">Use Tool <span class="arrow">→</span></a>';
+        grid.appendChild(card);
+      });
+      if (window.AlToolsAnimations) window.AlToolsAnimations.initScrollAnimations();
+    }
+
+    document.querySelectorAll('.filter-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        renderTools();
+      });
+    });
+
+    document.getElementById('categorySearch').addEventListener('input', function() {
+      searchQuery = this.value.toLowerCase().trim();
+      renderTools();
+    });
+
+    renderTools();
+  });
+  </script>
+</body>
+</html>

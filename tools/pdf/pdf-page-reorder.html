@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Page Reorder Online Free — Rearrange PDF Pages Instantly | Ali Tools Company</title>
+  <meta name="description" content="Reorder PDF pages online free. Rearrange page sequence in PDF documents. No upload needed.">
+  <meta name="keywords" content="PDF Page Reorder, pdf page reorder online, free pdf page reorder, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-page-reorder.html">
+  <meta property="og:title" content="PDF Page Reorder Online Free — Rearrange PDF Pages Instantly">
+  <meta property="og:description" content="Reorder PDF pages online free. Rearrange page sequence in PDF documents. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Page Reorder Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-page-reorder.html",
+    "description": "Reorder PDF pages online free. Rearrange page sequence in PDF documents. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Page Reorder</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🔀</div>
+      <h1>PDF Page Reorder</h1>
+      <p>PDF Page Reorder Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group">
+            <label for="orderInput">New Page Order</label>
+            <input type="text" id="orderInput" placeholder="e.g. 3,1,2,4" style="width:100%;max-width:300px;">
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:4px;">Enter page numbers in the desired order, separated by commas (e.g. 3,1,2,4)</p>
+          </div>
+          <div id="pageCountHint" style="font-size:0.85rem;color:var(--gray-600);margin:8px 0;"></div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Reorder Pages</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Reordered PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF file or click to browse. Supports PDF documents.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Set Page Order</h3>
+            <p>Type the new page order as a comma-separated list, e.g. "3,1,2,4" to move page 3 to the front.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Reorder Pages" and download your PDF with the new page arrangement.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Page Reorder?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Reorder PDF pages instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🚫</div>
+            <h4>No Watermark</h4>
+            <p>Your reordered PDF is clean and free of any watermarks.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start reordering immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Page Reorder Tool?</h2>
+        <p>A PDF Page Reorder tool lets you rearrange the page sequence in a PDF document. Whether you need to move a page to the front, reverse the entire document, or reorganize sections, our tool makes it simple. Our free online PDF Page Reorder processes your file entirely in your browser, meaning your PDF is never uploaded to any server. This makes it one of the fastest and most private PDF reorganizing tools available online.</p>
+
+        <h2>Why Use Our PDF Page Reorder?</h2>
+        <p>Most online PDF reordering tools require you to upload your document to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using JavaScript, you can reorder PDF pages instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF Page Reorder</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Flexible Ordering:</strong> Specify any page order using comma-separated page numbers.</li>
+          <li><strong>Instant Results:</strong> Get your reordered PDF immediately.</li>
+          <li><strong>No File Size Limit:</strong> Reorder PDFs of any size (within browser memory limits).</li>
+          <li><strong>Preserves Content:</strong> All text, images, and formatting are preserved.</li>
+          <li><strong>Page Count Hint:</strong> See how many pages your PDF has before reordering.</li>
+        </ul>
+
+        <h2>Use Cases for PDF Page Reorder</h2>
+        <p>Our PDF Page Reorder is perfect for a wide range of scenarios: office workers rearrange document sections for better flow; students reorder pages after scanning; publishers reorganize chapters; and anyone who needs to change the order of pages in a PDF can do so quickly and easily.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How do I specify the new page order? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Enter the page numbers in your desired order separated by commas. For example, "3,1,2,4" will put page 3 first, then page 1, page 2, and page 4 last. You must include every page number exactly once.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I reverse the entire PDF? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! If your PDF has 5 pages, enter "5,4,3,2,1" to reverse the entire document.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I move a single page to the front? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes. For a 5-page PDF, entering "3,1,2,4,5" will move page 3 to the front while keeping the rest in order. You can move any page to any position.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to reorder sensitive documents? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser using JavaScript, your PDF never leaves your computer. No data is transmitted to any server.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I reorder pages on my phone or tablet? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Our tool is fully responsive and works on all devices including smartphones and tablets. The drag-and-drop interface works with touch screens.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-page-counter.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📄</div>
+            <h3>PDF Page Counter</h3>
+            <p>Count pages in your PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-rotator.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔄</div>
+            <h3>PDF Page Rotator</h3>
+            <p>Rotate PDF pages to any orientation.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-extractor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">✂️</div>
+            <h3>PDF Page Extractor</h3>
+            <p>Extract specific pages from your PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const orderInput = document.getElementById('orderInput');
+    const pageCountHint = document.getElementById('pageCountHint');
+
+    let isProcessing = false;
+    var totalPages = 0;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+
+      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
+        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+          totalPages = pdfDoc.getPageCount();
+          pageCountHint.textContent = 'PDF has ' + totalPages + ' page' + (totalPages === 1 ? '' : 's') + '. Enter new order using numbers 1-' + totalPages + '.';
+        });
+      });
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      var input = orderInput.value.trim();
+      if (!input) {
+        utils.showError('errorContainer', 'Please enter the new page order.');
+        return;
+      }
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Reordering...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 1200, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              var numPages = pdfDoc.getPageCount();
+              var parts = input.split(',').map(function(s) { return parseInt(s.trim()); });
+              if (parts.length !== numPages) {
+                utils.showError('errorContainer', 'Please provide exactly ' + numPages + ' page numbers (1-' + numPages + '), separated by commas.');
+                isProcessing = false;
+                actionBtn.disabled = false;
+                actionBtn.textContent = 'Reorder Pages';
+                return;
+              }
+              var pageIndices = [];
+              var seen = {};
+              for (var i = 0; i < parts.length; i++) {
+                var p = parts[i];
+                if (isNaN(p) || p < 1 || p > numPages) {
+                  utils.showError('errorContainer', 'Invalid page number: ' + parts[i] + '. Pages must be between 1 and ' + numPages + '.');
+                  isProcessing = false;
+                  actionBtn.disabled = false;
+                  actionBtn.textContent = 'Reorder Pages';
+                  return;
+                }
+                if (seen[p]) {
+                  utils.showError('errorContainer', 'Duplicate page number: ' + p + '. Each page can only appear once.');
+                  isProcessing = false;
+                  actionBtn.disabled = false;
+                  actionBtn.textContent = 'Reorder Pages';
+                  return;
+                }
+                seen[p] = true;
+                pageIndices.push(p - 1);
+              }
+
+              var newDoc = PDFLib.PDFDocument.create();
+              var copiedPages = newDoc.copyPages(pdfDoc, pageIndices);
+              for (var j = 0; j < copiedPages.length; j++) {
+                newDoc.addPage(copiedPages[j]);
+              }
+
+              newDoc.save().then(function(bytes) {
+                var blob = new Blob([bytes], { type: 'application/pdf' });
+                var url = URL.createObjectURL(blob);
+                downloadBtn.onclick = function() {
+                  var link = document.createElement('a');
+                  link.href = url;
+                  link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_reordered.pdf';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                };
+                downloadBtn.style.display = 'inline-flex';
+                utils.hideProgress('progressBar');
+                utils.showSuccess('fileInfoContainer', 'Pages reordered successfully! Click download to save.');
+                isProcessing = false;
+                actionBtn.disabled = false;
+                actionBtn.textContent = 'Reorder Pages';
+              });
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error reordering pages: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Reorder Pages';
+        }
+      });
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNG to SVG Converter Online Free — Convert Raster to Vector | Ali Tools Company</title>
+  <meta name="description" content="Convert PNG to SVG online free. Transform raster images to vector graphics. No upload needed.">
+  <meta name="keywords" content="PNG to SVG Converter, raster to vector, image to SVG, online converter">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/converter/png-to-svg.html">
+  <meta property="og:title" content="PNG to SVG Converter Online Free — Convert Raster to Vector">
+  <meta property="og:description" content="Convert PNG to SVG online free. Transform raster images to vector graphics. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PNG to SVG Converter Online Free",
+    "url": "https://alitoolscompany.com/tools/converter/png-to-svg.html",
+    "description": "Convert PNG to SVG online free. Transform raster images to vector graphics. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../converter-tools.html">Converter Tools</a> &gt; <span>PNG to SVG Converter</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">✏️</div>
+      <h1>PNG to SVG Converter</h1>
+      <p>Convert Raster Images to Vector Graphics Online Free — Instantly in Your Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".png,image/png" class="file-input" hidden aria-label="Choose a PNG image">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop your PNG image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG files</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group" id="modeGroup" style="display:none;">
+            <label for="modeSelect">Conversion Mode</label>
+            <select id="modeSelect" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--gray-300);background:var(--white);font-size:0.95rem;">
+              <option value="embed">Embedded Image (Fast — PNG inside SVG)</option>
+              <option value="trace">Trace (Edge Detection — Best for logos/icons)</option>
+            </select>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Convert to SVG</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download SVG</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Your PNG</h3>
+            <p>Drag & drop your PNG image or click to browse. Supports .png files.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Choose Mode</h3>
+            <p>Select "Embedded Image" for photos (fast), or "Trace" for logos/icons (edge detection).</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Convert to SVG" to process, then download your vector graphic instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PNG to SVG Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Convert PNG to SVG instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your images never leave your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">✏️</div>
+            <h4>Two Modes</h4>
+            <p>Embedded image for photos, edge detection trace for logos and icons.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">🚫</div>
+            <h4>No Sign-Up</h4>
+            <p>Start converting immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PNG to SVG Conversion?</h2>
+        <p>PNG to SVG Converter is a tool that transforms raster PNG images into SVG (Scalable Vector Graphics) format. SVG is a vector image format that can be scaled to any size without losing quality, making it ideal for logos, icons, illustrations, and web graphics. Our converter offers two modes: Embedded Image mode wraps your PNG inside an SVG container (fast and lossless), while Trace mode uses edge detection to create actual vector paths from your image (best for simple graphics with solid colors). Our free online PNG to SVG Converter processes everything directly in your browser, meaning your files are never uploaded to any server.</p>
+
+        <h2>Why Use Our PNG to SVG Converter?</h2>
+        <p>Most online PNG to SVG Converters require you to upload your images to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits, watermarks, or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using JavaScript, you can convert images of any size instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PNG to SVG Converter</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Two Conversion Modes:</strong> Embedded Image for photos, Edge Detection Trace for logos and icons.</li>
+          <li><strong>Scalable Output:</strong> SVG files can be scaled to any size without quality loss.</li>
+          <li><strong>No File Size Limits:</strong> Convert images of any resolution (within browser memory limits).</li>
+          <li><strong>Instant Download:</strong> Get your SVG file immediately after conversion.</li>
+          <li><strong>No Watermarks:</strong> Clean output with no branding added.</li>
+          <li><strong>No Limits:</strong> Convert as many files as you need, one at a time.</li>
+        </ul>
+
+        <h2>Use Cases for PNG to SVG Converter</h2>
+        <p>Our PNG to SVG Converter is perfect for a wide range of scenarios: web developers convert logo PNGs to SVG for responsive websites; graphic designers prepare raster artwork for vector editing programs; UI/UX designers convert interface elements to scalable vectors; print professionals prepare images for large-format printing without resolution limits; and anyone who needs scalable vector versions of their raster images.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What is the difference between the two modes? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Embedded Image mode places your original PNG image inside an SVG container — it's fast, lossless, and works with any image type. Trace mode uses edge detection algorithms to create actual vector paths from the pixel data, which works best for images with solid colors, clear edges, and simple shapes (like logos, icons, and illustrations). For complex photographs, Embedded Image mode is recommended.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I convert multiple PNG files at once? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Currently, our PNG to SVG Converter processes one image at a time. We are working on adding batch conversion functionality in a future update.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to convert sensitive images? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser using JavaScript, your images never leave your computer. No data is transmitted to any server. This makes it completely safe for sensitive or confidential images.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I use this on my phone or tablet? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Our tool is fully responsive and works on all devices including smartphones and tablets. The drag-and-drop interface works with touch screens, and you can also tap to browse and select images from your device's gallery.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="images-to-pptx.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🖼️</div>
+            <h3>Images to PPTX</h3>
+            <p>Create PowerPoint from images.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="../../converter-tools.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>More Converters</h3>
+            <p>Browse all converter tools.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let loadedImage = null;
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const modeGroup = document.getElementById('modeGroup');
+    const modeSelect = document.getElementById('modeSelect');
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.match(/^image\//) || !file.name.match(/\.png$/i)) {
+        utils.showError('errorContainer', 'Please select a valid .png file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      loadedImage = null;
+      modeGroup.style.display = 'block';
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+    }
+
+    function setupDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      downloadBtn.onclick = function() {
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      downloadBtn.style.display = 'inline-flex';
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'Conversion complete! Click download to save.');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'Convert to SVG';
+    }
+
+    function loadImage(file) {
+      return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() { resolve(img); };
+          img.onerror = function() { reject(new Error('Failed to decode image.')); };
+          img.src = e.target.result;
+        };
+        reader.onerror = function() { reject(new Error('Failed to read file.')); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function createEmbeddedSvg(img, dataUrl) {
+      var w = img.naturalWidth;
+      var h = img.naturalHeight;
+      return '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><image width="' + w + '" height="' + h + '" xlink:href="' + dataUrl + '"/></svg>';
+    }
+
+    function traceToSvg(img) {
+      var canvas = document.createElement('canvas');
+      var w = img.naturalWidth;
+      var h = img.naturalHeight;
+      var maxDim = 200;
+      var scale = 1;
+      if (w > maxDim || h > maxDim) {
+        scale = Math.min(maxDim / w, maxDim / h);
+      }
+      var cw = Math.round(w * scale);
+      var ch = Math.round(h * scale);
+      canvas.width = cw;
+      canvas.height = ch;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, cw, ch);
+      var imageData = ctx.getImageData(0, 0, cw, ch);
+      var data = imageData.data;
+      var gray = new Array(cw * ch);
+      for (var y = 0; y < ch; y++) {
+        for (var x = 0; x < cw; x++) {
+          var idx = (y * cw + x) * 4;
+          gray[y * cw + x] = (data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114);
+        }
+      }
+      var edgeThreshold = 128;
+      var edges = [];
+      for (var ey = 0; ey < ch; ey++) {
+        edges[ey] = [];
+        for (var ex = 0; ex < cw; ex++) {
+          var g = gray[ey * cw + ex];
+          if (ey > 0 && ey < ch - 1 && ex > 0 && ex < cw - 1) {
+            var gx = -gray[(ey - 1) * cw + (ex - 1)] + gray[(ey - 1) * cw + (ex + 1)]
+                     - 2 * gray[ey * cw + (ex - 1)] + 2 * gray[ey * cw + (ex + 1)]
+                     - gray[(ey + 1) * cw + (ex - 1)] + gray[(ey + 1) * cw + (ex + 1)];
+            var gy = -gray[(ey - 1) * cw + (ex - 1)] - 2 * gray[(ey - 1) * cw + ex] - gray[(ey - 1) * cw + (ex + 1)]
+                     + gray[(ey + 1) * cw + (ex - 1)] + 2 * gray[(ey + 1) * cw + ex] + gray[(ey + 1) * cw + (ex + 1)];
+            var mag = Math.sqrt(gx * gx + gy * gy);
+            edges[ey][ex] = mag > edgeThreshold ? 1 : 0;
+          } else {
+            edges[ey][ex] = 0;
+          }
+        }
+      }
+      var scaleX = w / cw;
+      var scaleY = h / ch;
+      var pathParts = [];
+      var visited = {};
+      var dr = [[0, 1], [1, 0], [0, -1], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+      for (var sy = 0; sy < ch; sy++) {
+        for (var sx = 0; sx < cw; sx++) {
+          var key = sx + ',' + sy;
+          if (edges[sy][sx] && !visited[key]) {
+            var contour = [];
+            var stack = [[sx, sy]];
+            visited[key] = true;
+            while (stack.length) {
+              var pt = stack.pop();
+              contour.push(pt);
+              for (var d = 0; d < dr.length; d++) {
+                var nx = pt[0] + dr[d][0];
+                var ny = pt[1] + dr[d][1];
+                var nk = nx + ',' + ny;
+                if (nx >= 0 && nx < cw && ny >= 0 && ny < ch && edges[ny][nx] && !visited[nk]) {
+                  visited[nk] = true;
+                  stack.push([nx, ny]);
+                }
+              }
+            }
+            if (contour.length > 5) {
+              var dStr = '';
+              for (var ci = 0; ci < contour.length; ci++) {
+                var px = (contour[ci][0] + 0.5) * scaleX;
+                var py = (contour[ci][1] + 0.5) * scaleY;
+                dStr += (ci === 0 ? 'M' : 'L') + px.toFixed(1) + ',' + py.toFixed(1) + ' ';
+              }
+              if (dStr) {
+                dStr += 'Z';
+                pathParts.push('<path d="' + dStr + '" fill="none" stroke="black" stroke-width="1"/>');
+              }
+            }
+          }
+        }
+      }
+      if (pathParts.length === 0) {
+        return null;
+      }
+      var svgContent = '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' + pathParts.join('') + '</svg>';
+      return svgContent;
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Converting...';
+      downloadBtn.style.display = 'none';
+      var mode = modeSelect.value;
+      utils.simulateProgress('progressBar', 800, function() {
+        try {
+          loadImage(loadedFile).then(function(img) {
+            var svgContent;
+            if (mode === 'trace') {
+              svgContent = traceToSvg(img);
+              if (!svgContent) {
+                utils.showError('errorContainer', 'Trace mode did not find clear edges. Try Embedded Image mode instead.');
+                isProcessing = false;
+                actionBtn.disabled = false;
+                actionBtn.textContent = 'Convert to SVG';
+                return;
+              }
+            } else {
+              var reader = new FileReader();
+              reader.onload = function(e) {
+                svgContent = createEmbeddedSvg(img, e.target.result);
+                var blob = new Blob([svgContent], {type: 'image/svg+xml'});
+                var filename = loadedFile.name.replace(/\.png$/i, '') + '.svg';
+                setupDownload(blob, filename);
+              };
+              reader.readAsDataURL(loadedFile);
+              return;
+            }
+            var blob = new Blob([svgContent], {type: 'image/svg+xml'});
+            var filename = loadedFile.name.replace(/\.png$/i, '') + '.svg';
+            setupDownload(blob, filename);
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Convert to SVG';
+        }
+      });
+    });
+  });
+  </script>
+</body>
+</html>

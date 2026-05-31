@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Tools — Free Online PDF Editor & Manipulation Tools | Ali Tools Company</title>
+  <meta name="description" content="50 free online PDF tools: merge, split, compress, convert, edit, and protect PDFs. No sign-up, no uploads, 100% free. Process PDFs in your browser.">
+  <meta name="keywords" content="PDF tools, PDF editor, merge PDF, split PDF, compress PDF, PDF converter">
+  <link rel="canonical" href="https://alitoolscompany.com/pdf-tools.html">
+  <meta property="og:title" content="Free Online PDF Tools — Ali Tools Company">
+  <meta property="og:description" content="50 free PDF tools. Merge, split, compress, convert, and edit PDFs.">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <section class="category-hero">
+      <div class="cat-icon">📄</div>
+      <h1 class="scroll-animate fade-in-up">PDF Tools</h1>
+      <p class="scroll-animate fade-in-up stagger-delay-1">50 free online PDF manipulation tools — merge, split, compress, convert, protect, and edit PDF documents directly in your browser with zero uploads.</p>
+    </section>
+
+    <section class="category-filters">
+      <div class="container">
+        <input type="text" class="category-search" id="categorySearch" placeholder="Search PDF tools..." aria-label="Search PDF tools">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="organize">Organize</button>
+          <button class="filter-tab" data-filter="convert">Convert</button>
+          <button class="filter-tab" data-filter="protect">Protect</button>
+          <button class="filter-tab" data-filter="edit">Edit</button>
+          <button class="filter-tab" data-filter="extract">Extract</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools-section">
+      <div class="container">
+        <div class="tools-grid" id="allToolsGrid">
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up">Free Online PDF Tools — Edit PDFs Without Uploading</h2>
+        <p class="scroll-animate fade-in-up">Ali Tools Company offers 50 powerful PDF manipulation tools that run entirely in your browser. Unlike other online PDF editors that require uploading your documents to external servers, every tool processes your files locally on your device. Your documents never leave your computer, ensuring complete privacy and security for sensitive information.</p>
+        <p class="scroll-animate fade-in-up stagger-delay-1">Our PDF tools cover everything you need: merge multiple PDFs into one document, split large PDFs into smaller files, compress PDFs to reduce file size, convert PDFs to and from images, text, and other formats, protect PDFs with passwords, rotate and reorder pages, add watermarks and page numbers, extract text and images, fill forms, and much more. Whether you're a student, professional, or business owner, our PDF tools make document management quick and easy.</p>
+      </div>
+    </section>
+
+    <section class="faq-section">
+      <div class="container">
+        <h2 style="margin-bottom:24px;">Frequently Asked Questions</h2>
+        <div class="faq-item scroll-animate fade-in-up">
+          <button class="faq-question">Are the PDF tools really free to use? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, every PDF tool on Ali Tools Company is completely free with no hidden costs, subscriptions, or usage limits.</div>
+        </div>
+        <div class="faq-item scroll-animate fade-in-up stagger-delay-1">
+          <button class="faq-question">Is my document safe and private? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. All processing happens in your browser. Your PDF files never leave your device so no one else can access them.</div>
+        </div>
+        <div class="faq-item scroll-animate fade-in-up stagger-delay-2">
+          <button class="faq-question">What is the maximum PDF file size? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">There is no artificial limit but browser memory may limit very large files of 100MB+.</div>
+        </div>
+        <div class="faq-item scroll-animate fade-in-up stagger-delay-3">
+          <button class="faq-question">Can I use these tools on my phone? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, all tools are fully responsive and work on smartphones, tablets, and desktop browsers.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tools = [
+      { name: 'PDF Merger', desc: 'Combine multiple PDFs into one', icon: '📎', slug: 'pdf-merger', tags: ['organize'] },
+      { name: 'PDF Splitter', desc: 'Split PDFs into separate files', icon: '✂️', slug: 'pdf-splitter', tags: ['organize'] },
+      { name: 'PDF Compressor', desc: 'Reduce PDF file size', icon: '🗜️', slug: 'pdf-compressor', tags: ['edit'] },
+      { name: 'PDF to Image', desc: 'Convert PDF pages to images', icon: '🖼️', slug: 'pdf-to-image', tags: ['convert'] },
+      { name: 'Image to PDF', desc: 'Convert images to PDF documents', icon: '📄', slug: 'image-to-pdf', tags: ['convert'] },
+      { name: 'PDF Page Rotator', desc: 'Rotate PDF pages', icon: '🔄', slug: 'pdf-page-rotator', tags: ['organize'] },
+      { name: 'PDF Page Extractor', desc: 'Extract specific PDF pages', icon: '📄', slug: 'pdf-page-extractor', tags: ['organize'] },
+      { name: 'PDF Page Reorder', desc: 'Reorder PDF pages', icon: '🔀', slug: 'pdf-page-reorder', tags: ['organize'] },
+      { name: 'PDF Password Protector', desc: 'Add password to PDF', icon: '🔒', slug: 'pdf-password-protector', tags: ['protect'] },
+      { name: 'PDF Password Remover', desc: 'Remove PDF password', icon: '🔓', slug: 'pdf-password-remover', tags: ['protect'] },
+      { name: 'PDF Watermark', desc: 'Add watermark to PDF', icon: '💧', slug: 'pdf-watermark', tags: ['edit'] },
+      { name: 'PDF Metadata Editor', desc: 'Edit PDF metadata', icon: '📋', slug: 'pdf-metadata-editor', tags: ['edit'] },
+      { name: 'PDF to Text', desc: 'Extract text from PDF', icon: '📝', slug: 'pdf-to-text', tags: ['extract'] },
+      { name: 'PDF Word Counter', desc: 'Count words in PDF', icon: '🔢', slug: 'pdf-word-counter', tags: ['extract'] },
+      { name: 'PDF Page Counter', desc: 'Count PDF pages', icon: '🔢', slug: 'pdf-page-counter', tags: ['extract'] },
+      { name: 'PDF Bookmark Viewer', desc: 'View PDF bookmarks', icon: '🔖', slug: 'pdf-bookmark-viewer', tags: ['extract'] },
+      { name: 'PDF Annotation Viewer', desc: 'View PDF annotations', icon: '🏷️', slug: 'pdf-annotation-viewer', tags: ['extract'] },
+      { name: 'PDF Thumbnail Generator', desc: 'Generate PDF thumbnails', icon: '📷', slug: 'pdf-thumbnail-generator', tags: ['convert'] },
+      { name: 'PDF Header/Footer', desc: 'Add headers and footers', icon: '📐', slug: 'pdf-header-footer', tags: ['edit'] },
+      { name: 'PDF Page Number Adder', desc: 'Add page numbers to PDF', icon: '🔢', slug: 'pdf-page-number-adder', tags: ['edit'] },
+      { name: 'PDF Background Color', desc: 'Change PDF background', icon: '🎨', slug: 'pdf-background-color', tags: ['edit'] },
+      { name: 'PDF Crop', desc: 'Crop PDF pages', icon: '✂️', slug: 'pdf-crop', tags: ['edit'] },
+      { name: 'PDF Margin Adjuster', desc: 'Adjust PDF margins', icon: '📐', slug: 'pdf-margin-adjuster', tags: ['edit'] },
+      { name: 'PDF Blank Page Remover', desc: 'Remove blank PDF pages', icon: '🗑️', slug: 'pdf-blank-page-remover', tags: ['organize'] },
+      { name: 'PDF Duplicate Detector', desc: 'Detect duplicate PDF pages', icon: '🔍', slug: 'pdf-duplicate-detector', tags: ['organize'] },
+      { name: 'PDF to HTML', desc: 'Convert PDF to HTML', icon: '🌐', slug: 'pdf-to-html', tags: ['convert'] },
+      { name: 'PDF to Markdown', desc: 'Convert PDF to Markdown', icon: '📝', slug: 'pdf-to-markdown', tags: ['convert'] },
+      { name: 'PDF Form Extractor', desc: 'Extract PDF form data', icon: '📋', slug: 'pdf-form-extractor', tags: ['extract'] },
+      { name: 'PDF Form Filler', desc: 'Fill PDF forms', icon: '✍️', slug: 'pdf-form-filler', tags: ['edit'] },
+      { name: 'PDF Redaction', desc: 'Redact PDF content', icon: '🔒', slug: 'pdf-redaction', tags: ['protect'] },
+      { name: 'PDF Grayscale', desc: 'Convert PDF to grayscale', icon: '⚫', slug: 'pdf-grayscale', tags: ['edit'] },
+      { name: 'PDF Linearizer', desc: 'Optimize PDF for web', icon: '⚡', slug: 'pdf-linearizer', tags: ['edit'] },
+      { name: 'PDF Version Converter', desc: 'Convert PDF versions', icon: '🔄', slug: 'pdf-version-converter', tags: ['convert'] },
+      { name: 'PDF Comparison', desc: 'Compare two PDF files', icon: '🔍', slug: 'pdf-comparison', tags: ['extract'] },
+      { name: 'PDF to CSV', desc: 'Convert PDF tables to CSV', icon: '📊', slug: 'pdf-to-csv', tags: ['convert'] },
+      { name: 'PDF to JSON', desc: 'Convert PDF to JSON', icon: '📦', slug: 'pdf-to-json', tags: ['convert'] },
+      { name: 'PDF Font Viewer', desc: 'View fonts used in PDF', icon: '🔤', slug: 'pdf-font-viewer', tags: ['extract'] },
+      { name: 'PDF Layer Viewer', desc: 'View PDF layers', icon: '📑', slug: 'pdf-layer-viewer', tags: ['extract'] },
+      { name: 'PDF Color Profile', desc: 'View PDF color profile', icon: '🎨', slug: 'pdf-color-profile', tags: ['extract'] },
+      { name: 'PDF Signature Block', desc: 'Add signature to PDF', icon: '✍️', slug: 'pdf-signature-block', tags: ['edit'] },
+      { name: 'PDF QR Embedder', desc: 'Embed QR code in PDF', icon: '📱', slug: 'pdf-qr-embedder', tags: ['edit'] },
+      { name: 'PDF Bates Numbering', desc: 'Add Bates numbers to PDF', icon: '🔢', slug: 'pdf-bates-numbering', tags: ['edit'] },
+      { name: 'PDF TOC Generator', desc: 'Generate PDF table of contents', icon: '📑', slug: 'pdf-toc-generator', tags: ['edit'] },
+      { name: 'PDF Image Extractor', desc: 'Extract images from PDF', icon: '🖼️', slug: 'pdf-image-extractor', tags: ['extract'] },
+      { name: 'PDF Text Search', desc: 'Search text in PDF', icon: '🔍', slug: 'pdf-text-search', tags: ['extract'] },
+      { name: 'PDF to EPUB', desc: 'Convert PDF to EPUB', icon: '📚', slug: 'pdf-to-epub', tags: ['convert'] },
+      { name: 'PDF to PowerPoint', desc: 'Convert PDF to PPTX', icon: '📽️', slug: 'pdf-to-powerpoint', tags: ['convert'] },
+      { name: 'PDF to Excel', desc: 'Convert PDF to Excel', icon: '📊', slug: 'pdf-to-excel', tags: ['convert'] },
+      { name: 'PDF to Word', desc: 'Convert PDF to Word', icon: '📝', slug: 'pdf-to-word', tags: ['convert'] },
+      { name: 'PDF Accessibility Checker', desc: 'Check PDF accessibility', icon: '♿', slug: 'pdf-accessibility-checker', tags: ['extract'] }
+    ];
+
+    const grid = document.getElementById('allToolsGrid');
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function renderTools() {
+      grid.innerHTML = '';
+      const filtered = tools.filter(function(t) {
+        const f = currentFilter === 'all' || t.tags.includes(currentFilter);
+        const s = !searchQuery || t.name.toLowerCase().includes(searchQuery) || t.desc.toLowerCase().includes(searchQuery);
+        return f && s;
+      });
+      filtered.forEach(function(tool, index) {
+        const card = document.createElement('div');
+        card.className = 'tool-card scroll-animate fade-in-up stagger-delay-' + ((index % 8) + 1);
+        card.innerHTML = '<div class="card-icon pdf-icon">' + tool.icon + '</div><h3>' + tool.name + '</h3><p>' + tool.desc + '</p><a href="tools/pdf/' + tool.slug + '.html" class="card-link">Use Tool <span class="arrow">→</span></a>';
+        grid.appendChild(card);
+      });
+      if (window.AlToolsAnimations) window.AlToolsAnimations.initScrollAnimations();
+    }
+
+    document.querySelectorAll('.filter-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        renderTools();
+      });
+    });
+
+    document.getElementById('categorySearch').addEventListener('input', function() {
+      searchQuery = this.value.toLowerCase().trim();
+      renderTools();
+    });
+
+    renderTools();
+  });
+  </script>
+</body>
+</html>

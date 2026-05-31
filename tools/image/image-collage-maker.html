@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Collage Maker Online Free | Ali Tools Company</title>
+  <meta name="description" content="Create photo collages online free. Combine multiple images into a grid layout. No upload needed, 100% browser-based collage maker for PNG, JPG, WebP, GIF.">
+  <meta name="keywords" content="collage maker, photo collage, image collage, picture collage, grid collage, photo grid, collage maker online free">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-collage-maker.html">
+  <meta property="og:title" content="Image Collage Maker Online Free">
+  <meta property="og:description" content="Create photo collages online free. Combine images into grid layouts instantly in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Collage Maker Online Free","url":"https://alitoolscompany.com/tools/image/image-collage-maker.html","description":"Free online browser-based collage maker. Create photo collages in grid layouts without uploading.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container"><a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Collage Maker</span></div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🖼️</div>
+      <h1>Image Collage Maker</h1>
+      <p>Create Photo Collages Online Free — Combine Images into Grid Layouts</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose images" multiple>
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop images here or click to browse (select multiple)</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Select 2-6 images to create a collage</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill"></div></div>
+          <div class="tool-controls" id="toolControls" style="display:none;">
+            <div class="control-row">
+              <div class="control-group">
+                <label for="gridCols">Columns</label>
+                <input type="number" id="gridCols" min="1" max="3" value="2">
+              </div>
+              <div class="control-group">
+                <label for="spacing">Spacing (px)</label>
+                <input type="number" id="spacing" min="0" max="50" value="10">
+              </div>
+              <div class="control-group">
+                <label for="bgColor">Background</label>
+                <input type="color" id="bgColor" value="#ffffff">
+              </div>
+            </div>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">Collage Preview</div>
+            <img id="collagePreview" alt="Collage preview" style="max-width:100%;border-radius:8px;">
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="createBtn">🖼️ Create Collage</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Collage</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Create a Collage</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up"><div class="step-number">1</div><h3>Upload Images</h3><p>Select 2-6 images by dragging or browsing.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1"><div class="step-number">2</div><h3>Set Layout</h3><p>Choose columns, spacing, and background color.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2"><div class="step-number">3</div><h3>Download</h3><p>Click "Create Collage" and download your combined image.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Collage Maker?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">⚡</div><h4>Fast</h4><p>Create collages instantly in your browser.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">🔒</div><h4>Secure</h4><p>Your images never leave your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">🔓</div><h4>Free</h4><p>No hidden costs or premium tiers.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3"><div class="feature-icon">🎨</div><h4>Customizable</h4><p>Adjust columns, spacing, and background.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4"><div class="feature-icon">📝</div><h4>No Sign-Up</h4><p>Start immediately with zero registration.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5"><div class="feature-icon">🌐</div><h4>Works Offline</h4><p>No internet needed after loading.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is an Image Collage Maker?</h2>
+        <p>An image collage maker combines multiple photos into a single composite image, typically arranged in a grid or custom layout. Collages are used to tell visual stories, compare images, create mood boards, and share multiple photos in a single post on social media. Our free online collage maker arranges your images in a clean grid layout with customizable columns, spacing, and background color. All processing happens directly in your browser for complete privacy and instant results.</p>
+
+        <h2>Why Use Our Collage Maker?</h2>
+        <p>Creating collages traditionally requires desktop software like Photoshop or complex online tools that upload your images to servers. Our tool simplifies the process: upload 2-6 images, choose your layout preferences, and download a perfectly stitched collage. The grid layout automatically resizes images to fit evenly, maintaining consistent spacing throughout. Whether you are creating before-and-after comparisons, photo grids for Instagram, or project mood boards, our collage maker delivers professional results in seconds.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Multi-Image Upload:</strong> Select 2-6 images simultaneously.</li>
+          <li><strong>Grid Layout:</strong> Automatic arrangement with adjustable columns (1-3).</li>
+          <li><strong>Custom Spacing:</strong> Control gap size between images.</li>
+          <li><strong>Background Color:</strong> Choose any background color for gaps.</li>
+          <li><strong>Browser-Based:</strong> 100% private, no upload to any server.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>Social media users create Instagram photo grids; photographers show before/after edits; designers create mood boards; real estate agents showcase property photos; educators compare images for teaching; event planners create recap collages; and anyone who wants to combine multiple images into one file for easy sharing.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How many images can I use in a collage? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">You can upload between 2 and 6 images for a single collage. The grid automatically adjusts the layout based on the number of images and columns selected.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What happens if images have different sizes? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">All images are resized to fit equally within the grid cells, maintaining their original aspect ratios. Images with very different aspect ratios may appear differently within their cells.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I create a collage with mixed orientations? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, you can upload a mix of portrait and landscape images. They will be fitted within their grid cells, and the overall collage dimensions will adjust accordingly.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is this tool safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, all processing happens locally in your browser with no data transmitted to any server.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What output format is the collage saved as? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The collage is saved as a PNG image, which provides lossless quality and supports the background color properly.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-grid-splitter.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">🔲</div><h3>Grid Splitter</h3><p>Split images into grids.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-resizer.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">📏</div><h3>Image Resizer</h3><p>Resize images.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-cropper.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">✂️</div><h3>Image Cropper</h3><p>Crop images.</p><span class="card-link">Use Tool →</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    const E = {}; ['dropZone','fileInput','fileInfoContainer','errorContainer','toolControls','toolActions','previewArea','collagePreview','gridCols','spacing','bgColor','createBtn','downloadBtn','progressBar'].forEach(function(id) { E[id] = document.getElementById(id); });
+    let loadedImages = [];
+    let isProcessing = false;
+    utils.initDropZone('dropZone', function(files) { handleFiles(files); }, true);
+    E.fileInput.addEventListener('change', function() { if (this.files && this.files.length > 0) handleFiles(this.files); });
+    function handleFiles(files) {
+      var validFiles = [];
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].type.startsWith('image/')) validFiles.push(files[i]);
+      }
+      if (validFiles.length < 2) { utils.showError('errorContainer', 'Please select at least 2 images.'); return; }
+      if (validFiles.length > 6) { utils.showError('errorContainer', 'Maximum 6 images allowed.'); return; }
+      E.errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', validFiles[0]);
+      var msg = validFiles.length + ' image(s) selected';
+      E.toolControls.style.display = 'block';
+      E.toolActions.style.display = 'flex';
+      E.downloadBtn.style.display = 'none';
+      loadedImages = [];
+      var loaded = 0;
+      validFiles.forEach(function(file) {
+        utils.loadImage(file).then(function(r) {
+          loadedImages.push(r.image);
+          loaded++;
+          if (loaded === validFiles.length) {
+            E.previewArea.classList.add('show');
+          }
+        }).catch(function() { utils.showError('errorContainer', 'Failed to load an image.'); });
+      });
+    }
+    E.createBtn.addEventListener('click', function() {
+      if (loadedImages.length < 2 || isProcessing) return;
+      isProcessing = true;
+      E.createBtn.disabled = true;
+      E.createBtn.textContent = '⏳ Creating...';
+      E.downloadBtn.style.display = 'none';
+      utils.simulateProgress('progressBar', 1000, function() {
+        try {
+          var cols = parseInt(E.gridCols.value) || 2;
+          var gap = parseInt(E.spacing.value) || 10;
+          var bg = E.bgColor.value || '#ffffff';
+          var rows = Math.ceil(loadedImages.length / cols);
+          var cellW = 400, cellH = 300;
+          var canvas = document.createElement('canvas');
+          canvas.width = cols * (cellW + gap) - gap;
+          canvas.height = rows * (cellH + gap) - gap;
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          loadedImages.forEach(function(img, idx) {
+            var col = idx % cols;
+            var row = Math.floor(idx / cols);
+            var x = col * (cellW + gap);
+            var y = row * (cellH + gap);
+            var ratio = Math.min(cellW / img.width, cellH / img.height);
+            var drawW = img.width * ratio;
+            var drawH = img.height * ratio;
+            var drawX = x + (cellW - drawW) / 2;
+            var drawY = y + (cellH - drawH) / 2;
+            ctx.drawImage(img, drawX, drawY, drawW, drawH);
+          });
+          var dataUrl = canvas.toDataURL('image/png');
+          E.collagePreview.src = dataUrl;
+          E.collagePreview.style.display = 'block';
+          E.downloadBtn.onclick = function() { utils.triggerDownload(dataUrl, 'collage.png'); };
+          E.downloadBtn.style.display = 'inline-flex';
+          utils.hideProgress('progressBar');
+          utils.showSuccess('fileInfoContainer', 'Collage created!');
+        } catch (err) { utils.showError('errorContainer', 'Error: ' + err.message); }
+        isProcessing = false;
+        E.createBtn.disabled = false;
+        E.createBtn.textContent = '🖼️ Create Collage';
+      });
+    });
+  });
+  </script>
+</body>
+</html>

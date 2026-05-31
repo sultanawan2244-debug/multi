@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Page Rotator Online Free — Rotate PDF Pages Instantly | Ali Tools Company</title>
+  <meta name="description" content="Rotate PDF pages online free. Change page orientation in PDF documents. No upload needed.">
+  <meta name="keywords" content="PDF Page Rotator, pdf page rotator online, free pdf page rotator, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-page-rotator.html">
+  <meta property="og:title" content="PDF Page Rotator Online Free — Rotate PDF Pages Instantly">
+  <meta property="og:description" content="Rotate PDF pages online free. Change page orientation in PDF documents. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Page Rotator Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-page-rotator.html",
+    "description": "Rotate PDF pages online free. Change page orientation in PDF documents. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Page Rotator</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🔄</div>
+      <h1>PDF Page Rotator</h1>
+      <p>PDF Page Rotator Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group">
+            <label for="angleSelect">Rotation Angle</label>
+            <select id="angleSelect">
+              <option value="90">90° Clockwise</option>
+              <option value="180">180°</option>
+              <option value="270">270° Clockwise (90° Counter‑Clockwise)</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="pageSelect">Apply To</label>
+            <select id="pageSelect">
+              <option value="all">All Pages</option>
+              <option value="specific">Specific Page</option>
+            </select>
+          </div>
+          <div class="control-group" id="specificPageGroup" style="display:none;">
+            <label for="pageNumberInput">Page Number</label>
+            <input type="number" id="pageNumberInput" min="1" value="1" style="width:100px;">
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Rotate Pages</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Rotated PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF file or click to browse. Supports PDF documents.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Choose Rotation</h3>
+            <p>Select the rotation angle (90°, 180°, or 270°) and whether to apply to all pages or a specific page.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Rotate Pages" and download your rotated PDF instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Page Rotator?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Rotate PDF pages instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🚫</div>
+            <h4>No Watermark</h4>
+            <p>Your rotated PDF is clean and free of any watermarks.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start rotating immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Page Rotator?</h2>
+        <p>A PDF Page Rotator is a tool that lets you change the orientation of pages in a PDF document. Whether you need to rotate a scanned document that was uploaded sideways, fix a mix of portrait and landscape pages, or simply adjust the viewing angle, a page rotator makes it easy. Our free online PDF Page Rotator processes your file entirely in your browser, meaning your PDF is never uploaded to any server. This makes it one of the fastest and most private PDF rotation tools available online.</p>
+
+        <h2>Why Use Our PDF Page Rotator?</h2>
+        <p>Most online PDF rotators require you to upload your document to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using JavaScript, you can rotate PDF pages instantly, without worrying about privacy, data caps, or recurring fees. Rotate a single page or every page in a 500-page document in a fraction of a second.</p>
+
+        <h2>Key Features of Our PDF Page Rotator</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Multiple Angles:</strong> Rotate 90°, 180°, or 270° clockwise.</li>
+          <li><strong>Flexible Application:</strong> Rotate all pages or a single specific page.</li>
+          <li><strong>Instant Results:</strong> Get your rotated PDF immediately.</li>
+          <li><strong>No File Size Limit:</strong> Rotate PDFs of any size (within browser memory limits).</li>
+          <li><strong>Preserves Content:</strong> All text, images, and formatting are preserved during rotation.</li>
+          <li><strong>Simple Interface:</strong> Choose your angle and page, then rotate.</li>
+        </ul>
+
+        <h2>Use Cases for PDF Page Rotator</h2>
+        <p>Our PDF Page Rotator is perfect for a wide range of scenarios: office workers need to fix scanned documents that were fed upside down; students rotate lecture slides for better viewing on tablets; publishers correct mixed-orientation page layouts; and anyone who receives a PDF with wrong page orientation can fix it instantly without expensive software.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does rotating PDF pages affect quality? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No. Rotating PDF pages does not affect the quality of the content. Since PDF pages are rotated mathematically at the page level rather than re-rendering images, there is no loss of quality whatsoever.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I rotate a single page instead of all pages? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Use the "Apply To" dropdown and select "Specific Page", then enter the page number you want to rotate. All other pages will remain unchanged.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What rotation angles are supported? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">We support 90° clockwise, 180°, and 270° clockwise (which is equivalent to 90° counter-clockwise). These cover all common rotation needs.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to rotate sensitive documents? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser using JavaScript, your PDF never leaves your computer. No data is transmitted to any server. This makes it completely safe for sensitive or confidential documents.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I rotate pages on my phone or tablet? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Our tool is fully responsive and works on all devices including smartphones and tablets. The drag-and-drop interface works with touch screens, and you can also tap to browse and select PDFs from your device's storage.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-page-counter.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📄</div>
+            <h3>PDF Page Counter</h3>
+            <p>Count pages in your PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-extractor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">✂️</div>
+            <h3>PDF Page Extractor</h3>
+            <p>Extract specific pages from your PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-reorder.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔀</div>
+            <h3>PDF Page Reorder</h3>
+            <p>Rearrange pages in your PDF document.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const angleSelect = document.getElementById('angleSelect');
+    const pageSelect = document.getElementById('pageSelect');
+    const specificPageGroup = document.getElementById('specificPageGroup');
+    const pageNumberInput = document.getElementById('pageNumberInput');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    pageSelect.addEventListener('change', function() {
+      specificPageGroup.style.display = this.value === 'specific' ? 'block' : 'none';
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Rotating...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 1200, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              var angle = parseInt(angleSelect.value);
+              var pages = pdfDoc.getPages();
+
+              if (pageSelect.value === 'all') {
+                for (var i = 0; i < pages.length; i++) {
+                  pages[i].setRotation(PDFLib.degrees(angle));
+                }
+              } else {
+                var pageIdx = parseInt(pageNumberInput.value) - 1;
+                if (pageIdx < 0 || pageIdx >= pages.length) {
+                  utils.showError('errorContainer', 'Invalid page number. PDF has ' + pages.length + ' page' + (pages.length === 1 ? '' : 's') + '.');
+                  isProcessing = false;
+                  actionBtn.disabled = false;
+                  actionBtn.textContent = 'Rotate Pages';
+                  return;
+                }
+                pages[pageIdx].setRotation(PDFLib.degrees(angle));
+              }
+
+              pdfDoc.save().then(function(bytes) {
+                var blob = new Blob([bytes], { type: 'application/pdf' });
+                var url = URL.createObjectURL(blob);
+                downloadBtn.onclick = function() {
+                  var link = document.createElement('a');
+                  link.href = url;
+                  link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_rotated.pdf';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                };
+                downloadBtn.style.display = 'inline-flex';
+                utils.hideProgress('progressBar');
+                utils.showSuccess('fileInfoContainer', 'PDF rotated successfully! Click download to save.');
+                isProcessing = false;
+                actionBtn.disabled = false;
+                actionBtn.textContent = 'Rotate Pages';
+              });
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error rotating PDF: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Rotate Pages';
+        }
+      });
+    });
+  });
+  </script>
+</body>
+</html>

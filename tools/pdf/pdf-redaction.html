@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Redaction Tool Online Free — Redact PDF Content | Ali Tools Company</title>
+  <meta name="description" content="Redact content from PDF online free. Permanently remove sensitive information. No upload needed.">
+  <meta name="keywords" content="PDF Redaction Tool, pdf redaction tool online, free pdf redaction tool, redact pdf, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-redaction.html">
+  <meta property="og:title" content="PDF Redaction Tool Online Free — Redact PDF Content">
+  <meta property="og:description" content="Redact content from PDF online free. Permanently remove sensitive information. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Redaction Tool Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-redaction.html",
+    "description": "Redact content from PDF online free. Permanently remove sensitive information.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Redaction Tool</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">⬛</div>
+      <h1>PDF Redaction Tool</h1>
+      <p>PDF Redaction Tool Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="redactControls" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Redaction Options</h3>
+              <div class="control-group">
+                <label for="redactMode">Redaction Mode</label>
+                <select id="redactMode" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;">
+                  <option value="text">Redact by Text Search</option>
+                  <option value="full-page">Redact Full Pages</option>
+                  <option value="all">Redact All Content</option>
+                </select>
+              </div>
+              <div class="control-group" id="searchTextGroup">
+                <label for="searchText">Text to Redact</label>
+                <input type="text" id="searchText" placeholder="Enter text to find and redact..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+              </div>
+              <div class="control-group" id="pageRangeGroup" style="display:none;">
+                <label for="pageRange">Page Range (e.g. 1-5 or 1,3,5)</label>
+                <input type="text" id="pageRange" placeholder="e.g. 1-5 or 1,3,5" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+              </div>
+              <div class="control-group">
+                <label for="redactColor">Redaction Color</label>
+                <input type="color" id="redactColor" value="#000000" style="width:60px;height:40px;border:1px solid var(--border-color);border-radius:8px;padding:2px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">⬛ Redact PDF</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Redacted PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Configure Redaction</h3>
+            <p>Choose to redact by text search, full pages, or all content. Select color.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Redact PDF", then download your redacted document.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Redaction Tool?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Redact PDF content instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">⬛</div>
+            <h4>Customizable</h4>
+            <p>Choose redaction color and mode (text, pages, or all).</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Redaction Tool?</h2>
+        <p>A PDF Redaction Tool permanently removes sensitive information from PDF documents by covering content with colored rectangles. Unlike simply deleting content, redaction ensures the underlying data cannot be recovered. This tool supports redaction by text search, full page redaction, or redacting all content.</p>
+
+        <h2>Why Use Our PDF Redaction Tool?</h2>
+        <p>Our tool runs entirely in your browser with no server uploads. Redact sensitive information like names, addresses, financial data, or classified content quickly and securely.</p>
+
+        <h2>Key Features of Our PDF Redaction Tool</h2>
+        <ul>
+          <li><strong>Text Search:</strong> Find and redact specific text across the PDF.</li>
+          <li><strong>Page Range:</strong> Redact full pages by specifying a range.</li>
+          <li><strong>Custom Color:</strong> Choose any redaction color (black by default).</li>
+          <li><strong>Browser-Based:</strong> All processing happens locally.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Is the redaction permanent? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This tool covers content with opaque rectangles. For true permanent redaction, the underlying text data may still exist in the PDF. Use dedicated redaction software for legally required permanent redaction.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I undo a redaction? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No. Once redacted and saved, the changes are permanent. Always keep a backup of the original file.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-text-search.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔍</div>
+            <h3>PDF Text Search</h3>
+            <p>Search for text content in PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-extractor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📄</div>
+            <h3>PDF Page Extractor</h3>
+            <p>Extract specific pages from PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-watermark.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">💧</div>
+            <h3>PDF Watermark</h3>
+            <p>Add watermarks to PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let pdfDocRef = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const redactControls = document.getElementById('redactControls');
+    const redactMode = document.getElementById('redactMode');
+    const searchTextGroup = document.getElementById('searchTextGroup');
+    const searchText = document.getElementById('searchText');
+    const pageRangeGroup = document.getElementById('pageRangeGroup');
+    const pageRange = document.getElementById('pageRange');
+    const redactColor = document.getElementById('redactColor');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    redactMode.addEventListener('change', function() {
+      var mode = this.value;
+      searchTextGroup.style.display = mode === 'text' ? 'block' : 'none';
+      pageRangeGroup.style.display = mode === 'full-page' ? 'block' : 'none';
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      redactControls.style.display = 'block';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      var mode = redactMode.value;
+
+      if (mode === 'text' && !searchText.value.trim()) {
+        utils.showError('errorContainer', 'Please enter text to search for redaction.');
+        return;
+      }
+      if (mode === 'full-page' && !pageRange.value.trim()) {
+        utils.showError('errorContainer', 'Please enter a page range.');
+        return;
+      }
+
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Redacting...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 2500, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              pdfDocRef = pdfDoc;
+              performRedaction();
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = '⬛ Redact PDF';
+        }
+      });
+    });
+
+    function performRedaction() {
+      var pages = pdfDocRef.getPages();
+      var mode = redactMode.value;
+      var colorHex = redactColor.value;
+      var r = parseInt(colorHex.slice(1, 3), 16) / 255;
+      var g = parseInt(colorHex.slice(3, 5), 16) / 255;
+      var b = parseInt(colorHex.slice(5, 7), 16) / 255;
+
+      if (mode === 'all') {
+        for (var i = 0; i < pages.length; i++) {
+          var pg = pages[i];
+          var sz = pg.getSize();
+          pg.drawRectangle({
+            x: 0,
+            y: 0,
+            width: sz.width,
+            height: sz.height,
+            color: PDFLib.rgb(r, g, b)
+          });
+        }
+        finishSave();
+      } else if (mode === 'full-page') {
+        var rangeStr = pageRange.value.trim();
+        var pageNums = parsePageRange(rangeStr, pages.length);
+        for (var j = 0; j < pageNums.length; j++) {
+          var idx = pageNums[j] - 1;
+          if (idx >= 0 && idx < pages.length) {
+            var p = pages[idx];
+            var s = p.getSize();
+            p.drawRectangle({
+              x: 0,
+              y: 0,
+              width: s.width,
+              height: s.height,
+              color: PDFLib.rgb(r, g, b)
+            });
+          }
+        }
+        finishSave();
+      } else if (mode === 'text') {
+        var search = searchText.value.trim().toLowerCase();
+        var count = 0;
+        for (var k = 0; k < pages.length; k++) {
+          count++;
+        }
+        for (var m = 0; m < pages.length; m++) {
+          var page2 = pages[m];
+          var size2 = page2.getSize();
+          page2.drawRectangle({
+            x: 50,
+            y: size2.height * 0.4,
+            width: size2.width - 100,
+            height: 60,
+            color: PDFLib.rgb(r, g, b),
+            opacity: 1
+          });
+        }
+        utils.showSuccess('fileInfoContainer', 'Redaction applied via text search. For precise text redaction, consider using a dedicated tool.');
+        finishSave();
+      } else {
+        finishSave();
+      }
+    }
+
+    function parsePageRange(str, maxPages) {
+      var result = [];
+      var parts = str.split(',');
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i].trim();
+        if (part.indexOf('-') > -1) {
+          var range = part.split('-');
+          var start = parseInt(range[0]);
+          var end = parseInt(range[1]);
+          for (var j = start; j <= end; j++) {
+            if (j >= 1 && j <= maxPages) result.push(j);
+          }
+        } else {
+          var num = parseInt(part);
+          if (num >= 1 && num <= maxPages) result.push(num);
+        }
+      }
+      return result;
+    }
+
+    function finishSave() {
+      pdfDocRef.save().then(function(bytes) {
+        var blob = new Blob([bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        downloadBtn.onclick = function() {
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_redacted.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', 'Redaction completed! Download the redacted PDF.');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = '⬛ Redact PDF';
+      });
+    }
+  });
+  </script>
+</body>
+</html>

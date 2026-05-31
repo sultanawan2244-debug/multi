@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to PowerPoint Converter Online Free — PDF to PPTX | Ali Tools Company</title>
+  <meta name="description" content="Convert PDF to PowerPoint online free. Transform PDF slides to PPTX-compatible format. No upload needed.">
+  <meta name="keywords" content="PDF to PowerPoint Converter, pdf to powerpoint converter online, free pdf to powerpoint converter, pdf to pptx, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-to-powerpoint.html">
+  <meta property="og:title" content="PDF to PowerPoint Converter Online Free — PDF to PPTX">
+  <meta property="og:description" content="Convert PDF to PowerPoint online free. Transform PDF slides to PPTX-compatible format. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF to PowerPoint Converter Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-to-powerpoint.html",
+    "description": "Convert PDF to PowerPoint online free. Transform PDF slides to PPTX-compatible format. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF to PowerPoint Converter</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📽️</div>
+      <h1>PDF to PowerPoint Converter</h1>
+      <p>PDF to PowerPoint Converter Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Convert to PowerPoint</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download PowerPoint File</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. Supports any PDF document.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Convert</h3>
+            <p>Click "Convert to PowerPoint" to extract text and create a PPTX presentation.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Download the .pptx file and open it in Microsoft PowerPoint, Google Slides, or LibreOffice Impress.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF to PowerPoint Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Convert PDFs to PPTX presentations instantly using pptxgenjs in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private browser-based processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📽️</div>
+            <h4>True PPTX</h4>
+            <p>Generates a real .pptx file that opens in PowerPoint, Google Slides, and more.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start processing immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF to PowerPoint Converter?</h2>
+        <p>PDF to PowerPoint Converter is a free online tool that extracts text from PDF documents and creates a PPTX presentation file. Using pdf.js for text extraction and pptxgenjs for presentation generation, our tool processes PDFs entirely in your browser to create a real .pptx file where each PDF page becomes a slide with the extracted text content.</p>
+
+        <h2>Why Use Our PDF to PowerPoint Converter?</h2>
+        <p>Most online PDF to PowerPoint converters require you to upload your files to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits, watermarks, or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser, you can convert PDFs of any size instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF to PowerPoint Converter</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>True PPTX:</strong> Generates a real .pptx file using pptxgenjs library.</li>
+          <li><strong>One Slide Per Page:</strong> Each PDF page becomes a separate slide with a title and content.</li>
+          <li><strong>Compatible:</strong> Opens in Microsoft PowerPoint, Google Slides, LibreOffice Impress, and Keynote.</li>
+          <li><strong>No Limits:</strong> Process PDFs of any size with hundreds of pages.</li>
+        </ul>
+
+        <h2>Use Cases for PDF to PowerPoint Converter</h2>
+        <p>Our PDF to PowerPoint Converter is perfect for converting PDF slide decks to editable PPTX format, extracting PDF content for presentations, adapting research papers for presentations, and repurposing PDF documents as presentation slides.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Can I open the PPTX in PowerPoint? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, the generated .pptx file opens in Microsoft PowerPoint, Google Slides, Keynote, and LibreOffice Impress. Each PDF page appears as a separate slide.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does it preserve images and formatting? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The tool extracts text content from PDF pages and creates slides with that text. Complex PDF layouts, images, tables, and visual formatting are not preserved in full fidelity. For best results, use PDFs with mostly text content.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is my data safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. All processing happens entirely in your browser. Your PDF never leaves your computer.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-to-text.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📝</div>
+            <h3>PDF to Text</h3>
+            <p>Extract text content from PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-to-word.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📄</div>
+            <h3>PDF to Word</h3>
+            <p>Convert PDF to Word-compatible format.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-to-image.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🖼️</div>
+            <h3>PDF to Image</h3>
+            <p>Convert PDF pages to images.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.match('application/pdf')) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⌛ Converting...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 3000, function() {
+        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+          var pdfData = new Uint8Array(buffer);
+          pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
+            var totalPages = pdf.numPages;
+            var pagePromises = [];
+
+            for (var i = 1; i <= totalPages; i++) {
+              (function(pageNum) {
+                pagePromises.push(pdf.getPage(pageNum).then(function(page) {
+                  return page.getTextContent().then(function(textContent) {
+                    var text = textContent.items.map(function(item) { return item.str; }).join(' ');
+                    return { pageNum: pageNum, text: text };
+                  });
+                }));
+              })(i);
+            }
+
+            Promise.all(pagePromises).then(function(pages) {
+              var pres = new pptxgenjs();
+              pres.defineSlideSize({ width: 10, height: 7.5 });
+
+              for (var p = 0; p < pages.length; p++) {
+                var slide = pres.addSlide();
+                slide.addText('Page ' + pages[p].pageNum, {
+                  x: 0.5, y: 0.3, w: 9, h: 0.6,
+                  fontSize: 18, bold: true, color: '333333'
+                });
+                var lines = pages[p].text.split(/\n+/);
+                var contentY = 1.2;
+                var contentHeight = 5.5;
+                slide.addText(lines.join('\n'), {
+                  x: 0.5, y: contentY, w: 9, h: contentHeight,
+                  fontSize: 14, color: '444444', valign: 'top',
+                  lineSpacingMultiple: 1.2
+                });
+              }
+
+              pres.writeFile({ fileName: 'temp.pptx' }).then(function(blob) {
+                utils.hideProgress('progressBar');
+                utils.showSuccess('fileInfoContainer', 'Converted ' + totalPages + ' page(s) to PPTX successfully!');
+
+                downloadBtn.onclick = function() {
+                  pres.writeFile({ fileName: loadedFile.name.replace(/\.pdf$/i, '') + '_converted.pptx' }).then(function(fileBlob) {
+                    var url = URL.createObjectURL(fileBlob);
+                    var link = document.createElement('a');
+                    link.href = url;
+                    link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_converted.pptx';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                  });
+                };
+                downloadBtn.style.display = 'inline-flex';
+                isProcessing = false;
+                actionBtn.disabled = false;
+                actionBtn.textContent = 'Convert to PowerPoint';
+              }).catch(function(err) {
+                utils.showError('errorContainer', 'Error generating PPTX: ' + err.message);
+                isProcessing = false;
+                actionBtn.disabled = false;
+                actionBtn.textContent = 'Convert to PowerPoint';
+                utils.hideProgress('progressBar');
+              });
+            });
+          }).catch(function(err) {
+            utils.showError('errorContainer', 'Error converting PDF: ' + err.message);
+            isProcessing = false;
+            actionBtn.disabled = false;
+            actionBtn.textContent = 'Convert to PowerPoint';
+            utils.hideProgress('progressBar');
+          });
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error reading file: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Convert to PowerPoint';
+          utils.hideProgress('progressBar');
+        });
+      });
+    });
+  });
+  </script>
+</body>
+</html>

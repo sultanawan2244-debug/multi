@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Cropper Online Free — Crop Images Instantly | Ali Tools Company</title>
+  <meta name="description" content="Crop images online free with our browser-based image cropper. No upload needed, no watermark. Crop PNG, JPG, WebP, and GIF images with custom aspect ratios.">
+  <meta name="keywords" content="image cropper, crop image online, free image cropper, photo cropper, crop PNG, crop JPG, aspect ratio">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-cropper.html">
+  <meta property="og:title" content="Image Cropper Online Free — Crop Images Instantly">
+  <meta property="og:description" content="Crop images online free with custom aspect ratios. No upload, no watermark. 100% browser-based image cropper for PNG, JPG, WebP, and GIF.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <style>
+    .crop-container-wrapper { margin-top:16px; }
+    .crop-container { position:relative; display:inline-block; max-width:100%; }
+    .crop-container img { display:block; max-width:100%; height:auto; }
+    .crop-overlay { position:absolute; top:0; left:0; right:0; bottom:0; cursor:crosshair; }
+    .crop-selection { position:absolute; border:2px dashed #fff; outline:1px solid rgba(0,0,0,0.3); box-shadow:0 0 0 9999px rgba(0,0,0,0.4); cursor:move; }
+    .crop-handle { position:absolute; width:12px; height:12px; background:#fff; border:2px solid #1A73E8; border-radius:2px; }
+    .handle-nw { top:-7px; left:-7px; cursor:nwse-resize; }
+    .handle-n { top:-7px; left:50%; margin-left:-7px; cursor:ns-resize; }
+    .handle-ne { top:-7px; right:-7px; cursor:nesw-resize; }
+    .handle-e { top:50%; margin-top:-7px; right:-7px; cursor:ew-resize; }
+    .handle-se { bottom:-7px; right:-7px; cursor:nwse-resize; }
+    .handle-s { bottom:-7px; left:50%; margin-left:-7px; cursor:ns-resize; }
+    .handle-sw { bottom:-7px; left:-7px; cursor:nesw-resize; }
+    .handle-w { top:50%; margin-top:-7px; left:-7px; cursor:ew-resize; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Cropper Online Free",
+    "url": "https://alitoolscompany.com/tools/image/image-cropper.html",
+    "description": "Free online browser-based image cropper. Crop PNG, JPG, WebP, and GIF images with custom aspect ratios without uploading files.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Image Cropper</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">✂️</div>
+      <h1>Image Cropper</h1>
+      <p>Crop Images Online Free — Custom Aspect Ratios, No Upload, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop an image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="tool-controls" id="toolControls" style="display:none;">
+            <div class="control-row">
+              <div class="control-group">
+                <label for="cropX">X Offset (px)</label>
+                <input type="number" id="cropX" min="0" max="10000" value="0">
+              </div>
+              <div class="control-group">
+                <label for="cropY">Y Offset (px)</label>
+                <input type="number" id="cropY" min="0" max="10000" value="0">
+              </div>
+            </div>
+            <div class="control-row">
+              <div class="control-group">
+                <label for="cropWidth">Crop Width (px)</label>
+                <input type="number" id="cropWidth" min="1" max="10000" value="800">
+              </div>
+              <div class="control-group">
+                <label for="cropHeight">Crop Height (px)</label>
+                <input type="number" id="cropHeight" min="1" max="10000" value="600">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="aspectPresets">Aspect Ratio Presets</label>
+              <select id="aspectPresets">
+                <option value="free">Free</option>
+                <option value="1:1">1:1 Square</option>
+                <option value="4:3">4:3 Standard</option>
+                <option value="16:9">16:9 Widescreen</option>
+                <option value="3:2">3:2 Photo</option>
+                <option value="9:16">9:16 Portrait</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="crop-container-wrapper" id="previewArea" style="display:none;">
+            <div class="preview-label">Drag handles or the crop area to adjust</div>
+            <div class="crop-container" id="cropContainer">
+              <img id="cropDisplayImage" alt="Image to crop" style="display:block;max-width:100%;">
+              <div class="crop-overlay" id="cropOverlay">
+                <div class="crop-selection" id="cropSelection">
+                  <div class="crop-handle handle-nw" data-handle="nw"></div>
+                  <div class="crop-handle handle-n" data-handle="n"></div>
+                  <div class="crop-handle handle-ne" data-handle="ne"></div>
+                  <div class="crop-handle handle-e" data-handle="e"></div>
+                  <div class="crop-handle handle-se" data-handle="se"></div>
+                  <div class="crop-handle handle-s" data-handle="s"></div>
+                  <div class="crop-handle handle-sw" data-handle="sw"></div>
+                  <div class="crop-handle handle-w" data-handle="w"></div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:0.85rem;color:var(--gray-600);">
+              <span id="originalSize">Original: —</span> | <span id="croppedSize">Cropped: —</span>
+            </div>
+          </div>
+          <div class="preview-area" id="resultPreview" style="display:none;">
+            <div class="preview-label">Cropped Result</div>
+            <img id="croppedPreview" alt="Cropped image preview" style="max-width:100%;">
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="cropBtn">✂️ Crop Image</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Cropped Image</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Crop an Image</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Image</h3>
+            <p>Drag & drop your image or click to browse. Supports PNG, JPG, WebP, GIF, and BMP.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Set Crop Region</h3>
+            <p>Adjust X and Y offsets, width, and height. Pick an aspect ratio preset or use free mode.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Crop Image" to preview, then download your cropped image instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Image Cropper?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Crop images instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your images never leave your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📐</div>
+            <h4>Preset Ratios</h4>
+            <p>Choose from popular aspect ratios like 1:1, 4:3, 16:9, and more.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start cropping immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is an Image Cropper?</h2>
+        <p>An image cropper is a tool that lets you remove unwanted outer areas from a digital photo or graphic by selecting a rectangular region to keep. Unlike resizing which scales the entire image, cropping removes pixels from the edges to improve composition, change the aspect ratio, or focus attention on a specific subject. Our free online image cropper processes all images directly in your browser using the HTML5 Canvas API, so your files never get uploaded to any server. This approach ensures both speed and privacy, making it one of the most secure image cropping tools available online.</p>
+
+        <h2>Why Use Our Image Cropper?</h2>
+        <p>Many online cropping tools require file uploads to remote servers, which introduces privacy risks, file size limits, and frustrating wait times. Our image cropper eliminates these concerns entirely. Since all image processing runs locally in your browser, you can crop images of any size instantly without worrying about data caps or recurring subscription fees. The intuitive interface provides precise control over the crop region through X/Y offsets and width/height inputs, while the aspect ratio presets help you quickly set common dimensions for social media, printing, or web use.</p>
+
+        <h2>Key Features of Our Image Cropper</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Multiple Formats:</strong> Crop PNG, JPEG, WebP, GIF, and BMP images with ease.</li>
+          <li><strong>Aspect Ratio Presets:</strong> Quickly apply 1:1, 4:3, 16:9, 3:2, and 9:16 ratios.</li>
+          <li><strong>Free Mode:</strong> Set custom width and height without any ratio constraints.</li>
+          <li><strong>Instant Preview:</strong> See a side-by-side comparison of original and cropped images before downloading.</li>
+          <li><strong>Precise Controls:</strong> Adjust X and Y offset values for pixel-perfect cropping.</li>
+          <li><strong>No Watermark:</strong> Your cropped images are clean and free of any watermarks.</li>
+          <li><strong>No Limits:</strong> Crop images of any resolution or file size (within browser memory limits).</li>
+        </ul>
+
+        <h2>Use Cases for Image Cropper</h2>
+        <p>Our image cropper is ideal for a wide variety of scenarios: photographers crop portraits to improve framing and composition; social media managers adjust images to platform-specific aspect ratios like Instagram's 1:1 square or Twitter's 16:9 header; e-commerce sellers crop product photos to remove distracting backgrounds; graphic designers prepare assets at exact dimensions for digital projects; web developers crop screenshots for documentation; and students crop images for presentations and assignments. The aspect ratio presets make it especially quick to produce consistently sized images for any platform.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does cropping reduce image quality? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No, cropping does not reduce image quality. Unlike resizing which scales pixels, cropping simply removes pixels from the edges of the image. The remaining pixels retain their original quality and resolution. However, if you crop to a very small selection and then enlarge it, quality loss may occur due to upscaling.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is the difference between cropping and resizing? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Cropping removes outer portions of an image to change its composition or aspect ratio, discarding pixels in the process. Resizing scales the entire image up or down, changing pixel dimensions but keeping the full content. Cropping is used to reframe or remove unwanted areas, while resizing is used to change overall dimensions.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I crop multiple images at once? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Currently, our image cropper processes one image at a time. For batch processing, we recommend using dedicated batch editing software. We are exploring the addition of batch crop functionality in a future update.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How do I crop to a specific aspect ratio? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Simply select an aspect ratio preset from the dropdown menu (1:1, 4:3, 16:9, 3:2, or 9:16). The crop dimensions will automatically adjust to maintain the selected ratio. You can also use "Free" mode to set any custom width and height.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is the image cropper safe to use on my phone? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Our tool is fully responsive and works on all smartphones and tablets. Since all processing happens locally in your browser, it is completely safe. The touch-friendly interface makes it easy to upload images from your camera roll or gallery.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-resizer.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📏</div>
+            <h3>Image Resizer</h3>
+            <p>Resize images to exact dimensions.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-format-converter.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>Format Converter</h3>
+            <p>Convert between image formats instantly.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="image-compressor.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🗜️</div>
+            <h3>Image Compressor</h3>
+            <p>Compress images without losing quality.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var utils = window.AlToolsUtils;
+    var originalImage = null;
+
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var errorContainer = document.getElementById('errorContainer');
+    var toolControls = document.getElementById('toolControls');
+    var toolActions = document.getElementById('toolActions');
+    var previewArea = document.getElementById('previewArea');
+    var resultPreview = document.getElementById('resultPreview');
+    var cropDisplayImage = document.getElementById('cropDisplayImage');
+    var cropContainer = document.getElementById('cropContainer');
+    var cropOverlay = document.getElementById('cropOverlay');
+    var cropSelection = document.getElementById('cropSelection');
+    var croppedPreview = document.getElementById('croppedPreview');
+    var originalSize = document.getElementById('originalSize');
+    var croppedSize = document.getElementById('croppedSize');
+    var cropX = document.getElementById('cropX');
+    var cropY = document.getElementById('cropY');
+    var cropWidth = document.getElementById('cropWidth');
+    var cropHeight = document.getElementById('cropHeight');
+    var aspectPresets = document.getElementById('aspectPresets');
+    var cropBtn = document.getElementById('cropBtn');
+    var downloadBtn = document.getElementById('downloadBtn');
+    var progressBar = document.getElementById('progressBar');
+
+    var isProcessing = false;
+
+    var sel = { x: 0, y: 0, w: 100, h: 100 };
+    var displayScale = 1;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid file type.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      toolControls.style.display = 'block';
+      toolActions.style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      resultPreview.style.display = 'none';
+
+      utils.loadImage(file).then(function(result) {
+        originalImage = result.image;
+        cropDisplayImage.src = result.dataUrl;
+        previewArea.style.display = 'block';
+
+        sel.x = 0;
+        sel.y = 0;
+        sel.w = originalImage.width;
+        sel.h = originalImage.height;
+
+        cropWidth.value = sel.w;
+        cropHeight.value = sel.h;
+        cropX.value = 0;
+        cropY.value = 0;
+
+        originalSize.textContent = 'Original: ' + originalImage.width + 'x' + originalImage.height + ' (' + utils.formatFileSize(file.size) + ')';
+        croppedSize.textContent = 'Cropped: —';
+
+        setTimeout(function() {
+          updateSelFromInputs();
+          renderCrop();
+        }, 50);
+      }).catch(function() {
+        utils.showError('errorContainer', 'Failed to load image. The file may be corrupted or unsupported.');
+      });
+    }
+
+    function getDisplayRect() {
+      var rect = cropDisplayImage.getBoundingClientRect();
+      var cs = getComputedStyle(cropDisplayImage);
+      var w = parseFloat(cs.width) || rect.width;
+      var h = parseFloat(cs.height) || rect.height;
+      return { w: w, h: h };
+    }
+
+    function updateScale() {
+      if (!originalImage) return;
+      var dr = getDisplayRect();
+      displayScale = dr.w / originalImage.width;
+    }
+
+    function toDisplay(val) { return val * displayScale; }
+    function toImage(val) { return Math.round(val / displayScale); }
+
+    function renderCrop() {
+      if (!originalImage) return;
+      updateScale();
+      var dl = toDisplay(sel.x);
+      var dt = toDisplay(sel.y);
+      var dw = toDisplay(sel.w);
+      var dh = toDisplay(sel.h);
+      cropSelection.style.left = dl + 'px';
+      cropSelection.style.top = dt + 'px';
+      cropSelection.style.width = dw + 'px';
+      cropSelection.style.height = dh + 'px';
+    }
+
+    function updateInputs() {
+      cropX.value = sel.x;
+      cropY.value = sel.y;
+      cropWidth.value = sel.w;
+      cropHeight.value = sel.h;
+    }
+
+    function updateSelFromInputs() {
+      if (!originalImage) return;
+      sel.x = Math.max(0, parseInt(cropX.value) || 0);
+      sel.y = Math.max(0, parseInt(cropY.value) || 0);
+      sel.w = Math.min(parseInt(cropWidth.value) || originalImage.width, originalImage.width - sel.x);
+      sel.h = Math.min(parseInt(cropHeight.value) || originalImage.height, originalImage.height - sel.y);
+      if (sel.w < 1) { sel.w = 1; }
+      if (sel.h < 1) { sel.h = 1; }
+      renderCrop();
+    }
+
+    cropX.addEventListener('input', updateSelFromInputs);
+    cropY.addEventListener('input', updateSelFromInputs);
+    cropWidth.addEventListener('input', updateSelFromInputs);
+    cropHeight.addEventListener('input', updateSelFromInputs);
+
+    function constrainAspect(w, h, lockW) {
+      if (aspectPresets.value === 'free') return { w: w, h: h };
+      var parts = aspectPresets.value.split(':');
+      var rW = parseFloat(parts[0]);
+      var rH = parseFloat(parts[1]);
+      if (lockW) {
+        h = Math.round(w * rH / rW);
+      } else {
+        w = Math.round(h * rW / rH);
+      }
+      return { w: w, h: h };
+    }
+
+    aspectPresets.addEventListener('change', function() {
+      if (!originalImage) return;
+      if (this.value === 'free') {
+        cropWidth.disabled = false;
+        cropHeight.disabled = false;
+        updateSelFromInputs();
+        return;
+      }
+      cropWidth.disabled = true;
+      cropHeight.disabled = true;
+      var parts = this.value.split(':');
+      var rW = parseFloat(parts[0]);
+      var rH = parseFloat(parts[1]);
+      var maxW = originalImage.width;
+      var maxH = originalImage.height;
+      var w, h;
+      if (rW / rH > maxW / maxH) {
+        w = maxW;
+        h = Math.round(w * rH / rW);
+      } else {
+        h = maxH;
+        w = Math.round(h * rW / rH);
+      }
+      sel.x = 0;
+      sel.y = 0;
+      sel.w = w;
+      sel.h = h;
+      updateInputs();
+      renderCrop();
+    });
+
+    // Mouse/touch interaction
+    var dragMode = null;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var dragOrigSel = null;
+    var isDragging = false;
+
+    function getEventPos(e) {
+      var t = e.touches ? e.touches[0] : e;
+      return { x: t.clientX, y: t.clientY };
+    }
+
+    function getOverlayPos(clientX, clientY) {
+      var imgRect = cropDisplayImage.getBoundingClientRect();
+      var x = clientX - imgRect.left;
+      var y = clientY - imgRect.top;
+      return { x: Math.max(0, x), y: Math.max(0, y) };
+    }
+
+    function imgPos(clientX, clientY) {
+      var p = getOverlayPos(clientX, clientY);
+      return { x: toImage(p.x), y: toImage(p.y) };
+    }
+
+    function clampSel() {
+      sel.x = Math.max(0, Math.min(sel.x, originalImage.width - sel.w));
+      sel.y = Math.max(0, Math.min(sel.y, originalImage.height - sel.h));
+      if (sel.x + sel.w > originalImage.width) sel.w = originalImage.width - sel.x;
+      if (sel.y + sel.h > originalImage.height) sel.h = originalImage.height - sel.y;
+      if (sel.w < 1) sel.w = 1;
+      if (sel.h < 1) sel.h = 1;
+    }
+
+    function startDrag(e, mode) {
+      if (isProcessing) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var pos = getEventPos(e);
+      dragMode = mode;
+      dragStartX = pos.x;
+      dragStartY = pos.y;
+      dragOrigSel = { x: sel.x, y: sel.y, w: sel.w, h: sel.h };
+      isDragging = true;
+    }
+
+    function onDragMove(e) {
+      if (!isDragging || !dragMode) return;
+      e.preventDefault();
+      var pos = getEventPos(e);
+      var dx = pos.x - dragStartX;
+      var dy = pos.y - dragStartY;
+      var dix = toImage(Math.abs(dx)) * (dx < 0 ? -1 : 1);
+      var diy = toImage(Math.abs(dy)) * (dy < 0 ? -1 : 1);
+
+      var o = dragOrigSel;
+      var minSize = 10;
+
+      if (dragMode === 'move') {
+        sel.x = o.x + dix;
+        sel.y = o.y + diy;
+        clampSel();
+      } else if (dragMode === 'se') {
+        sel.w = Math.max(minSize, o.w + dix);
+        sel.h = Math.max(minSize, o.h + diy);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, true);
+          sel.w = c.w;
+          sel.h = c.h;
+        }
+      } else if (dragMode === 'nw') {
+        sel.x = o.x + dix;
+        sel.y = o.y + diy;
+        sel.w = Math.max(minSize, o.w - dix);
+        sel.h = Math.max(minSize, o.h - diy);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, true);
+          sel.x = o.x + (o.w - c.w);
+          sel.y = o.y + (o.h - c.h);
+          sel.w = c.w;
+          sel.h = c.h;
+        }
+      } else if (dragMode === 'ne') {
+        sel.y = o.y + diy;
+        sel.w = Math.max(minSize, o.w + dix);
+        sel.h = Math.max(minSize, o.h - diy);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, true);
+          sel.y = o.y + (o.h - c.h);
+          sel.w = c.w;
+          sel.h = c.h;
+        }
+      } else if (dragMode === 'sw') {
+        sel.x = o.x + dix;
+        sel.w = Math.max(minSize, o.w - dix);
+        sel.h = Math.max(minSize, o.h + diy);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, true);
+          sel.x = o.x + (o.w - c.w);
+          sel.w = c.w;
+          sel.h = c.h;
+        }
+      } else if (dragMode === 'n') {
+        sel.y = o.y + diy;
+        sel.h = Math.max(minSize, o.h - diy);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, false);
+          sel.h = c.h;
+          sel.w = c.w;
+          sel.y = o.y + (o.h - c.h);
+        }
+      } else if (dragMode === 's') {
+        sel.h = Math.max(minSize, o.h + diy);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, false);
+          sel.h = c.h;
+          sel.w = c.w;
+        }
+      } else if (dragMode === 'e') {
+        sel.w = Math.max(minSize, o.w + dix);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, true);
+          sel.w = c.w;
+          sel.h = c.h;
+        }
+      } else if (dragMode === 'w') {
+        sel.x = o.x + dix;
+        sel.w = Math.max(minSize, o.w - dix);
+        if (aspectPresets.value !== 'free') {
+          var c = constrainAspect(sel.w, sel.h, true);
+          sel.x = o.x + (o.w - c.w);
+          sel.w = c.w;
+          sel.h = c.h;
+        }
+      }
+
+      clampSel();
+      updateInputs();
+      renderCrop();
+    }
+
+    function endDrag(e) {
+      if (isDragging) {
+        isDragging = false;
+        dragMode = null;
+        dragOrigSel = null;
+      }
+    }
+
+    // Handle clicks on overlay (create new selection)
+    cropOverlay.addEventListener('mousedown', function(e) {
+      if (e.target === cropSelection || cropSelection.contains(e.target)) return;
+      if (isProcessing) return;
+      e.preventDefault();
+      var pos = imgPos(e.clientX, e.clientY);
+      dragMode = 'se';
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      sel.x = pos.x;
+      sel.y = pos.y;
+      sel.w = 1;
+      sel.h = 1;
+      dragOrigSel = { x: sel.x, y: sel.y, w: 0, h: 0 };
+      isDragging = true;
+    });
+
+    // Selection dragging
+    cropSelection.addEventListener('mousedown', function(e) {
+      if (e.target.classList.contains('crop-handle')) return;
+      startDrag(e, 'move');
+    });
+
+    // Handle dragging
+    document.querySelectorAll('.crop-handle').forEach(function(el) {
+      el.addEventListener('mousedown', function(e) { startDrag(e, this.dataset.handle); });
+    });
+
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', endDrag);
+
+    // Touch support
+    cropOverlay.addEventListener('touchstart', function(e) {
+      if (e.target === cropSelection || cropSelection.contains(e.target)) return;
+      var t = e.touches[0];
+      var pos = imgPos(t.clientX, t.clientY);
+      dragMode = 'se';
+      dragStartX = t.clientX;
+      dragStartY = t.clientY;
+      sel.x = pos.x;
+      sel.y = pos.y;
+      sel.w = 1;
+      sel.h = 1;
+      dragOrigSel = { x: sel.x, y: sel.y, w: 0, h: 0 };
+      isDragging = true;
+    }, { passive: false });
+
+    cropSelection.addEventListener('touchstart', function(e) {
+      if (e.target.classList.contains('crop-handle')) return;
+      e.preventDefault();
+      var t = e.touches[0];
+      dragMode = 'move';
+      dragStartX = t.clientX;
+      dragStartY = t.clientY;
+      dragOrigSel = { x: sel.x, y: sel.y, w: sel.w, h: sel.h };
+      isDragging = true;
+    }, { passive: false });
+
+    document.querySelectorAll('.crop-handle').forEach(function(el) {
+      el.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var t = e.touches[0];
+        dragMode = this.dataset.handle;
+        dragStartX = t.clientX;
+        dragStartY = t.clientY;
+        dragOrigSel = { x: sel.x, y: sel.y, w: sel.w, h: sel.h };
+        isDragging = true;
+      }, { passive: false });
+    });
+
+    document.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var t = e.touches[0];
+      var me = { clientX: t.clientX, clientY: t.clientY, preventDefault: function() { e.preventDefault(); } };
+      if (onDragMove(me) !== false) e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchend', endDrag);
+
+    // Crop execution
+    cropBtn.addEventListener('click', function() {
+      if (!originalImage || isProcessing) return;
+      isProcessing = true;
+      cropBtn.disabled = true;
+      cropBtn.textContent = '\u23F3 Cropping...';
+      downloadBtn.style.display = 'none';
+      resultPreview.style.display = 'none';
+
+      var x = sel.x;
+      var y = sel.y;
+      var w = sel.w;
+      var h = sel.h;
+
+      utils.simulateProgress('progressBar', 600, function() {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(originalImage, x, y, w, h, 0, 0, w, h);
+
+          var dataUrl = canvas.toDataURL('image/png');
+
+          croppedPreview.src = dataUrl;
+          resultPreview.style.display = 'block';
+          croppedSize.textContent = 'Cropped Region: (' + x + ',' + y + ') ' + w + 'x' + h;
+
+          downloadBtn.onclick = function() {
+            var originalName = fileInput.files && fileInput.files[0] ? fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
+            utils.triggerDownload(dataUrl, originalName + '_cropped.png');
+          };
+
+          downloadBtn.style.display = 'inline-flex';
+          utils.hideProgress('progressBar');
+          utils.showSuccess('fileInfoContainer', 'Image cropped successfully! Click download to save.');
+        } catch (err) {
+          utils.showError('errorContainer', 'Error cropping image: ' + err.message);
+        }
+
+        isProcessing = false;
+        cropBtn.disabled = false;
+        cropBtn.textContent = '\u2702\ufe0f Crop Image';
+      });
+    });
+  });
+  </script>
+</body>
+</html>

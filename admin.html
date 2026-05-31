@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Ali Tools Company</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <section class="page-hero">
+      <h1 class="scroll-animate fade-in-up">Admin Panel</h1>
+      <p class="scroll-animate fade-in-up stagger-delay-1">Manage your external links list</p>
+    </section>
+    <section class="page-content">
+      <div class="container">
+        <div id="loginView" class="admin-view">
+          <div class="admin-card">
+            <h2>Admin Login</h2>
+            <form id="loginForm" onsubmit="return adminLogin(event)">
+              <div class="form-group">
+                <label for="adminUser">Username</label>
+                <input type="text" id="adminUser" placeholder="Enter username" required>
+              </div>
+              <div class="form-group">
+                <label for="adminPass">Password</label>
+                <input type="password" id="adminPass" placeholder="Enter password" required>
+              </div>
+              <p id="loginError" class="error-msg" style="display:none;">Invalid username or password</p>
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Login</button>
+            </form>
+          </div>
+        </div>
+        <div id="dashboardView" class="admin-view" style="display:none;">
+          <div class="admin-card">
+            <div class="admin-header">
+              <h2>Manage External Links</h2>
+              <button class="btn btn-outline" onclick="adminLogout()">Logout</button>
+            </div>
+            <div class="add-link-form">
+              <div class="form-group">
+                <label for="linkName">Website Name</label>
+                <input type="text" id="linkName" placeholder="e.g. Google">
+              </div>
+              <div class="form-group">
+                <label for="linkUrl">Website URL</label>
+                <input type="url" id="linkUrl" placeholder="https://example.com">
+              </div>
+              <button class="btn btn-primary" onclick="addLink()">Add Link</button>
+              <p id="addError" class="error-msg" style="display:none;"></p>
+            </div>
+          </div>
+          <div class="admin-card">
+            <h3 style="margin-bottom:16px;">Saved Links</h3>
+            <div id="linksContainer">
+              <p class="empty-state">No links added yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

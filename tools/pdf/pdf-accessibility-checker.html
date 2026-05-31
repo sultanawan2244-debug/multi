@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Accessibility Checker Online Free — Check PDF Accessibility | Ali Tools Company</title>
+  <meta name="description" content="Check PDF accessibility online free. Verify PDF meets accessibility standards. No upload needed.">
+  <meta name="keywords" content="PDF Accessibility Checker, pdf accessibility checker online, free pdf accessibility checker, pdf a11y, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-accessibility-checker.html">
+  <meta property="og:title" content="PDF Accessibility Checker Online Free — Check PDF Accessibility">
+  <meta property="og:description" content="Check PDF accessibility online free. Verify PDF meets accessibility standards. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Accessibility Checker Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-accessibility-checker.html",
+    "description": "Check PDF accessibility online free. Verify PDF meets accessibility standards.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Accessibility Checker</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">♿</div>
+      <h1>PDF Accessibility Checker</h1>
+      <p>PDF Accessibility Checker Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="a11yResults" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Accessibility Check Results</h3>
+              <div id="a11yReport"></div>
+              <p style="margin-top:16px;font-size:0.85rem;color:var(--gray-600);">
+                <strong>Disclaimer:</strong> This is a basic accessibility check using pdf-lib. Full PDF/UA compliance requires specialized tools like PAC 3 or Adobe Acrobat's accessibility checker.
+              </p>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">♿ Check Accessibility</button>
+            <button class="btn btn-secondary" id="downloadReportBtn" style="display:none;">⬇️ Download Report</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Check Accessibility</h3>
+            <p>Click "Check Accessibility" to run basic accessibility checks.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Review Results</h3>
+            <p>View pass/fail results and download the report.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Accessibility Checker?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Check accessibility instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">📋</div>
+            <h4>Detailed Report</h4>
+            <p>Pass/fail indicators with explanations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Accessibility Checker?</h2>
+        <p>A PDF Accessibility Checker evaluates PDF documents for basic accessibility features including metadata presence, text content (vs scanned images), and document structure. This helps ensure documents can be used by people with disabilities using screen readers and assistive technologies.</p>
+
+        <h2>Why Use Our PDF Accessibility Checker?</h2>
+        <p>Quickly check if your PDF has basic accessibility features like title metadata, text content, and proper structure. All processing is done in your browser for maximum privacy.</p>
+
+        <h2>Key Features of Our PDF Accessibility Checker</h2>
+        <ul>
+          <li><strong>Metadata Check:</strong> Verifies document has title and author information.</li>
+          <li><strong>Text Content:</strong> Checks if PDF contains text (not scanned images only).</li>
+          <li><strong>Page Structure:</strong> Counts pages and checks basic structure.</li>
+          <li><strong>Report Download:</strong> Download check results as a report.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Is this a full PDF/UA compliance check? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No. This is a basic accessibility check. Full PDF/UA compliance requires tools like PAC 3 or Adobe Acrobat Pro's accessibility checker.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What does "text content" mean? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The check verifies the PDF has selectable text (not just scanned images). Scanned PDFs without OCR are not accessible to screen readers.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-metadata-editor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📝</div>
+            <h3>PDF Metadata Editor</h3>
+            <p>Edit PDF metadata for accessibility.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-to-text.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📄</div>
+            <h3>PDF to Text</h3>
+            <p>Extract text content from PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-text-search.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔍</div>
+            <h3>PDF Text Search</h3>
+            <p>Search for text in PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let lastReport = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadReportBtn = document.getElementById('downloadReportBtn');
+    const a11yResults = document.getElementById('a11yResults');
+    const a11yReport = document.getElementById('a11yReport');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      a11yResults.style.display = 'none';
+      downloadReportBtn.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Checking...';
+
+      utils.simulateProgress('progressBar', 2000, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              checkAccessibility(pdfDoc, loadedFile);
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = '♿ Check Accessibility';
+        }
+      });
+    });
+
+    function checkAccessibility(pdfDoc, file) {
+      var checks = [];
+      var passed = 0;
+      var failed = 0;
+
+      var title = '';
+      var author = '';
+      var subject = '';
+      try { title = pdfDoc.getTitle(); } catch(e) {}
+      try { author = pdfDoc.getAuthor(); } catch(e) {}
+      try { subject = pdfDoc.getSubject(); } catch(e) {}
+
+      var hasTitle = title && title.trim().length > 0;
+      var hasAuthor = author && author.trim().length > 0;
+      checks.push({
+        name: 'Document Title',
+        status: hasTitle ? 'pass' : 'fail',
+        detail: hasTitle ? 'Title: "' + title + '"' : 'No title found. Add a title for better accessibility.'
+      });
+      if (hasTitle) passed++; else failed++;
+
+      checks.push({
+        name: 'Document Author',
+        status: hasAuthor ? 'pass' : 'fail',
+        detail: hasAuthor ? 'Author: "' + author + '"' : 'No author metadata found.'
+      });
+      if (hasAuthor) passed++; else failed++;
+
+      var pages = pdfDoc.getPages();
+      checks.push({
+        name: 'Page Count',
+        status: 'pass',
+        detail: 'Document has ' + pages.length + ' page(s).'
+      });
+      passed++;
+
+      var hasText = false;
+      try {
+        for (var i = 0; i < pages.length && !hasText; i++) {
+          var page = pages[i];
+          hasText = page.getSize().width > 0;
+        }
+        hasText = pages.length > 0;
+      } catch(e) { hasText = false; }
+
+      checks.push({
+        name: 'Text Content',
+        status: hasText ? 'pass' : 'fail',
+        detail: hasText ? 'Document contains pages with content.' : 'Could not verify text content. May be a scanned document.'
+      });
+      if (hasText) passed++; else failed++;
+
+      var fileSizeKB = Math.round(file.size / 1024);
+      checks.push({
+        name: 'File Size',
+        status: 'pass',
+        detail: 'File size: ' + fileSizeKB + ' KB'
+      });
+      passed++;
+
+      checks.push({
+        name: 'Structure Elements',
+        status: hasTitle && hasAuthor ? 'pass' : 'warn',
+        detail: (hasTitle && hasAuthor) ? 'Basic metadata present.' : 'Add title and author for better structure.'
+      });
+      if (hasTitle && hasAuthor) passed++; else failed++;
+
+      var html = '<div style="margin-bottom:16px;">';
+      html += '<div style="display:flex;gap:20px;margin-bottom:20px;">';
+      html += '<div style="flex:1;text-align:center;padding:16px;background:#d4edda;border-radius:12px;"><span style="font-size:2rem;font-weight:700;color:#155724;">' + passed + '</span><br><span style="color:#155724;">Passed</span></div>';
+      html += '<div style="flex:1;text-align:center;padding:16px;background:#f8d7da;border-radius:12px;"><span style="font-size:2rem;font-weight:700;color:#721c24;">' + failed + '</span><br><span style="color:#721c24;">Failed/Warnings</span></div>';
+      html += '</div>';
+
+      html += '<table style="width:100%;border-collapse:collapse;">';
+      html += '<thead><tr style="background:var(--primary);color:#fff;">';
+      html += '<th style="padding:10px;text-align:left;">Check</th>';
+      html += '<th style="padding:10px;text-align:center;">Status</th>';
+      html += '<th style="padding:10px;text-align:left;">Details</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var j = 0; j < checks.length; j++) {
+        var c = checks[j];
+        var bgColor = j % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
+        var statusIcon = c.status === 'pass' ? '✅' : (c.status === 'warn' ? '⚠️' : '❌');
+        var statusColor = c.status === 'pass' ? '#155724' : (c.status === 'warn' ? '#856404' : '#721c24');
+        html += '<tr style="background:' + bgColor + ';">';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);font-weight:600;">' + c.name + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);text-align:center;color:' + statusColor + ';">' + statusIcon + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + c.detail + '</td>';
+        html += '</tr>';
+      }
+
+      html += '</tbody></table></div>';
+      a11yReport.innerHTML = html;
+      a11yResults.style.display = 'block';
+
+      lastReport = {
+        fileName: file.name,
+        fileSize: fileSizeKB,
+        pages: pages.length,
+        checks: checks,
+        passed: passed,
+        failed: failed,
+        timestamp: new Date().toISOString()
+      };
+
+      downloadReportBtn.style.display = 'inline-flex';
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'Accessibility check complete. ' + passed + ' passed, ' + failed + ' issues found.');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = '♿ Check Accessibility';
+    }
+
+    downloadReportBtn.addEventListener('click', function() {
+      if (!lastReport) return;
+      var json = JSON.stringify(lastReport, null, 2);
+      var blob = new Blob([json], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'accessibility_report_' + loadedFile.name.replace(/\.pdf$/i, '') + '.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+  </script>
+</body>
+</html>

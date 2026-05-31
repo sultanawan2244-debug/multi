@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text to QR Code Generator Online Free | Ali Tools Company</title>
+  <meta name="description" content="Generate QR codes from text online free. Convert text, URLs, phone numbers, and more to QR codes. No upload needed.">
+  <meta name="keywords" content="Text to QR, QR code generator, create QR code, free QR code, online QR generator">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/converter/text-to-qr.html">
+  <meta property="og:title" content="Text to QR Code Generator Online Free">
+  <meta property="og:description" content="Generate QR codes from text online free. Convert text, URLs, and more to QR codes instantly.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Text to QR Code Generator Online Free",
+    "url": "https://alitoolscompany.com/tools/converter/text-to-qr.html",
+    "description": "Generate QR codes from text online free. Convert text, URLs, phone numbers, and more to QR codes.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../converter-tools.html">Converter Tools</a> &gt; <span>Text to QR Code Generator</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📱</div>
+      <h1>Text to QR Code Generator</h1>
+      <p>Text to QR Online Free — Generate Instantly in Your Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="control-group">
+            <label for="textInput">Enter Text or URL</label>
+            <textarea id="textInput" rows="4" style="width:100%;font-family:inherit;font-size:14px;padding:12px;border:1px solid var(--gray-300);border-radius:8px;resize:vertical;" placeholder="Enter any text, URL, phone number, or email address..."></textarea>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="qrSize">QR Code Size</label>
+              <select id="qrSize">
+                <option value="128">Small (128x128)</option>
+                <option value="256" selected>Medium (256x256)</option>
+                <option value="512">Large (512x512)</option>
+                <option value="1024">Extra Large (1024x1024)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="qrColor">Foreground Color</label>
+              <input type="color" id="qrColor" value="#000000">
+            </div>
+            <div class="control-group">
+              <label for="qrBg">Background Color</label>
+              <input type="color" id="qrBg" value="#ffffff">
+            </div>
+          </div>
+
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="tool-actions">
+            <button class="btn btn-primary" id="actionBtn">Generate QR Code</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download QR Code (PNG)</button>
+          </div>
+
+          <div id="resultContainer" style="margin-top:24px;display:none;text-align:center;">
+            <h3 style="margin-bottom:12px;">Your QR Code:</h3>
+            <div id="qrDisplay" style="display:inline-block;padding:16px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Enter Your Text</h3>
+            <p>Type or paste any text, URL, phone number, or email address.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Customize</h3>
+            <p>Choose size, foreground color, and background color for your QR code.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Generate QR Code" and download your QR code as a PNG image.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Text to QR Generator?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Generate QR codes instantly with the qrcode library.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your data never leaves your device.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🎨</div>
+            <h4>Customizable</h4>
+            <p>Choose size, foreground color, and background color.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start generating immediately.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is Text to QR Code Generator?</h2>
+        <p>Text to QR Code Generator converts any text, URL, phone number, or email address into a scannable QR code image. Using the qrcode library, it generates standard QR codes that can be scanned by any smartphone camera or QR reader app.</p>
+
+        <h2>Why Use Our Text to QR Code Generator?</h2>
+        <p>All processing happens locally in your browser. Your text is never sent to any server. No sign-ups, no limits, and no paid subscriptions. Customize colors and size to match your brand.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing with qrcode library.</li>
+          <li><strong>Secure:</strong> Your data never leaves your device.</li>
+          <li><strong>Customizable:</strong> Choose size, foreground, and background colors.</li>
+          <li><strong>Free:</strong> No hidden costs or premium tiers.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Can I scan the QR code from my phone? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Once generated, you can scan the QR code with any smartphone camera or QR code reader app. The QR code works with all standard QR scanners.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="qr-to-text.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>QR to Text</h3>
+            <p>Decode QR codes from images.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="svg-to-png.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>SVG to PNG</h3>
+            <p>Convert SVG to PNG images.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="html-to-pdf.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔄</div>
+            <h3>HTML to PDF</h3>
+            <p>Convert HTML to PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var utils = window.AlToolsUtils;
+
+    var errorContainer = document.getElementById('errorContainer');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadBtn = document.getElementById('downloadBtn');
+    var textInput = document.getElementById('textInput');
+    var qrSize = document.getElementById('qrSize');
+    var qrColor = document.getElementById('qrColor');
+    var qrBg = document.getElementById('qrBg');
+    var resultContainer = document.getElementById('resultContainer');
+    var qrDisplay = document.getElementById('qrDisplay');
+
+    var isProcessing = false;
+    var currentDataUrl = '';
+    var currentCanvas = null;
+
+    actionBtn.addEventListener('click', function() {
+      var text = textInput.value.trim();
+      if (!text) {
+        utils.showError('errorContainer', 'Please enter some text or a URL.');
+        return;
+      }
+      if (isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '\u23F3 Generating...';
+      downloadBtn.style.display = 'none';
+      resultContainer.style.display = 'none';
+      errorContainer.innerHTML = '';
+
+      var size = parseInt(qrSize.value);
+      var fg = qrColor.value;
+      var bg = qrBg.value;
+
+      try {
+        qrDisplay.innerHTML = '';
+
+        var qr = new QRious({
+          value: text,
+          size: size,
+          foreground: fg,
+          background: bg
+        });
+
+        currentCanvas = qr.canvas;
+        qrDisplay.appendChild(currentCanvas);
+        resultContainer.style.display = 'block';
+        currentDataUrl = currentCanvas.toDataURL('image/png');
+
+        downloadBtn.onclick = function() {
+          utils.triggerDownload(currentDataUrl, 'qrcode.png');
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.showSuccess('fileInfoContainer', 'QR code generated successfully!');
+      } catch (e) {
+        utils.showError('errorContainer', 'Error: ' + (e.message || e));
+      }
+
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'Generate QR Code';
+    });
+  });
+  </script>
+</body>
+</html>

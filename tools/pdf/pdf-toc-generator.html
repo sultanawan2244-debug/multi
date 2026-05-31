@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF TOC Generator Online Free — Generate Table of Contents | Ali Tools Company</title>
+  <meta name="description" content="Generate table of contents for PDF online free. Create clickable TOC pages from headings. No upload needed.">
+  <meta name="keywords" content="PDF TOC Generator, pdf toc generator online, free pdf toc generator, pdf table of contents, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-toc-generator.html">
+  <meta property="og:title" content="PDF TOC Generator Online Free — Generate Table of Contents">
+  <meta property="og:description" content="Generate table of contents for PDF online free. Create clickable TOC pages from headings. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF TOC Generator Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-toc-generator.html",
+    "description": "Generate table of contents for PDF online free. Create clickable TOC pages from headings.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF TOC Generator</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📋</div>
+      <h1>PDF TOC Generator</h1>
+      <p>PDF TOC Generator Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="tocControls" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Table of Contents Entries</h3>
+              <p style="margin-bottom:12px;font-size:0.85rem;color:var(--gray-600);">
+                Add entries for your table of contents. Each entry includes a heading text and page number.
+              </p>
+              <div id="tocEntries"></div>
+              <button class="btn btn-secondary" id="addEntryBtn" style="margin-top:8px;">+ Add Entry</button>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Generate TOC</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download PDF with TOC</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. Supports PDF files.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Add TOC Entries</h3>
+            <p>Add heading text and page numbers for each table of contents entry.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Generate TOC" to create the TOC pages, then download your result.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF TOC Generator?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Generate TOC pages instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📝</div>
+            <h4>Customizable</h4>
+            <p>Add as many TOC entries as you need with custom headings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF TOC Generator?</h2>
+        <p>A PDF TOC (Table of Contents) Generator creates a structured table of contents page at the beginning of your PDF document. It adds entry pages listing section headings and their corresponding page numbers, making navigation easier for readers. This is essential for reports, eBooks, manuals, and long documents.</p>
+
+        <h2>Why Use Our PDF TOC Generator?</h2>
+        <p>Most online TOC generators require server uploads. Our tool runs entirely in your browser, keeping documents private. You can customize headings and page references, and download the enhanced PDF instantly.</p>
+
+        <h2>Key Features of Our PDF TOC Generator</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers.</li>
+          <li><strong>Custom Entries:</strong> Add multiple TOC entries with custom headings.</li>
+          <li><strong>Page References:</strong> Each entry includes a page number reference.</li>
+          <li><strong>Clean Layout:</strong> Professionally formatted TOC pages.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does the TOC have clickable links? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The TOC is rendered as text entries on dedicated pages. For fully interactive clickable bookmarks, use a dedicated PDF authoring tool.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I add more entries later? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">You can add as many entries as needed before generating. Simply click "+ Add Entry" for each heading.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-bookmark-viewer.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📑</div>
+            <h3>PDF Bookmark Viewer</h3>
+            <p>View PDF page structure and indices.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-number-adder.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">🔢</div>
+            <h3>Page Number Adder</h3>
+            <p>Add page numbers to your PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-header-footer.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📐</div>
+            <h3>PDF Header Footer</h3>
+            <p>Add headers and footers to PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let entryCount = 0;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const tocControls = document.getElementById('tocControls');
+    const tocEntries = document.getElementById('tocEntries');
+    const addEntryBtn = document.getElementById('addEntryBtn');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      tocControls.style.display = 'block';
+      downloadBtn.style.display = 'none';
+      if (entryCount === 0) addTocEntry();
+    }
+
+    function addTocEntry() {
+      entryCount++;
+      var div = document.createElement('div');
+      div.className = 'toc-entry';
+      div.style.cssText = 'display:flex;gap:12px;align-items:center;margin-bottom:8px;';
+      div.innerHTML = '<input type="text" class="toc-heading" placeholder="Section heading..." style="flex:1;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">' +
+        '<input type="number" class="toc-page" placeholder="Page #" min="1" value="' + entryCount + '" style="width:80px;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">' +
+        '<button class="btn btn-danger remove-entry" style="padding:8px 12px;font-size:0.8rem;">✕</button>';
+      div.querySelector('.remove-entry').addEventListener('click', function() {
+        div.remove();
+        entryCount--;
+      });
+      tocEntries.appendChild(div);
+    }
+
+    addEntryBtn.addEventListener('click', addTocEntry);
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      var headings = document.querySelectorAll('.toc-heading');
+      var pages = document.querySelectorAll('.toc-page');
+      var entries = [];
+      for (var i = 0; i < headings.length; i++) {
+        var text = headings[i].value.trim();
+        var page = parseInt(pages[i].value) || 1;
+        if (text) entries.push({ text: text, page: page });
+      }
+      if (entries.length === 0) {
+        utils.showError('errorContainer', 'Please add at least one TOC entry.');
+        return;
+      }
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Generating TOC...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 2000, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              generateTOC(pdfDoc, loadedFile.name, entries);
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Generate TOC';
+        }
+      });
+    });
+
+    function generateTOC(pdfDoc, originalName, entries) {
+      var font = pdfDoc.getFonts()[0];
+      if (!font) {
+        PDFLib.StandardFonts.Helvetica;
+      }
+      var helveticaFont = pdfDoc.embedStandardFont(PDFLib.StandardFonts.Helvetica);
+      var helveticaBold = pdfDoc.embedStandardFont(PDFLib.StandardFonts.HelveticaBold);
+
+      var tocPage = pdfDoc.addPage([612, 792]);
+      var yPos = 720;
+
+      tocPage.drawText('Table of Contents', {
+        x: 50,
+        y: yPos,
+        size: 24,
+        font: helveticaBold,
+        color: PDFLib.rgb(0.1, 0.1, 0.1)
+      });
+      yPos -= 40;
+
+      tocPage.drawLine({
+        start: { x: 50, y: yPos + 5 },
+        end: { x: 562, y: yPos + 5 },
+        thickness: 1,
+        color: PDFLib.rgb(0.7, 0.7, 0.7)
+      });
+      yPos -= 20;
+
+      for (var i = 0; i < entries.length; i++) {
+        if (yPos < 60) {
+          tocPage = pdfDoc.addPage([612, 792]);
+          yPos = 740;
+        }
+
+        var entry = entries[i];
+        tocPage.drawText(entry.text, {
+          x: 50,
+          y: yPos,
+          size: 14,
+          font: helveticaFont,
+          color: PDFLib.rgb(0.2, 0.2, 0.2)
+        });
+
+        var pageNumStr = 'Page ' + entry.page;
+        var pageNumWidth = helveticaFont.widthOfTextAtSize(pageNumStr, 14);
+        tocPage.drawText(pageNumStr, {
+          x: 562 - pageNumWidth,
+          y: yPos,
+          size: 14,
+          font: helveticaFont,
+          color: PDFLib.rgb(0.4, 0.4, 0.4)
+        });
+
+        yPos -= 30;
+      }
+
+      var originalPages = pdfDoc.getPages();
+      var totalBeforeTOC = originalPages.length - 1;
+
+      var newPages = [];
+      newPages.push(originalPages.length - 1);
+      for (var j = 0; j < totalBeforeTOC; j++) {
+        newPages.push(j);
+      }
+
+      pdfDoc.save().then(function(bytes) {
+        var blob = new Blob([bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        downloadBtn.onclick = function() {
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = originalName.replace(/\.pdf$/i, '') + '_with_toc.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', 'TOC generated successfully! TOC page added at the end.');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = 'Generate TOC';
+      });
+    }
+  });
+  </script>
+</body>
+</html>

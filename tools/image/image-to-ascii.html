@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to ASCII Art Converter Online Free | Ali Tools Company</title>
+  <meta name="description" content="Convert images to ASCII art online free. Transform PNG, JPG, WebP, GIF into text-based ASCII art. No upload needed, 100% browser-based ASCII converter.">
+  <meta name="keywords" content="image to ASCII, ASCII art generator, image to text art, ASCII converter, photo to ASCII, text art from image">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-to-ascii.html">
+  <meta property="og:title" content="Image to ASCII Art Converter Online Free">
+  <meta property="og:description" content="Convert images to ASCII art online free. Generate text-based art from photos instantly in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image to ASCII Art Converter Online Free","url":"https://alitoolscompany.com/tools/image/image-to-ascii.html","description":"Free online browser-based image to ASCII art converter. Generate text art from images without uploading.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Image to ASCII</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🔤</div>
+      <h1>Image to ASCII Art Converter</h1>
+      <p>Convert Images to ASCII Art Online Free — Transform Photos into Text Art</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop an image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill"></div></div>
+          <div class="tool-controls" id="toolControls" style="display:none;">
+            <div class="control-row">
+              <div class="control-group">
+                <label for="charWidth">Width (chars)</label>
+                <input type="number" id="charWidth" min="20" max="300" value="100">
+              </div>
+              <div class="control-group">
+                <label for="charSet">Character Set</label>
+                <select id="charSet">
+                  <option value="classic">Classic (@%#*+=-:. )</option>
+                  <option value="detailed">Detailed ($@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`\'. )</option>
+                  <option value="simple">Simple (#*+-:. )</option>
+                  <option value="block">Block (█▓▒░ )</option>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="checkbox-group">
+                <input type="checkbox" id="invertAscii" checked>
+                Invert (light background)
+              </label>
+            </div>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">ASCII Art Output</div>
+            <div style="font-size:0.85rem;color:var(--gray-600);margin-bottom:8px;">
+              <span id="originalSize">Original: —</span>
+            </div>
+            <textarea id="asciiOutput" rows="12" readonly placeholder="ASCII art will appear here..." style="width:100%;padding:12px;border:1px solid var(--border-color);border-radius:8px;font-family:monospace;font-size:0.55rem;line-height:1.1;resize:vertical;background:var(--gray-50);"></textarea>
+            <div id="copySuccess" style="display:none;margin-top:8px;padding:8px 12px;background:#e6f7e6;color:#2e7d32;border-radius:8px;">✅ Copied to clipboard!</div>
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="convertBtn">🔤 Convert to ASCII</button>
+            <button class="btn btn-secondary" id="copyBtn" style="display:none;">📋 Copy ASCII</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download .txt</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Convert Image to ASCII Art</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up"><div class="step-number">1</div><h3>Upload Image</h3><p>Drag & drop your image or click to browse.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1"><div class="step-number">2</div><h3>Set Options</h3><p>Adjust width, character set, and inversion for your ASCII art.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2"><div class="step-number">3</div><h3>Copy or Download</h3><p>Click "Convert to ASCII" to generate, then copy or save as text.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our ASCII Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">⚡</div><h4>Fast</h4><p>Convert to ASCII instantly in your browser.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">🔒</div><h4>Secure</h4><p>Your images never leave your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">🎨</div><h4>Multiple Sets</h4><p>Choose from classic, detailed, simple, or block characters.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3"><div class="feature-icon">🔓</div><h4>Free</h4><p>No hidden costs or premium tiers.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4"><div class="feature-icon">📝</div><h4>No Sign-Up</h4><p>Start immediately with zero registration.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5"><div class="feature-icon">🌐</div><h4>Works Offline</h4><p>No internet needed after loading.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is Image to ASCII Art?</h2>
+        <p>Image to ASCII art conversion transforms a digital image into a text-based representation using characters from the ASCII standard. Each character represents a specific brightness level or tone, with denser characters like @ and # representing darker areas and lighter characters like . and spaces representing lighter areas. When viewed in a monospace font, these characters form a recognizable image made entirely of text. Our free online converter processes images directly in your browser, offering multiple character sets and adjustable width for creative control.</p>
+
+        <h2>Why Use Our ASCII Converter?</h2>
+        <p>ASCII art has a rich history dating back to the early days of computing when graphical displays were limited. Today, it is used for creative expression, retro aesthetic designs, forum signatures, code comments art, and unique social media posts. Our tool makes it easy to convert any image into high-quality ASCII art with customizable character sets. Whether you want a classic @#-based look, a highly detailed rendering, or a simple outline, our tool delivers clean results in seconds.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads.</li>
+          <li><strong>Adjustable Width:</strong> Control ASCII resolution from 20 to 300 characters wide.</li>
+          <li><strong>Character Sets:</strong> Choose from classic, detailed, simple, or block characters.</li>
+          <li><strong>Inversion Option:</strong> Optimize for light or dark backgrounds.</li>
+          <li><strong>Copy & Download:</strong> Copy to clipboard or download as .txt file.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>Developers add ASCII art to code comments; designers create retro-themed graphics; social media users post unique text art; educators teach about character encoding; artists explore computational creativity; forum members create signatures; and anyone who appreciates the nostalgic beauty of text-based imagery.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What character set should I use? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The "Detailed" set produces the most nuanced ASCII art with many gray levels. "Classic" is the traditional set used in early ASCII art. "Simple" gives clean outlines. "Block" uses Unicode block characters for smoother rendering.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How does ASCII art work? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Each pixel or group of pixels is mapped to a character based on its brightness. Darker pixels become dense characters like @ or #, while lighter pixels become sparse characters like . or spaces. When rendered in a monospace font, the characters form a recognizable image.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I control the size of the ASCII art? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, use the "Width" control to set the number of characters per line. A higher width produces more detailed art but requires more horizontal space. The height adjusts automatically to maintain the aspect ratio.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Why does my ASCII art look distorted? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">ASCII art looks best when viewed in a monospace font with proper line height. The preview textarea uses monospace font. If copying to another application, make sure it uses a monospace font and the text is not auto-wrapped.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is this tool safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, all processing happens locally in your browser with no data transmitted to any server.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-grayscale.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">⚫</div><h3>Image Grayscale</h3><p>Convert images to black and white.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-pencil-sketch.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">✏️</div><h3>Pencil Sketch</h3><p>Create pencil sketch effects.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-pixel-art.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">🟦</div><h3>Pixel Art</h3><p>Convert images to pixel art.</p><span class="card-link">Use Tool →</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let originalImage = null;
+    const E = {}; ['dropZone','fileInput','fileInfoContainer','errorContainer','toolControls','toolActions','previewArea','originalPreview','asciiOutput','originalSize','charWidth','charSet','invertAscii','convertBtn','copyBtn','downloadBtn','copySuccess','progressBar'].forEach(function(id) { E[id] = document.getElementById(id); });
+    let isProcessing = false;
+    utils.initDropZone('dropZone', function(f) { handleFile(f); });
+    E.fileInput.addEventListener('change', function() { if (this.files && this.files[0]) handleFile(this.files[0]); });
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) { utils.showError('errorContainer', 'Please select a valid file type.'); return; }
+      E.errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      E.toolControls.style.display = 'block';
+      E.toolActions.style.display = 'flex';
+      utils.loadImage(file).then(function(r) {
+        originalImage = r.image;
+        E.originalPreview.src = r.dataUrl;
+        E.originalPreview.style.display = 'block';
+        E.previewArea.classList.add('show');
+        E.originalSize.textContent = 'Original: ' + originalImage.width + 'x' + originalImage.height + ' (' + utils.formatFileSize(file.size) + ')';
+      }).catch(function() { utils.showError('errorContainer', 'Failed to load image.'); });
+    }
+    function getCharset(name) {
+      var sets = {
+        'classic': ['@','%','#','*','+','=','-',':','.',' '],
+        'detailed': ['$','@','B','%','8','&','W','M','#','*','o','a','h','k','b','d','p','q','w','m','Z','O','0','Q','L','C','J','U','Y','X','z','c','v','u','n','x','r','j','f','t','/','\\','|','(',')','1','{','}','[',']','?','-','_','+','~','<','>','i','!','l','I',';',':','\\"','^','`','\'','.',' '],
+        'simple': ['#','*','+','-',':','.',' '],
+        'block': ['█','▓','▒','░',' ']
+      };
+      return sets[name] || sets['classic'];
+    }
+    E.convertBtn.addEventListener('click', function() {
+      if (!originalImage || isProcessing) return;
+      isProcessing = true;
+      E.convertBtn.disabled = true;
+      E.convertBtn.textContent = '⏳ Converting...';
+      E.copyBtn.style.display = 'none';
+      E.downloadBtn.style.display = 'none';
+      E.copySuccess.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 800, function() {
+        try {
+          var width = parseInt(E.charWidth.value) || 100;
+          var charset = getCharset(E.charSet.value);
+          var invert = E.invertAscii.checked;
+          var canvas = document.createElement('canvas');
+          var ratio = originalImage.height / originalImage.width;
+          canvas.width = width;
+          canvas.height = Math.round(width * ratio * 0.5);
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          var data = imageData.data;
+          var result = '';
+
+          for (var y = 0; y < canvas.height; y++) {
+            for (var x = 0; x < canvas.width; x++) {
+              var idx = (y * canvas.width + x) * 4;
+              var gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
+              var charIdx = Math.floor((gray / 255) * (charset.length - 1));
+              if (invert) charIdx = charset.length - 1 - charIdx;
+              if (charIdx < 0) charIdx = 0;
+              if (charIdx >= charset.length) charIdx = charset.length - 1;
+              result += charset[charIdx];
+            }
+            result += '\n';
+          }
+
+          E.asciiOutput.value = result;
+          E.copyBtn.style.display = 'inline-flex';
+          E.downloadBtn.style.display = 'inline-flex';
+          utils.hideProgress('progressBar');
+          utils.showSuccess('fileInfoContainer', 'ASCII art generated!');
+        } catch (err) { utils.showError('errorContainer', 'Error: ' + err.message); }
+        isProcessing = false;
+        E.convertBtn.disabled = false;
+        E.convertBtn.textContent = '🔤 Convert to ASCII';
+      });
+    });
+    E.copyBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText(E.asciiOutput.value).then(function() {
+        E.copySuccess.style.display = 'block';
+        setTimeout(function() { E.copySuccess.style.display = 'none'; }, 2000);
+      }).catch(function() {
+        E.asciiOutput.select();
+        document.execCommand('copy');
+        E.copySuccess.style.display = 'block';
+        setTimeout(function() { E.copySuccess.style.display = 'none'; }, 2000);
+      });
+    });
+    E.downloadBtn.addEventListener('click', function() {
+      var blob = new Blob([E.asciiOutput.value], {type: 'text/plain'});
+      var url = URL.createObjectURL(blob);
+      var name = E.fileInput.files && E.fileInput.files[0] ? E.fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
+      utils.triggerDownload(url, name + '_ascii.txt');
+      URL.revokeObjectURL(url);
+    });
+  });
+  </script>
+</body>
+</html>

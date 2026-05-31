@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Page Number Adder Online Free — Add Page Numbers to PDF | Ali Tools Company</title>
+  <meta name="description" content="Add page numbers to PDF files online free. Customize starting number, position, font size. Page X of Y format. No upload needed.">
+  <meta name="keywords" content="PDF Page Number Adder, add page numbers to pdf, pdf page number online, free pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-page-number-adder.html">
+  <meta property="og:title" content="PDF Page Number Adder Online Free — Add Page Numbers to PDF">
+  <meta property="og:description" content="Add page numbers to PDF files online free. Customize starting number, position, font size. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Page Number Adder Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-page-number-adder.html",
+    "description": "Add page numbers to PDF files online free. Customize starting number, position, font size.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Page Number Adder</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🔢</div>
+      <h1>PDF Page Number Adder</h1>
+      <p>Add professional page numbers to your PDF documents. Supports "Page X of Y" format with customizable positioning.</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="controlsContainer" style="display:none;">
+            <div class="control-group">
+              <label for="startNumber">Starting Number</label>
+              <input type="number" id="startNumber" value="1" min="1" style="width:100%;padding:10px 14px;border:2px solid var(--gray-300);border-radius:10px;font-size:1rem;background:var(--white);">
+            </div>
+            <div class="control-group">
+              <label for="pagePosition">Position</label>
+              <select id="pagePosition" style="width:100%;padding:10px 14px;border:2px solid var(--gray-300);border-radius:10px;font-size:1rem;background:var(--white);">
+                <option value="bottom-center">Bottom Center</option>
+                <option value="bottom-left">Bottom Left</option>
+                <option value="bottom-right">Bottom Right</option>
+                <option value="top-center">Top Center</option>
+                <option value="top-left">Top Left</option>
+                <option value="top-right">Top Right</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="pageFontSize">Font Size</label>
+              <div class="range-slider">
+                <input type="range" id="pageFontSize" min="8" max="48" value="12">
+              </div>
+              <span id="pageFontSizeValue" style="font-weight:700;color:var(--primary);">12px</span>
+            </div>
+            <div class="control-group">
+              <label class="checkbox-group">
+                <input type="checkbox" id="showTotalPages" checked>
+                Show "Page X of Y"
+              </label>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Add Page Numbers</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Numbered PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. All processing stays in your browser.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Configure Page Numbers</h3>
+            <p>Set starting number, choose position, adjust font size, and toggle "Page X of Y" format.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Add Page Numbers" to process, then download your numbered PDF instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Page Number Adder?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Add page numbers instantly in your browser with optimized JavaScript processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🎯</div>
+            <h4>Flexible Positioning</h4>
+            <p>Place page numbers at any corner or center of the page.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start processing immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF Page Numbering?</h2>
+        <p>PDF page numbering adds sequential numbers to each page of a PDF document, making it easier to navigate, reference, and organize multi-page documents. Our PDF Page Number Adder lets you add customizable page numbers to any PDF. Unlike online services that require file uploads, all processing happens entirely in your browser using pdf-lib, ensuring your documents remain private and secure.</p>
+
+        <h2>Why Use Our PDF Page Number Adder?</h2>
+        <p>Most online PDF page numbering tools require you to upload your documents to a server, creating privacy risks and slow upload times. Our tool eliminates these problems. Since everything runs in your browser using JavaScript, you can add page numbers to PDFs of any size instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF Page Number Adder</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers, no data transfer.</li>
+          <li><strong>Page X of Y:</strong> Optionally show total page count alongside current page number.</li>
+          <li><strong>Custom Starting Number:</strong> Begin numbering from any number you choose.</li>
+          <li><strong>Flexible Position:</strong> Place numbers at any corner or center position.</li>
+          <li><strong>Adjustable Font Size:</strong> Match the numbering style to your document.</li>
+          <li><strong>No Limits:</strong> Process PDFs of any page count (within browser memory limits).</li>
+        </ul>
+
+        <h2>Use Cases for PDF Page Number Adder</h2>
+        <p>Our PDF Page Number Adder is perfect for: authors numbering manuscript pages; legal professionals organizing case documents; students formatting thesis papers; businesses preparing proposals and reports; and anyone who needs professional page numbering on their PDF documents.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does page numbering affect existing content? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No, page numbers are added on top of existing content. They do not alter or remove any text, images, or formatting in your PDF.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I start numbering from a specific page? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The current version numbers all pages sequentially starting from your chosen starting number. Advanced per-page control is coming in a future update.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to process confidential documents? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser, your files never leave your computer. No data is transmitted to any server.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-watermark.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">💧</div>
+            <h3>PDF Watermark</h3>
+            <p>Add text watermarks to your PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-header-footer.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📄</div>
+            <h3>Header Footer</h3>
+            <p>Add headers and footers to PDF pages.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-bates-numbering.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🏷️</div>
+            <h3>Bates Numbering</h3>
+            <p>Add sequential Bates numbers to documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    var controlsContainer = document.getElementById('controlsContainer');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    document.getElementById('pageFontSize').addEventListener('input', function() {
+      document.getElementById('pageFontSizeValue').textContent = this.value + 'px';
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      controlsContainer.style.display = 'block';
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Adding Numbers...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 1500, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              processPDF(pdfDoc, loadedFile.name);
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error processing PDF: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Add Page Numbers';
+        }
+      });
+    });
+
+    function getPositionCoords(pageWidth, pageHeight, position, fontSize) {
+      var margin = 40;
+      switch (position) {
+        case 'top-left': return { x: margin, y: pageHeight - margin };
+        case 'top-center': return { x: pageWidth / 2, y: pageHeight - margin };
+        case 'top-right': return { x: pageWidth - margin, y: pageHeight - margin };
+        case 'bottom-left': return { x: margin, y: margin + fontSize / 3 };
+        case 'bottom-center': return { x: pageWidth / 2, y: margin + fontSize / 3 };
+        case 'bottom-right': return { x: pageWidth - margin, y: margin + fontSize / 3 };
+        default: return { x: pageWidth / 2, y: margin + fontSize / 3 };
+      }
+    }
+
+    function processPDF(pdfDoc, originalName) {
+      var pages = pdfDoc.getPages();
+      var startNumber = parseInt(document.getElementById('startNumber').value) || 1;
+      var position = document.getElementById('pagePosition').value;
+      var fontSize = parseInt(document.getElementById('pageFontSize').value);
+      var showTotal = document.getElementById('showTotalPages').checked;
+      var totalPages = pages.length;
+      var font = pdfDoc.getFonts()[0] || null;
+
+      for (var i = 0; i < totalPages; i++) {
+        var page = pages[i];
+        var pageWidth = page.getWidth();
+        var pageHeight = page.getHeight();
+        var pageNum = startNumber + i;
+        var text = showTotal ? 'Page ' + pageNum + ' of ' + (startNumber + totalPages - 1) : String(pageNum);
+        var coords = getPositionCoords(pageWidth, pageHeight, position, fontSize);
+
+        page.drawText(text, {
+          x: coords.x,
+          y: coords.y,
+          size: fontSize,
+          font: font,
+          color: PDFLib.rgb(0, 0, 0),
+          textAlignment: position.indexOf('center') > -1 ? PDFLib.TextAlignment.Center : (position.indexOf('right') > -1 ? PDFLib.TextAlignment.Right : PDFLib.TextAlignment.Left),
+        });
+      }
+
+      pdfDoc.save().then(function(bytes) {
+        var blob = new Blob([bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        downloadBtn.onclick = function() {
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = originalName.replace(/\.pdf$/i, '') + '_numbered.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', 'Page numbers added! Click download to save.');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = 'Add Page Numbers';
+      });
+    }
+  });
+  </script>
+</body>
+</html>

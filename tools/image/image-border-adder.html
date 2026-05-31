@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Border Adder Online Free | Ali Tools Company</title>
+  <meta name="description" content="Add borders to images online free. Custom border width, color, style, and corner radius for PNG, JPG, WebP, GIF. No upload needed, works in browser.">
+  <meta name="keywords" content="image border, add border to image, photo border, image framing, picture border, custom border, border radius">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-border-adder.html">
+  <meta property="og:title" content="Image Border Adder Online Free">
+  <meta property="og:description" content="Add custom borders to images online free. Choose width, color, style, and corner radius. 100% browser-based.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Border Adder Online Free","url":"https://alitoolscompany.com/tools/image/image-border-adder.html","description":"Free online browser-based image border tool. Add custom borders to images without uploading.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Image Border Adder</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🖼️</div>
+      <h1>Image Border Adder</h1>
+      <p>Add Borders to Images Online Free — Custom Width, Color, Style, Round Corners</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop an image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill"></div></div>
+          <div class="tool-controls" id="toolControls" style="display:none;">
+            <div class="control-row">
+              <div class="control-group">
+                <label for="borderWidth">Border Width (px)</label>
+                <input type="number" id="borderWidth" min="1" max="200" value="20">
+              </div>
+              <div class="control-group">
+                <label for="borderColor">Border Color</label>
+                <input type="color" id="borderColor" value="#ffffff">
+              </div>
+            </div>
+            <div class="control-row">
+              <div class="control-group">
+                <label for="borderRadius">Corner Radius (px)</label>
+                <input type="number" id="borderRadius" min="0" max="200" value="0">
+              </div>
+            </div>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">Preview</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <p style="font-size:0.82rem;color:var(--gray-600);margin-bottom:8px;">Original</p>
+                <img id="originalPreview" alt="Original">
+              </div>
+              <div style="flex:1;min-width:200px;">
+                <p style="font-size:0.82rem;color:var(--gray-600);margin-bottom:8px;">With Border</p>
+                <img id="borderedPreview" alt="Bordered">
+              </div>
+            </div>
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="applyBtn">🖼️ Add Border</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Image</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Add a Border to an Image</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload Image</h3>
+            <p>Drag & drop your image or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Set Border Options</h3>
+            <p>Choose border width, color, and optional rounded corners.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Add Border" to preview, then download your framed image.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Border Adder?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">⚡</div><h4>Fast</h4><p>Add borders instantly in your browser.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">🔒</div><h4>Secure</h4><p>Your images never leave your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">🎨</div><h4>Customizable</h4><p>Adjust width, color, and corner radius.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3"><div class="feature-icon">🔓</div><h4>Free</h4><p>No hidden costs or premium tiers.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4"><div class="feature-icon">📝</div><h4>No Sign-Up</h4><p>Start immediately with zero registration.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5"><div class="feature-icon">🌐</div><h4>Works Offline</h4><p>No internet needed after loading.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is an Image Border Tool?</h2>
+        <p>An image border tool lets you add a decorative or functional frame around digital images. Borders can be used to separate images from backgrounds, add visual polish, create consistent framing for galleries, or prepare images for printing with white margins. Our free online tool lets you customize border width, color, and optional rounded corners, all processed directly in your browser for complete privacy and instant results.</p>
+
+        <h2>Why Use Our Border Tool?</h2>
+        <p>Adding borders to images is a common requirement for social media graphics, product photography, digital scrapbooking, and portfolio presentations. Our tool makes it trivially easy with intuitive controls and instant preview. Choose a thin black border for a classic photo look, a white border for Instagram-style framing, or colorful borders for creative projects. Rounded corners add a modern touch that softens the image edges.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads.</li>
+          <li><strong>Adjustable Width:</strong> Border thickness from 1 to 200 pixels.</li>
+          <li><strong>Color Picker:</strong> Choose any color for your border.</li>
+          <li><strong>Rounded Corners:</strong> Optional corner radius for modern framing.</li>
+          <li><strong>Instant Preview:</strong> See original and bordered images side by side.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>Social media managers add consistent borders to Instagram posts; photographers frame portfolio images; e-commerce sellers add white borders to product shots; graphic designers create visual separation in layouts; scrapbooking enthusiasts decorate digital photos; and anyone preparing images for print adds margins to prevent edge cropping.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does adding a border change the image size? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, the border adds pixels around the image, increasing the overall dimensions. A 20px border adds 40px to both width and height (20px on each side).</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I make the border transparent? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The border is drawn as a solid color. For a transparent effect, you can match the border color to your background or use a very thin border that blends visually.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What border width should I use for Instagram? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">A white border of 10-30 pixels is popular for Instagram, creating the classic Polaroid-style framed look. Experiment with different widths to find your preferred aesthetic.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I add borders to multiple images at once? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Currently, the tool processes one image at a time. For batch processing, you would need desktop software.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is this tool safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, all processing happens locally in your browser with no data transmitted to any server.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-round-corner.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">⚪</div><h3>Round Corner</h3><p>Round image corners.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-shadow-adder.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">🌑</div><h3>Shadow Adder</h3><p>Add shadows to images.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-padding-adder.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">📦</div><h3>Padding Adder</h3><p>Add padding/space around images.</p><span class="card-link">Use Tool →</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let originalImage = null;
+    const ids = ['dropZone','fileInput','fileInfoContainer','errorContainer','toolControls','toolActions','previewArea','originalPreview','borderedPreview','borderWidth','borderColor','borderRadius','applyBtn','downloadBtn','progressBar'];
+    const el = {}; ids.forEach(function(id) { el[id] = document.getElementById(id); });
+    let isProcessing = false;
+    utils.initDropZone('dropZone', function(file) { handleFile(file); });
+    el.fileInput.addEventListener('change', function() { if (this.files && this.files[0]) handleFile(this.files[0]); });
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) { utils.showError('errorContainer', 'Please select a valid file type.'); return; }
+      el.errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      el.toolControls.style.display = 'block';
+      el.toolActions.style.display = 'flex';
+      el.downloadBtn.style.display = 'none';
+      utils.loadImage(file).then(function(result) {
+        originalImage = result.image;
+        el.originalPreview.src = result.dataUrl;
+        el.originalPreview.style.display = 'block';
+        el.previewArea.classList.add('show');
+      }).catch(function() { utils.showError('errorContainer', 'Failed to load image.'); });
+    }
+    el.applyBtn.addEventListener('click', function() {
+      if (!originalImage || isProcessing) return;
+      isProcessing = true;
+      el.applyBtn.disabled = true;
+      el.applyBtn.textContent = '⏳ Adding Border...';
+      el.downloadBtn.style.display = 'none';
+      utils.simulateProgress('progressBar', 600, function() {
+        try {
+          var bw = parseInt(el.borderWidth.value) || 20;
+          var color = el.borderColor.value || '#ffffff';
+          var radius = parseInt(el.borderRadius.value) || 0;
+          var canvas = document.createElement('canvas');
+          canvas.width = originalImage.width + bw * 2;
+          canvas.height = originalImage.height + bw * 2;
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = color;
+          if (radius > 0) {
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(canvas.width - radius, 0);
+            ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+            ctx.lineTo(canvas.width, canvas.height - radius);
+            ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
+            ctx.lineTo(radius, canvas.height);
+            ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(radius + 1, bw + 1);
+            ctx.lineTo(canvas.width - radius - 1, bw + 1);
+            ctx.quadraticCurveTo(canvas.width - bw - 1, bw + 1, canvas.width - bw - 1, radius + 1);
+            ctx.lineTo(canvas.width - bw - 1, canvas.height - radius - 1);
+            ctx.quadraticCurveTo(canvas.width - bw - 1, canvas.height - bw - 1, canvas.width - radius - 1, canvas.height - bw - 1);
+            ctx.lineTo(bw + radius + 1, canvas.height - bw - 1);
+            ctx.quadraticCurveTo(bw + 1, canvas.height - bw - 1, bw + 1, canvas.height - radius - 1);
+            ctx.lineTo(bw + 1, bw + radius + 1);
+            ctx.quadraticCurveTo(bw + 1, bw + 1, bw + radius + 1, bw + 1);
+            ctx.closePath();
+            ctx.clip();
+            ctx.drawImage(originalImage, bw, bw);
+            ctx.restore();
+          } else {
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(originalImage, bw, bw);
+          }
+          var dataUrl = canvas.toDataURL('image/png');
+          el.borderedPreview.src = dataUrl;
+          el.borderedPreview.style.display = 'block';
+          el.downloadBtn.onclick = function() {
+            var name = el.fileInput.files && el.fileInput.files[0] ? el.fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
+            utils.triggerDownload(dataUrl, name + '_bordered.png');
+          };
+          el.downloadBtn.style.display = 'inline-flex';
+          utils.hideProgress('progressBar');
+          utils.showSuccess('fileInfoContainer', 'Border added successfully!');
+        } catch (err) { utils.showError('errorContainer', 'Error: ' + err.message); }
+        isProcessing = false;
+        el.applyBtn.disabled = false;
+        el.applyBtn.textContent = '🖼️ Add Border';
+      });
+    });
+  });
+  </script>
+</body>
+</html>

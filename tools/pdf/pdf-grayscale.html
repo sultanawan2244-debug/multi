@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Grayscale Converter Online Free — Convert PDF to Black & White | Ali Tools Company</title>
+  <meta name="description" content="Convert PDF to grayscale (black and white) online free. Remove color from PDF documents. No upload needed. Browser-based processing.">
+  <meta name="keywords" content="PDF Grayscale Converter, convert pdf to grayscale, pdf to black and white, grayscale pdf, free pdf tool">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-grayscale.html">
+  <meta property="og:title" content="PDF Grayscale Converter Online Free — Convert PDF to Black & White">
+  <meta property="og:description" content="Convert PDF to grayscale online free. Remove color from PDF documents. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Grayscale Converter Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-grayscale.html",
+    "description": "Convert PDF to grayscale online free. Remove color from PDF documents.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  </head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Grayscale Converter</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">⚫</div>
+      <h1>PDF Grayscale Converter</h1>
+      <p>Convert color PDF documents to grayscale (black and white). Renders each page, applies grayscale filter, and creates a new PDF.</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="controlsContainer" style="display:none;">
+            <div class="control-group">
+              <label class="checkbox-group">
+                <input type="checkbox" id="highQuality" checked>
+                High Quality (slower, better output)
+              </label>
+            </div>
+            <div style="margin-top:8px;font-size:0.85rem;color:var(--gray-600);">
+              <span id="pageCount">Ready to convert</span>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Convert to Grayscale</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Grayscale PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. All processing stays in your browser.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Configure Settings</h3>
+            <p>Toggle high quality mode if needed for better output quality.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Convert to Grayscale" to process, then download your grayscale PDF.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Grayscale Converter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Convert to grayscale quickly using canvas rendering.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs or premium tiers.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🎯</div>
+            <h4>Quality Options</h4>
+            <p>Choose between speed and output quality.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start immediately with zero registration.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, works without internet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF Grayscale Conversion?</h2>
+        <p>PDF grayscale conversion removes all color from a PDF document, rendering it in black, white, and shades of gray. This is useful for printing to save color ink, creating documents for grayscale-only displays, or reducing file size. Our tool uses PDF.js to render each page, applies a canvas-based grayscale filter, and creates a new PDF with pdf-lib.</p>
+
+        <h2>Why Use Our PDF Grayscale Converter?</h2>
+        <p>Most online converters require uploading documents. Our tool processes everything in your browser. No uploads, no server processing, no privacy concerns.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing.</li>
+          <li><strong>Canvas Rendering:</strong> Each page is rendered and converted using high-quality canvas operations.</li>
+          <li><strong>Quality Control:</strong> Choose between faster processing or higher output quality.</li>
+          <li><strong>No Limits:</strong> Process documents of any length.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>Perfect for: printing documents economically without color ink; preparing documents for e-readers with grayscale displays; creating archive copies in grayscale; reducing PDF file sizes; and converting color presentations to black and white for handouts.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Will this reduce file size? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, grayscale conversion often reduces PDF file size since color information is removed. The actual reduction depends on how much color content the original PDF contains.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does it affect text quality? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Text quality remains excellent in grayscale. Since text is typically black or dark, it converts cleanly. Color charts and images will lose their color information but retain their luminance detail.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is my document safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. All processing happens in your browser. Your files never leave your computer.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-background-color.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🎨</div>
+            <h3>Background Color</h3>
+            <p>Change PDF page background color.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-watermark.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">💧</div>
+            <h3>PDF Watermark</h3>
+            <p>Add watermarks to PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-crop.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">✂️</div>
+            <h3>PDF Cropper</h3>
+            <p>Crop PDF pages.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    var controlsContainer = document.getElementById('controlsContainer');
+
+    let isProcessing = false;
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      controlsContainer.style.display = 'block';
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+
+      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
+        pdfjsLib.getDocument({ data: buffer.slice(0) }).promise.then(function(pdf) {
+          document.getElementById('pageCount').textContent = pdf.numPages + ' page(s) detected. Ready to convert.';
+        });
+      });
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Converting to Grayscale...';
+      downloadBtn.style.display = 'none';
+
+      utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+        convertToGrayscale(buffer, loadedFile.name);
+      });
+    });
+
+    async function convertToGrayscale(buffer, originalName) {
+      try {
+        var highQuality = document.getElementById('highQuality').checked;
+        var scale = highQuality ? 2 : 1;
+
+        var pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
+        var newPdfDoc = await PDFLib.PDFDocument.create();
+        var totalPages = pdf.numPages;
+
+        for (var i = 1; i <= totalPages; i++) {
+          var page = await pdf.getPage(i);
+          var viewport = page.getViewport({ scale: scale });
+          var canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          var ctx = canvas.getContext('2d');
+
+          await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          var data = imageData.data;
+          for (var j = 0; j < data.length; j += 4) {
+            var gray = 0.299 * data[j] + 0.587 * data[j + 1] + 0.114 * data[j + 2];
+            data[j] = gray;
+            data[j + 1] = gray;
+            data[j + 2] = gray;
+          }
+          ctx.putImageData(imageData, 0, 0);
+
+          var pngData = canvas.toDataURL('image/png');
+          var pngBytes = dataURLToBytes(pngData);
+          var pngImage = await newPdfDoc.embedPng(pngBytes);
+          var imgDims = pngImage.scale(1);
+          var newPage = newPdfDoc.addPage([imgDims.width, imgDims.height]);
+          newPage.drawImage(pngImage, {
+            x: 0,
+            y: 0,
+            width: imgDims.width,
+            height: imgDims.height,
+          });
+
+          var progress = Math.round((i / totalPages) * 100);
+          utils.updateProgress('progressBar', progress);
+        }
+
+        var pdfBytes = await newPdfDoc.save();
+        var blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        downloadBtn.onclick = function() {
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = originalName.replace(/\.pdf$/i, '') + '_grayscale.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', 'Grayscale conversion complete! Click download to save.');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = 'Convert to Grayscale';
+      } catch (err) {
+        utils.showError('errorContainer', 'Error converting to grayscale: ' + err.message);
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = 'Convert to Grayscale';
+      }
+    }
+
+    function dataURLToBytes(dataURL) {
+      var parts = dataURL.split(',');
+      var byteString = atob(parts[1]);
+      var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      return ab;
+    }
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Thumbnail Generator Online Free — Generate PDF Preview Images | Ali Tools Company</title>
+  <meta name="description" content="Generate thumbnails from PDF online free. Create preview images of PDF pages. No upload needed.">
+  <meta name="keywords" content="PDF Thumbnail Generator, pdf thumbnail generator online, free pdf thumbnail generator, pdf preview, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-thumbnail-generator.html">
+  <meta property="og:title" content="PDF Thumbnail Generator Online Free — Generate PDF Preview Images">
+  <meta property="og:description" content="Generate thumbnails from PDF online free. Create preview images of PDF pages. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Thumbnail Generator Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-thumbnail-generator.html",
+    "description": "Generate thumbnails from PDF online free. Create preview images of PDF pages.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <style>
+    .thumbnail-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:16px; margin-top:16px; }
+    .thumbnail-item { background:var(--bg-primary); border-radius:8px; overflow:hidden; border:1px solid var(--border-color); text-align:center; }
+    .thumbnail-item canvas { width:100%; height:auto; display:block; }
+    .thumbnail-item .page-label { padding:8px; font-size:0.8rem; font-weight:600; border-top:1px solid var(--border-color); }
+    .thumbnail-item .download-link { display:block; padding:6px; font-size:0.75rem; background:var(--primary); color:#fff; text-decoration:none; }
+    .thumbnail-item .download-link:hover { opacity:0.9; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Thumbnail Generator</span>
+      </div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">???</div>
+      <h1>PDF Thumbnail Generator</h1>
+      <p>PDF Thumbnail Generator Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">? Free</span>
+        <span class="feature-badge">? No Sign-Up</span>
+        <span class="feature-badge">? Secure</span>
+        <span class="feature-badge">? Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">??</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents (rendered with pdf.js)</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill"></div></div>
+          <div id="thumbnailControls" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <div class="control-group">
+                <label for="thumbScale">Thumbnail Size</label>
+                <select id="thumbScale" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;">
+                  <option value="0.2">Small (20% scale)</option>
+                  <option value="0.4" selected>Medium (40% scale)</option>
+                  <option value="0.6">Large (60% scale)</option>
+                  <option value="1.0">Full (100% scale)</option>
+                </select>
+              </div>
+              <div id="thumbnailGrid" class="thumbnail-grid"></div>
+            </div>
+          </div>
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">??? Generate Thumbnails</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Choose Size</h3>
+            <p>Select thumbnail size (small, medium, large, or full).</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Generate & Download</h3>
+            <p>Click "Generate Thumbnails" and download individual thumbnails.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Thumbnail Generator?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">?</div><h4>Fast</h4><p>Generate thumbnails instantly using pdf.js renderer.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">??</div><h4>Secure</h4><p>Your PDF never leaves your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">???</div><h4>Multiple Sizes</h4><p>Choose from small to full-size thumbnails.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Thumbnail Generator?</h2>
+        <p>A PDF Thumbnail Generator creates preview images (thumbnails) of each page in a PDF document using pdf.js to render pages to canvas, allowing you to see page previews and download individual page images.</p>
+        <h2>Why Use Our PDF Thumbnail Generator?</h2>
+        <p>Generate visual previews of all PDF pages without uploading to any server. Choose from multiple thumbnail sizes and download individual page images.</p>
+        <h2>Key Features of Our PDF Thumbnail Generator</h2>
+        <ul>
+          <li><strong>pdf.js Rendering:</strong> High-quality page rendering using Mozilla's pdf.js.</li>
+          <li><strong>Multiple Sizes:</strong> Choose small, medium, large, or full-size thumbnails.</li>
+          <li><strong>Individual Downloads:</strong> Download each thumbnail as a PNG image.</li>
+          <li><strong>Grid View:</strong> See all page thumbnails in a responsive grid.</li>
+        </ul>
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does this work on all PDFs? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">pdf.js supports most PDF formats. Some complex or encrypted PDFs may not render fully.</div>
+        </div>
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-to-image.html" class="tool-card"><div class="card-icon">??</div><h3>PDF to Image</h3><p>Convert PDF pages to images.</p><span class="card-link">Use Tool ?</span></a>
+          <a href="pdf-image-extractor.html" class="tool-card"><div class="card-icon">???</div><h3>PDF Image Extractor</h3><p>Extract images from PDF.</p><span class="card-link">Use Tool ?</span></a>
+          <a href="pdf-page-extractor.html" class="tool-card"><div class="card-icon">??</div><h3>PDF Page Extractor</h3><p>Extract pages from PDF.</p><span class="card-link">Use Tool ?</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener("DOMContentLoaded",function(){const e=window.AlToolsUtils;let t=null;const n=document.getElementById("dropZone"),o=document.getElementById("fileInput"),i=document.getElementById("fileInfoContainer"),a=document.getElementById("errorContainer"),r=document.getElementById("progressBar"),l=document.getElementById("actionBtn"),s=document.getElementById("thumbnailControls"),c=document.getElementById("thumbnailGrid"),d=document.getElementById("thumbScale");let u=!1;pdfjsLib.GlobalWorkerOptions.workerSrc="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js",e.initDropZone("dropZone",(function(t){p(t)})),o.addEventListener("change",(function(){this.files&&this.files[0]&&p(this.files[0])}));function p(t){e.validateFileType(t)?(a.innerHTML="",e.showFileInfo("fileInfoContainer",t),t=t,document.getElementById("toolActions").style.display="flex",s.style.display="block",c.innerHTML='<p style="color:var(--gray-600);">Click "Generate Thumbnails" to render page previews.</p>'):e.showError("errorContainer","Please select a valid PDF file.")}l.addEventListener("click",(function(){t&&!u&&(u=!0,l.disabled=!0,l.textContent="? Rendering...",c.innerHTML='<p style="color:var(--gray-600);">Rendering thumbnails...</p>',e.simulateProgress("progressBar",3e3,(function(){g()})))}));async function g(){try{var n=await e.loadFileAsArrayBuffer(t),o=new Uint8Array(n),i=pdfjsLib.getDocument({data:o}),a=await i.promise,r=a.numPages,l=parseFloat(d.value);c.innerHTML="";for(var s=1;s<=r;s++){var u=await a.getPage(s),p=u.getViewport({scale:l}),g=document.createElement("canvas"),f=g.getContext("2d");g.width=p.width,g.height=p.height;var m={canvasContext:f,viewport:p};await u.render(m).promise;var h=document.createElement("div");h.className="thumbnail-item";var b=document.createElement("a");b.className="download-link",b.href=g.toDataURL("image/png"),b.download="page_"+(s+1)+".png",b.textContent="? Download";var v=document.createElement("div");v.className="page-label",v.textContent="Page "+(s+1),h.appendChild(g),h.appendChild(v),h.appendChild(b),c.appendChild(h)}e.hideProgress("progressBar"),e.showSuccess("fileInfoContainer","Generated "+r+" thumbnail(s)."),u=!1,l.disabled=!1,l.textContent="??? Generate Thumbnails"}catch(t){e.showError("errorContainer","Error: "+t.message),u=!1,l.disabled=!1,l.textContent="??? Generate Thumbnails"}}});
+  </script>
+</body>
+</html>

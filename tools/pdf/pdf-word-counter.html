@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Word Counter Online Free — Count Words in PDF | Ali Tools Company</title>
+  <meta name="description" content="Count words in PDF online free. Analyze word frequency and text statistics in PDF documents. No upload needed.">
+  <meta name="keywords" content="PDF Word Counter, pdf word counter online, free pdf word counter, count words in pdf, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-word-counter.html">
+  <meta property="og:title" content="PDF Word Counter Online Free — Count Words in PDF">
+  <meta property="og:description" content="Count words in PDF online free. Analyze word frequency in PDF documents. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Word Counter Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-word-counter.html",
+    "description": "Count words in PDF online free. Analyze word frequency in PDF documents. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Word Counter</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📊</div>
+      <h1>PDF Word Counter</h1>
+      <p>PDF Word Counter Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group" id="statsGroup" style="display:none;">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+              <div style="background:var(--gray-50);border-radius:8px;padding:16px;text-align:center;border:1px solid var(--gray-200);">
+                <div style="font-size:24px;font-weight:800;color:var(--primary);" id="totalWords">0</div>
+                <div style="font-size:12px;color:var(--gray-500);">Total Words</div>
+              </div>
+              <div style="background:var(--gray-50);border-radius:8px;padding:16px;text-align:center;border:1px solid var(--gray-200);">
+                <div style="font-size:24px;font-weight:800;color:var(--primary);" id="totalChars">0</div>
+                <div style="font-size:12px;color:var(--gray-500);">Characters</div>
+              </div>
+              <div style="background:var(--gray-50);border-radius:8px;padding:16px;text-align:center;border:1px solid var(--gray-200);">
+                <div style="font-size:24px;font-weight:800;color:var(--primary);" id="totalPages">0</div>
+                <div style="font-size:12px;color:var(--gray-500);">Pages</div>
+              </div>
+            </div>
+            <label>Top Words Frequency</label>
+            <div id="frequencyContainer" style="max-height:300px;overflow-y:auto;border:1px solid var(--gray-300);border-radius:8px;padding:12px;background:var(--gray-50);font-size:13px;"></div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Count Words</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Report</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. Supports any PDF document.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Count Words</h3>
+            <p>Click "Count Words" to extract text and analyze word frequency statistics.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Review & Download</h3>
+            <p>View total words, characters, pages and top frequency words. Download the full report.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Word Counter?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Analyze word count and frequency from PDFs instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private browser-based processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📊</div>
+            <h4>Word Frequency</h4>
+            <p>See the most common words in your document ranked by frequency.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start processing immediately with zero registration required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF Word Counter?</h2>
+        <p>PDF Word Counter is a free online tool that analyzes the text content of PDF documents to provide detailed word count statistics, character counts, page counts, and word frequency analysis. Using pdf.js for text extraction, our tool processes PDFs entirely in your browser to deliver comprehensive text analytics. The tool displays total words, total characters (with and without spaces), total pages, and a ranked list of the most frequently used words in the document.</p>
+
+        <h2>Why Use Our PDF Word Counter?</h2>
+        <p>Most online PDF word counters require you to upload your files to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using pdf.js, you can analyze PDFs of any size instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF Word Counter</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing using pdf.js. No uploads, no servers, no data transfer.</li>
+          <li><strong>Word Count:</strong> Accurate total word count from all pages of the PDF.</li>
+          <li><strong>Character Count:</strong> Total characters including and excluding spaces.</li>
+          <li><strong>Page Count:</strong> Number of pages in the PDF document.</li>
+          <li><strong>Word Frequency:</strong> Top words ranked by frequency, with bar visualization.</li>
+          <li><strong>Download Report:</strong> Export the full analysis as a text file.</li>
+        </ul>
+
+        <h2>Use Cases for PDF Word Counter</h2>
+        <p>Our PDF Word Counter is perfect for a wide range of scenarios: students check word counts for essays and assignments; writers track their document length; editors analyze word usage patterns; content managers measure document scope; researchers perform basic text analysis; and professionals ensure documents meet word count requirements.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How accurate is the word count? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The word count is highly accurate and based on the text content extracted from the PDF's text layer. Words are counted by splitting on whitespace, providing results comparable to standard word processors.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does it work with scanned PDFs? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This tool analyzes the text layer of PDFs. Scanned PDFs that are just images will not have text to count unless they have been processed with OCR first.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I use this on my phone? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes! Our tool is fully responsive and works on all devices including smartphones and tablets.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is my document safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser, your PDF never leaves your computer. No data is transmitted to any server.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-to-text.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📝</div>
+            <h3>PDF to Text</h3>
+            <p>Extract all text content from PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-text-search.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">🔍</div>
+            <h3>PDF Text Search</h3>
+            <p>Search for text within PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-counter.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📄</div>
+            <h3>PDF Page Counter</h3>
+            <p>Count pages in PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const statsGroup = document.getElementById('statsGroup');
+    const totalWords = document.getElementById('totalWords');
+    const totalChars = document.getElementById('totalChars');
+    const totalPages = document.getElementById('totalPages');
+    const frequencyContainer = document.getElementById('frequencyContainer');
+
+    let isProcessing = false;
+    var wordCountData = null;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.match('application/pdf')) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      statsGroup.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⌛ Counting...';
+      downloadBtn.style.display = 'none';
+      statsGroup.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 2000, function() {
+        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+          var pdfData = new Uint8Array(buffer);
+          pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
+            var numPages = pdf.numPages;
+            var promises = [];
+
+            for (var i = 1; i <= numPages; i++) {
+              promises.push(pdf.getPage(i).then(function(page) {
+                return page.getTextContent().then(function(textContent) {
+                  return textContent.items.map(function(item) { return item.str; }).join(' ');
+                });
+              }));
+            }
+
+            Promise.all(promises).then(function(pageTexts) {
+              var allText = pageTexts.join(' ');
+              var words = allText.match(/[a-zA-Z0-9\u00C0-\u024F]+(?:[''\u2019][a-zA-Z]+)?/g) || [];
+              var charCount = allText.length;
+              var charCountNoSpace = allText.replace(/\s/g, '').length;
+
+              var freq = {};
+              var stopWords = ['the','a','an','and','or','but','in','on','at','to','for','of','by','with','from','as','is','it','its','are','was','were','be','been','being','have','has','had','do','does','did','will','would','shall','should','may','might','must','can','could','this','that','these','those','i','you','he','she','we','they','me','him','her','us','them','my','your','his','her','our','their','mine','yours','his','hers','ours','theirs','not','no','nor','so','if','then','than','too','very','just','about','up','out','over','after','before','between','under','again','further','once','here','there','when','where','why','how','all','each','every','both','few','more','most','other','some','such','only','own','same','what','which','who','whom','whose'];
+              for (var w = 0; w < words.length; w++) {
+                var word = words[w].toLowerCase();
+                if (stopWords.indexOf(word) === -1 && word.length > 1) {
+                  freq[word] = (freq[word] || 0) + 1;
+                }
+              }
+
+              var sorted = Object.keys(freq).sort(function(a, b) { return freq[b] - freq[a]; });
+              var topWords = sorted.slice(0, 50);
+              var maxFreq = topWords.length > 0 ? freq[topWords[0]] : 1;
+
+              var freqHtml = '';
+              for (var f = 0; f < topWords.length; f++) {
+                var word = topWords[f];
+                var count = freq[word];
+                var barWidth = (count / maxFreq * 100).toFixed(0);
+                freqHtml += '<div style="display:flex;align-items:center;margin-bottom:4px;gap:8px;">';
+                freqHtml += '<span style="width:120px;text-align:right;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + utils.escapeHtml(word) + '</span>';
+                freqHtml += '<div style="flex:1;height:18px;background:var(--gray-200);border-radius:4px;overflow:hidden;">';
+                freqHtml += '<div style="height:100%;width:' + barWidth + '%;background:var(--primary);border-radius:4px;transition:width 0.3s;"></div>';
+                freqHtml += '</div>';
+                freqHtml += '<span style="font-size:12px;font-weight:600;width:30px;">' + count + '</span>';
+                freqHtml += '</div>';
+              }
+              if (topWords.length === 0) {
+                freqHtml = '<div style="color:var(--gray-500);text-align:center;padding:20px;">No significant words found.</div>';
+              }
+
+              var totalWordCount = allText.split(/\s+/).filter(function(w) { return w.length > 0; }).length;
+
+              totalWords.textContent = totalWordCount.toLocaleString();
+              totalChars.textContent = charCountNoSpace.toLocaleString();
+              totalPages.textContent = numPages;
+              frequencyContainer.innerHTML = freqHtml;
+              statsGroup.style.display = 'block';
+
+              wordCountData = {
+                fileName: loadedFile.name,
+                totalWords: totalWordCount,
+                totalChars: charCount,
+                totalCharsNoSpace: charCountNoSpace,
+                totalPages: numPages,
+                topWords: topWords.slice(0, 30).map(function(w) { return { word: w, count: freq[w] }; })
+              };
+
+              utils.hideProgress('progressBar');
+              utils.showSuccess('fileInfoContainer', 'Word count complete! ' + totalWordCount + ' words found.');
+
+              downloadBtn.onclick = function() {
+                var report = 'PDF Word Count Report\n';
+                report += '=====================\n\n';
+                report += 'File: ' + loadedFile.name + '\n';
+                report += 'Total Words: ' + wordCountData.totalWords + '\n';
+                report += 'Total Characters (no spaces): ' + wordCountData.totalCharsNoSpace + '\n';
+                report += 'Total Characters (with spaces): ' + wordCountData.totalChars + '\n';
+                report += 'Total Pages: ' + wordCountData.totalPages + '\n\n';
+                report += 'Top Words:\n';
+                report += '---------\n';
+                for (var t = 0; t < wordCountData.topWords.length; t++) {
+                  report += wordCountData.topWords[t].word + ': ' + wordCountData.topWords[t].count + '\n';
+                }
+                var blob = new Blob([report], { type: 'text/plain' });
+                var url = URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_wordcount_report.txt';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+              };
+              downloadBtn.style.display = 'inline-flex';
+              isProcessing = false;
+              actionBtn.disabled = false;
+              actionBtn.textContent = 'Count Words';
+            });
+          }).catch(function(err) {
+            utils.showError('errorContainer', 'Error processing PDF: ' + err.message);
+            isProcessing = false;
+            actionBtn.disabled = false;
+            actionBtn.textContent = 'Count Words';
+            utils.hideProgress('progressBar');
+          });
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error reading file: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Count Words';
+          utils.hideProgress('progressBar');
+        });
+      });
+    });
+  });
+  </script>
+</body>
+</html>

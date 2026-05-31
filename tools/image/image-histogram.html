@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Histogram Online Free — View Color Distribution | Ali Tools Company</title>
+  <meta name="description" content="View image histogram online free. Analyze RGB color distribution, brightness levels, and exposure of PNG, JPG, WebP, GIF. No upload needed, browser-based.">
+  <meta name="keywords" content="image histogram, color histogram, RGB histogram, photo histogram, image analysis, exposure check">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/image/image-histogram.html">
+  <meta property="og:title" content="Image Histogram Online Free">
+  <meta property="og:description" content="View image histogram online free. Analyze RGB color distribution and exposure instantly in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Histogram Online Free","url":"https://alitoolscompany.com/tools/image/image-histogram.html","description":"Free online image histogram tool. View RGB color distribution without uploading.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container"><a href="../../index.html">Home</a> &gt; <a href="../../image-tools.html">Image Tools</a> &gt; <span>Image Histogram</span></div>
+    </nav>
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📊</div>
+      <h1>Image Histogram</h1>
+      <p>View Image Histogram Online Free — Analyze Color Distribution and Exposure</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop an image here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill"></div></div>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-label">Histogram Analysis</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <img id="imagePreview" alt="Image" style="max-width:100%;border-radius:8px;">
+              </div>
+              <div style="flex:1;min-width:300px;">
+                <canvas id="histogramCanvas" width="300" height="200" style="width:100%;height:auto;background:#f5f5f5;border-radius:8px;"></canvas>
+                <div style="margin-top:12px;font-size:0.85rem;color:var(--gray-600);">
+                  <div><span style="color:#e74c3c;">●</span> Red <span style="color:#2ecc71;">●</span> Green <span style="color:#3498db;">●</span> Blue <span style="color:#7f8c8d;">●</span> Luminance</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to View an Image Histogram</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up"><div class="step-number">1</div><h3>Upload Image</h3><p>Drag & drop your image or click to browse.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1"><div class="step-number">2</div><h3>Analyze</h3><p>Histogram automatically displays RGB and luminance distribution.</p></div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2"><div class="step-number">3</div><h3>Interpret</h3><p>Use the histogram to evaluate exposure, contrast, and color balance.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our Histogram Tool?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">📊</div><h4>Visual Analysis</h4><p>See color distribution at a glance.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">🎨</div><h4>RGB Channels</h4><p>View individual red, green, blue histograms.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">🔒</div><h4>Secure</h4><p>Your images never leave your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3"><div class="feature-icon">🔓</div><h4>Free</h4><p>No hidden costs or premium tiers.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4"><div class="feature-icon">📝</div><h4>No Sign-Up</h4><p>Start immediately with zero registration.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5"><div class="feature-icon">🌐</div><h4>Works Offline</h4><p>No internet needed after loading.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is an Image Histogram?</h2>
+        <p>An image histogram is a graphical representation of the tonal distribution in a digital image. It plots the number of pixels for each tonal value, from 0 (black) on the left to 255 (white) on the right. By showing how pixels are distributed across these levels, histograms reveal crucial information about exposure, contrast, and color balance. Our free online tool generates separate histograms for the Red, Green, and Blue channels plus a luminance histogram, giving you comprehensive insight into your image's color characteristics.</p>
+
+        <h2>Why Use Our Histogram Tool?</h2>
+        <p>Photographers use histograms to evaluate exposure: a histogram pushed to the left indicates underexposure (too dark), while one pushed right indicates overexposure (too bright). A well-exposed image typically has a histogram spread across the full range. Designers use histograms to assess color balance: if one channel is significantly different from others, the image may have a color cast. Our tool makes this analysis instant and visual, helping you make better decisions about exposure correction, contrast adjustment, and color grading.</p>
+
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>RGB Channels:</strong> Separate histograms for Red, Green, and Blue channels.</li>
+          <li><strong>Luminance Overlay:</strong> Overall brightness distribution in grayscale.</li>
+          <li><strong>Instant Generation:</strong> Histogram updates immediately after upload.</li>
+          <li><strong>Image Preview:</strong> See the image alongside its histogram analysis.</li>
+          <li><strong>Browser-Based:</strong> 100% private processing, no upload required.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>Photographers check exposure before and after editing; graphic designers evaluate color balance; image analysts study tonal distribution; students learn about digital imaging concepts; retouchers identify clipping in highlights or shadows; and anyone working with digital images benefits from understanding histogram data.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What does a perfect histogram look like? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">There is no single "perfect" histogram shape. A well-exposed image typically has data spread across most of the range without touching the left (clipped shadows) or right (clipped highlights) edges. High-key images have histograms shifted right, low-key images shifted left.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is clipping in a histogram? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Clipping occurs when the histogram is pushed against the left edge (shadow clipping) or right edge (highlight clipping), meaning detail is lost in those areas. This appears as a spike at 0 or 255 on the histogram.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can histograms help with color correction? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes. By comparing the Red, Green, and Blue histograms, you can identify color casts. If one channel is significantly shifted relative to the others, the image has a color bias that can be corrected.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is this tool safe? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, all processing happens locally in your browser with no data transmitted to any server.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What does the luminance histogram show? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The luminance histogram shows the distribution of brightness values in the image, calculated as a weighted combination of RGB channels (0.299R + 0.587G + 0.114B). This matches human perception of brightness.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="image-color-picker.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">🎯</div><h3>Color Picker</h3><p>Pick colors from images.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-brightness-contrast.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">☀️</div><h3>Brightness & Contrast</h3><p>Adjust exposure.</p><span class="card-link">Use Tool →</span></a>
+          <a href="image-color-channel.html" class="tool-card" style="display:block;"><div class="card-icon image-icon">🎨</div><h3>Color Channel</h3><p>Manipulate RGB channels.</p><span class="card-link">Use Tool →</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    const E = {}; ['dropZone','fileInput','fileInfoContainer','errorContainer','previewArea','imagePreview','histogramCanvas','progressBar'].forEach(function(id) { E[id] = document.getElementById(id); });
+    utils.initDropZone('dropZone', function(f) { handleFile(f); });
+    E.fileInput.addEventListener('change', function() { if (this.files && this.files[0]) handleFile(this.files[0]); });
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) { utils.showError('errorContainer', 'Please select a valid file type.'); return; }
+      E.errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      E.previewArea.classList.add('show');
+      utils.simulateProgress('progressBar', 600, function() {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            E.imagePreview.src = e.target.result;
+            E.imagePreview.style.display = 'block';
+            drawHistogram(img);
+            utils.hideProgress('progressBar');
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    function drawHistogram(img) {
+      var canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+      var bins = 256;
+      var histR = new Array(bins).fill(0);
+      var histG = new Array(bins).fill(0);
+      var histB = new Array(bins).fill(0);
+      var histL = new Array(bins).fill(0);
+      for (var i = 0; i < data.length; i += 4) {
+        histR[data[i]]++;
+        histG[data[i+1]]++;
+        histB[data[i+2]]++;
+        var lum = Math.round(0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2]);
+        histL[lum]++;
+      }
+      var hCanvas = E.histogramCanvas;
+      hCanvas.width = hCanvas.clientWidth || 300;
+      hCanvas.height = 200;
+      var hCtx = hCanvas.getContext('2d');
+      var w = hCanvas.width, h = hCanvas.height;
+      hCtx.clearRect(0, 0, w, h);
+      hCtx.fillStyle = '#f8f9fa';
+      hCtx.fillRect(0, 0, w, h);
+      var maxVal = Math.max.apply(null, histL) * 1.1;
+      var barW = w / bins;
+      function drawChannel(hist, color, alpha) {
+        hCtx.fillStyle = color;
+        hCtx.globalAlpha = alpha;
+        for (var j = 0; j < bins; j++) {
+          var barH = (hist[j] / maxVal) * (h - 10);
+          hCtx.fillRect(j * barW, h - 5 - barH, barW + 1, barH);
+        }
+        hCtx.globalAlpha = 1;
+      }
+      drawChannel(histR, '#e74c3c', 0.3);
+      drawChannel(histG, '#2ecc71', 0.3);
+      drawChannel(histB, '#3498db', 0.3);
+      drawChannel(histL, '#7f8c8d', 0.6);
+      hCtx.fillStyle = '#ddd';
+      hCtx.fillRect(0, h - 3, w, 1);
+    }
+  });
+  </script>
+</body>
+</html>

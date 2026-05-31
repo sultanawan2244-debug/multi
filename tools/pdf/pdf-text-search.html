@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Text Search Online Free — Search Text in PDF | Ali Tools Company</title>
+  <meta name="description" content="Search text in PDF online free. Find words and phrases in PDF documents with page numbers. No upload needed.">
+  <meta name="keywords" content="PDF Text Search, pdf text search online, free pdf text search, search in pdf, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-text-search.html">
+  <meta property="og:title" content="PDF Text Search Online Free — Search Text in PDF">
+  <meta property="og:description" content="Search text in PDF online free. Find words and phrases in PDF documents. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Text Search Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-text-search.html",
+    "description": "Search text in PDF online free. Find words and phrases in PDF documents. No upload needed.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Text Search</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🔍</div>
+      <h1>PDF Text Search</h1>
+      <p>PDF Text Search Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div class="control-group" id="searchGroup" style="display:none;">
+            <label for="searchInput">Search Text</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="searchInput" placeholder="Enter search term..." style="flex:1;padding:10px 14px;border:1px solid var(--gray-300);border-radius:8px;font-size:14px;">
+              <button class="btn btn-primary" id="searchBtn" style="white-space:nowrap;">Search</button>
+            </div>
+          </div>
+
+          <div class="control-group" id="resultsGroup" style="display:none;">
+            <label>Search Results (<span id="resultCount">0</span> matches)</label>
+            <div id="resultsContainer" style="max-height:400px;overflow-y:auto;border:1px solid var(--gray-300);border-radius:8px;padding:12px;background:var(--gray-50);font-size:13px;font-family:monospace;white-space:pre-wrap;"></div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">Process PDF</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Search Results</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. Supports any PDF document.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Process & Search</h3>
+            <p>Click "Process PDF" to extract text, then enter your search term and click Search.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Review Results</h3>
+            <p>View matches with page numbers and context. Download results if needed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Text Search?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Search through PDFs instantly with optimized text extraction and search.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private browser-based processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📄</div>
+            <h4>Page Numbers</h4>
+            <p>Results show exactly which page each match is found on.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-4">
+            <div class="feature-icon">📝</div>
+            <h4>Context View</h4>
+            <p>See surrounding text for each match to understand the context.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-5">
+            <div class="feature-icon">🌐</div>
+            <h4>Works Offline</h4>
+            <p>Once loaded, the tool works without an internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is PDF Text Search?</h2>
+        <p>PDF Text Search is a free online tool that allows you to search for words and phrases within PDF documents. Using pdf.js for text extraction, our tool processes PDFs entirely in your browser to find all occurrences of your search term. Results are displayed with page numbers and surrounding context, making it easy to locate exactly where information appears in your document. Whether you need to find a specific term in a report, locate data in a research paper, or search through legal documents, PDF Text Search handles it all locally and securely.</p>
+
+        <h2>Why Use Our PDF Text Search?</h2>
+        <p>Most online PDF search tools require you to upload your files to a server, wait for processing, and then download the result — which is slow, insecure, and often comes with file size limits, watermarks, or paid subscriptions. Our tool eliminates all of these problems. Since everything runs in your browser using pdf.js, you can search through PDFs of any size instantly, without worrying about privacy, data caps, or recurring fees.</p>
+
+        <h2>Key Features of Our PDF Text Search</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing using pdf.js. No uploads, no servers, no data transfer.</li>
+          <li><strong>Multi-Page Search:</strong> Searches through every page of the PDF document automatically.</li>
+          <li><strong>Context Display:</strong> Shows surrounding text for each match to provide context.</li>
+          <li><strong>Page Number Reference:</strong> Each result includes the page number where it was found.</li>
+          <li><strong>Match Count:</strong> Displays total number of matches found in the document.</li>
+          <li><strong>Case-Insensitive:</strong> Search matches regardless of case for comprehensive results.</li>
+        </ul>
+
+        <h2>Use Cases for PDF Text Search</h2>
+        <p>Our PDF Text Search is perfect for a wide range of scenarios: researchers search for specific terms in academic papers; lawyers find relevant clauses in legal documents; students locate information in textbooks; editors check for consistency across documents; data analysts find specific data points in reports; and professionals quickly navigate through lengthy PDF documents to find the information they need.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How does the search work? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">The tool uses pdf.js to extract text from every page of your PDF. Once extracted, your search term is compared against the text using case-insensitive matching. Results show each match with its page number and surrounding context.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is the search case-sensitive? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No, the search is case-insensitive by default, so searching for "PDF" will also match "pdf" and "Pdf".</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I search scanned PDFs? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This tool searches the text layer of PDFs. Scanned PDFs that are just images will not have searchable text unless they have been processed with OCR.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to search sensitive documents? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Absolutely. Since all processing happens entirely in your browser, your PDF never leaves your computer. No data is transmitted to any server.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I download the search results? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">Yes, after searching you can download the results as a text file with all matches, page numbers, and context preserved.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-to-text.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📝</div>
+            <h3>PDF to Text</h3>
+            <p>Extract all text content from PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-word-counter.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📊</div>
+            <h3>PDF Word Counter</h3>
+            <p>Count words and analyze text frequency in PDFs.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-to-csv.html" class="tool-card" style="display:block;">
+            <div class="card-icon image-icon">📊</div>
+            <h3>PDF to CSV</h3>
+            <p>Convert PDF content to CSV spreadsheet format.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchGroup = document.getElementById('searchGroup');
+    const resultsGroup = document.getElementById('resultsGroup');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const resultCount = document.getElementById('resultCount');
+
+    let isProcessing = false;
+    var fullText = '';
+    var pageContents = [];
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.match('application/pdf')) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      searchGroup.style.display = 'none';
+      resultsGroup.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⌛ Processing...';
+      downloadBtn.style.display = 'none';
+      searchGroup.style.display = 'none';
+      resultsGroup.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 2000, function() {
+        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+          var pdfData = new Uint8Array(buffer);
+          pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
+            var totalPages = pdf.numPages;
+            pageContents = [];
+            var pagePromises = [];
+
+            for (var i = 1; i <= totalPages; i++) {
+              pagePromises.push(pdf.getPage(i).then(function(page) {
+                return page.getTextContent().then(function(textContent) {
+                  return textContent.items.map(function(item) { return item.str; }).join(' ');
+                });
+              }));
+            }
+
+            Promise.all(pagePromises).then(function(texts) {
+              pageContents = texts;
+              fullText = '';
+              for (var j = 0; j < texts.length; j++) {
+                fullText += '--- Page ' + (j + 1) + ' ---\n' + texts[j] + '\n\n';
+              }
+              utils.hideProgress('progressBar');
+              utils.showSuccess('fileInfoContainer', 'PDF processed! ' + totalPages + ' pages extracted. Enter a search term.');
+              searchGroup.style.display = 'block';
+              searchInput.value = '';
+              resultsGroup.style.display = 'none';
+              isProcessing = false;
+              actionBtn.disabled = false;
+              actionBtn.textContent = 'Process PDF';
+              searchInput.focus();
+            });
+          }).catch(function(err) {
+            utils.showError('errorContainer', 'Error processing PDF: ' + err.message);
+            isProcessing = false;
+            actionBtn.disabled = false;
+            actionBtn.textContent = 'Process PDF';
+            utils.hideProgress('progressBar');
+          });
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error reading file: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'Process PDF';
+          utils.hideProgress('progressBar');
+        });
+      });
+    });
+
+    function performSearch() {
+      var query = searchInput.value.trim();
+      if (!query) {
+        utils.showError('errorContainer', 'Please enter a search term.');
+        return;
+      }
+      if (pageContents.length === 0) return;
+
+      var queryLower = query.toLowerCase();
+      var results = [];
+
+      for (var i = 0; i < pageContents.length; i++) {
+        var pageText = pageContents[i];
+        var pageTextLower = pageText.toLowerCase();
+        var idx = pageTextLower.indexOf(queryLower);
+        while (idx !== -1) {
+          var start = Math.max(0, idx - 60);
+          var end = Math.min(pageText.length, idx + query.length + 60);
+          var context = (start > 0 ? '...' : '') + pageText.substring(start, end) + (end < pageText.length ? '...' : '');
+          results.push({ page: i + 1, context: context });
+          idx = pageTextLower.indexOf(queryLower, idx + 1);
+        }
+      }
+
+      resultCount.textContent = results.length;
+      if (results.length === 0) {
+        resultsContainer.innerHTML = '<div style="color:var(--gray-500);text-align:center;padding:20px;">No matches found for "' + utils.escapeHtml(query) + '"</div>';
+      } else {
+        var html = '';
+        for (var r = 0; r < results.length; r++) {
+          html += '<div style="padding:8px 0;border-bottom:1px solid var(--gray-200);">';
+          html += '<strong style="color:var(--primary);">Page ' + results[r].page + '</strong>: ';
+          html += utils.escapeHtml(results[r].context);
+          html += '</div>';
+        }
+        resultsContainer.innerHTML = html;
+      }
+      resultsGroup.style.display = 'block';
+
+      var resultText = 'Search Results for "' + query + '"\n';
+      resultText += 'Total matches: ' + results.length + '\n\n';
+      for (var r = 0; r < results.length; r++) {
+        resultText += '--- Page ' + results[r].page + ' ---\n';
+        resultText += results[r].context + '\n\n';
+      }
+
+      downloadBtn.onclick = function() {
+        var blob = new Blob([resultText], { type: 'text/plain' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_search_results.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
+      downloadBtn.style.display = 'inline-flex';
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') performSearch();
+    });
+  });
+  </script>
+</body>
+</html>

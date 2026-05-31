@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Signature Block Online Free — Add Signature Lines to PDF | Ali Tools Company</title>
+  <meta name="description" content="Add signature blocks to PDF online free. Insert signature lines, date, and name fields. No upload needed.">
+  <meta name="keywords" content="PDF Signature Block, pdf signature block online, free pdf signature block, add signature to pdf, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-signature-block.html">
+  <meta property="og:title" content="PDF Signature Block Online Free — Add Signature Lines to PDF">
+  <meta property="og:description" content="Add signature blocks to PDF online free. Insert signature lines, date, and name fields. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Signature Block Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-signature-block.html",
+    "description": "Add signature blocks to PDF online free. Insert signature lines, date, and name fields.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Signature Block</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">✍️</div>
+      <h1>PDF Signature Block</h1>
+      <p>PDF Signature Block Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="signatureControls" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Signature Block Details</h3>
+              <div class="control-group">
+                <label for="signerName">Signer's Printed Name</label>
+                <input type="text" id="signerName" placeholder="e.g. John Doe" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+              </div>
+              <div class="control-group">
+                <label for="signerTitle">Title</label>
+                <input type="text" id="signerTitle" placeholder="e.g. CEO, Manager" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+              </div>
+              <div class="control-group">
+                <label for="signerDate">Date</label>
+                <input type="date" id="signerDate" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+              </div>
+              <div class="control-group">
+                <label for="signatureImage">Optional: Signature Image (PNG)</label>
+                <input type="file" id="signatureImage" accept="image/png,image/jpeg" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+                <p style="font-size:0.75rem;color:var(--gray-500);margin-top:4px;">Upload a signature image to embed (optional). PNG or JPG with transparent background works best.</p>
+              </div>
+              <div class="control-group">
+                <label for="pageSelect">Place on Page</label>
+                <select id="pageSelect" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;"></select>
+              </div>
+              <div class="control-group">
+                <label for="positionSelect">Position</label>
+                <select id="positionSelect" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">
+                  <option value="bottom-right">Bottom Right</option>
+                  <option value="bottom-left">Bottom Left</option>
+                  <option value="bottom-center" selected>Bottom Center</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">✍️ Add Signature Block</button>
+            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Signed PDF</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>Configure Signature</h3>
+            <p>Enter signer name, title, date, and optionally upload a signature image.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Download</h3>
+            <p>Click "Add Signature Block" to add it to your PDF, then download.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Signature Block?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Add signature blocks instantly in your browser.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🖼️</div>
+            <h4>Image Support</h4>
+            <p>Optionally embed a signature image in the block.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Signature Block?</h2>
+        <p>A PDF Signature Block adds a professional signature area to your PDF document including a signature line, printed name, title, and date. You can optionally include a scanned signature image. This is commonly used for contracts, agreements, and approval forms.</p>
+
+        <h2>Why Use Our PDF Signature Block?</h2>
+        <p>Our tool adds signature blocks directly in your browser. No uploads to servers, no software installation needed. Customize with signer details and optional signature image.</p>
+
+        <h2>Key Features of Our PDF Signature Block</h2>
+        <ul>
+          <li><strong>Customizable:</strong> Add signer name, title, and date.</li>
+          <li><strong>Image Upload:</strong> Optional signature image embedding.</li>
+          <li><strong>Position Control:</strong> Choose where to place the signature block.</li>
+          <li><strong>Page Selection:</strong> Add signature to any page.</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Is this a legally binding signature? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">This tool adds a visual signature block to your PDF. For legally binding electronic signatures, use a dedicated e-signature platform.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What image format for signatures? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">PNG format with transparent background works best. JPG is also supported.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-form-filler.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📝</div>
+            <h3>PDF Form Filler</h3>
+            <p>Fill PDF form fields interactively.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-watermark.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">💧</div>
+            <h3>PDF Watermark</h3>
+            <p>Add watermarks to PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-header-footer.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📐</div>
+            <h3>PDF Header Footer</h3>
+            <p>Add headers and footers to PDF.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+    let pdfDocRef = null;
+    let totalPages = 0;
+    let signatureImageData = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const signatureControls = document.getElementById('signatureControls');
+    const signerName = document.getElementById('signerName');
+    const signerTitle = document.getElementById('signerTitle');
+    const signerDate = document.getElementById('signerDate');
+    const signatureImage = document.getElementById('signatureImage');
+    const pageSelect = document.getElementById('pageSelect');
+    const positionSelect = document.getElementById('positionSelect');
+
+    let isProcessing = false;
+
+    signerDate.value = new Date().toISOString().split('T')[0];
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    signatureImage.addEventListener('change', function(e) {
+      if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          signatureImageData = ev.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      downloadBtn.style.display = 'none';
+      signatureControls.style.display = 'block';
+      loadPageInfo(file);
+    }
+
+    function loadPageInfo(file) {
+      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
+        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+          pdfDocRef = pdfDoc;
+          var pages = pdfDoc.getPages();
+          totalPages = pages.length;
+          pageSelect.innerHTML = '';
+          for (var i = 0; i < totalPages; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = 'Page ' + (i + 1);
+            pageSelect.appendChild(opt);
+          }
+        });
+      });
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!pdfDocRef || isProcessing) return;
+      if (!signerName.value.trim()) {
+        utils.showError('errorContainer', 'Please enter the signer\'s name.');
+        return;
+      }
+
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Adding Signature...';
+      downloadBtn.style.display = 'none';
+
+      utils.simulateProgress('progressBar', 2000, function() {
+        addSignatureBlock();
+      });
+    });
+
+    function addSignatureBlock() {
+      var pageIdx = parseInt(pageSelect.value);
+      var pages = pdfDocRef.getPages();
+      var page = pages[pageIdx];
+      var size = page.getSize();
+
+      var helveticaFont = pdfDocRef.embedStandardFont(PDFLib.StandardFonts.Helvetica);
+      var helveticaBold = pdfDocRef.embedStandardFont(PDFLib.StandardFonts.HelveticaBold);
+
+      var pos = positionSelect.value;
+      var blockWidth = 300;
+      var blockHeight = 120;
+      var margin = 60;
+      var x, y;
+
+      if (pos === 'bottom-right') {
+        x = size.width - blockWidth - margin;
+        y = margin;
+      } else if (pos === 'bottom-left') {
+        x = margin;
+        y = margin;
+      } else {
+        x = (size.width - blockWidth) / 2;
+        y = margin;
+      }
+
+      var lineY = y + blockHeight - 10;
+      page.drawText('Signature Block', {
+        x: x,
+        y: lineY,
+        size: 10,
+        font: helveticaBold,
+        color: PDFLib.rgb(0.4, 0.4, 0.4)
+      });
+
+      lineY -= 25;
+
+      page.drawLine({
+        start: { x: x, y: lineY },
+        end: { x: x + 200, y: lineY },
+        thickness: 1,
+        color: PDFLib.rgb(0, 0, 0)
+      });
+      page.drawText('Signature', {
+        x: x,
+        y: lineY - 14,
+        size: 8,
+        font: helveticaFont,
+        color: PDFLib.rgb(0.5, 0.5, 0.5)
+      });
+
+      lineY -= 35;
+      var dateStr = signerDate.value || new Date().toLocaleDateString();
+      page.drawLine({
+        start: { x: x, y: lineY },
+        end: { x: x + 200, y: lineY },
+        thickness: 1,
+        color: PDFLib.rgb(0, 0, 0)
+      });
+      page.drawText('Date: ' + dateStr, {
+        x: x,
+        y: lineY - 14,
+        size: 8,
+        font: helveticaFont,
+        color: PDFLib.rgb(0.5, 0.5, 0.5)
+      });
+
+      lineY -= 30;
+      page.drawText(signerName.value.trim(), {
+        x: x,
+        y: lineY,
+        size: 12,
+        font: helveticaBold,
+        color: PDFLib.rgb(0.1, 0.1, 0.1)
+      });
+      if (signerTitle.value.trim()) {
+        page.drawText(signerTitle.value.trim(), {
+          x: x,
+          y: lineY - 16,
+          size: 10,
+          font: helveticaFont,
+          color: PDFLib.rgb(0.3, 0.3, 0.3)
+        });
+      }
+
+      if (signatureImageData) {
+        var img = new Image();
+        img.onload = function() {
+          var canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          var imageData = canvas.toDataURL('image/png').split(',')[1];
+          var imageBytes = Uint8Array.from(atob(imageData), function(c) { return c.charCodeAt(0); });
+          var pngImage = pdfDocRef.embedPng(imageBytes);
+          var maxWidth = 150;
+          var maxHeight = 50;
+          var scale = Math.min(maxWidth / pngImage.width, maxHeight / pngImage.height, 1);
+          page.drawImage(pngImage, {
+            x: x + 210,
+            y: lineY - 40,
+            width: pngImage.width * scale,
+            height: pngImage.height * scale
+          });
+          finishSave();
+        };
+        img.src = signatureImageData;
+      } else {
+        finishSave();
+      }
+    }
+
+    function finishSave() {
+      pdfDocRef.save().then(function(bytes) {
+        var blob = new Blob([bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        downloadBtn.onclick = function() {
+          var link = document.createElement('a');
+          link.href = url;
+          link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_signed.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        downloadBtn.style.display = 'inline-flex';
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', 'Signature block added successfully!');
+        isProcessing = false;
+        actionBtn.disabled = false;
+        actionBtn.textContent = '✍️ Add Signature Block';
+      });
+    }
+  });
+  </script>
+</body>
+</html>

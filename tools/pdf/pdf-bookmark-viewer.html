@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Bookmark Viewer Online Free — View PDF Bookmarks & Page Structure | Ali Tools Company</title>
+  <meta name="description" content="View PDF bookmarks and page structure online free. Examine PDF outlines and page indices. No upload needed.">
+  <meta name="keywords" content="PDF Bookmark Viewer, pdf bookmark viewer online, free pdf bookmark viewer, view pdf bookmarks, pdf tools">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-bookmark-viewer.html">
+  <meta property="og:title" content="PDF Bookmark Viewer Online Free — View PDF Bookmarks & Page Structure">
+  <meta property="og:description" content="View PDF bookmarks and page structure online free. Examine PDF outlines and page indices. No upload needed.">
+  <meta property="og:type" content="website">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/animations.css">
+  <link rel="stylesheet" href="../../assets/css/tool-page.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Bookmark Viewer Online Free",
+    "url": "https://alitoolscompany.com/tools/pdf/pdf-bookmark-viewer.html",
+    "description": "View PDF bookmarks and page structure online free. Examine PDF outlines and page indices.",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../../index.html">Home</a> &gt; <a href="../../pdf-tools.html">PDF Tools</a> &gt; <span>PDF Bookmark Viewer</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">📑</div>
+      <h1>PDF Bookmark Viewer</h1>
+      <p>PDF Bookmark Viewer Online Free - No Upload, No Watermark, Works in Browser</p>
+      <div class="feature-badges" style="justify-content:center;">
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
+      </div>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <div class="drop-icon">📁</div>
+            <p>Drag & drop PDF files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
+            <div class="drop-text">Drop here!</div>
+          </div>
+          <div id="fileInfoContainer"></div>
+          <div id="errorContainer"></div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill"></div>
+          </div>
+
+          <div id="bookmarkResults" style="display:none;">
+            <div style="background:var(--bg-secondary);border-radius:12px;padding:20px;margin-top:16px;">
+              <h3 style="margin-bottom:16px;">Page Structure</h3>
+              <div id="bookmarkList"></div>
+              <div style="margin-top:16px;padding:12px;background:#fff3cd;border-radius:8px;font-size:0.85rem;color:#856404;">
+                <strong>Note:</strong> pdf-lib has limited support for reading PDF bookmarks/outlines. 
+                Pages are listed with their indices. For full bookmark support, use a dedicated PDF reader.
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions" id="toolActions" style="display:none;">
+            <button class="btn btn-primary" id="actionBtn">View Page Structure</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-use">
+      <div class="container">
+        <h2 class="section-heading scroll-animate fade-in-up" style="border:none;padding:0;margin-bottom:32px;">How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step scroll-animate fade-in-up">
+            <div class="step-number">1</div>
+            <h3>Upload PDF</h3>
+            <p>Drag & drop your PDF or click to browse. Supports PDF files.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-1">
+            <div class="step-number">2</div>
+            <h3>View Structure</h3>
+            <p>Click "View Page Structure" to analyze the PDF page layout.</p>
+          </div>
+          <div class="how-to-step scroll-animate fade-in-up stagger-delay-2">
+            <div class="step-number">3</div>
+            <h3>Review Results</h3>
+            <p>See all pages listed with their indices and dimensions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-grid-section" style="padding:60px 0;">
+      <div class="container">
+        <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF Bookmark Viewer?</h2>
+        <div class="features-grid">
+          <div class="feature-card scroll-animate fade-in-up">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast</h4>
+            <p>Analyze PDF page structure instantly in your browser with optimized JavaScript.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
+            <div class="feature-icon">🔒</div>
+            <h4>Secure</h4>
+            <p>Your PDF never leaves your device. 100% private processing.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2">
+            <div class="feature-icon">🔓</div>
+            <h4>Free</h4>
+            <p>No hidden costs, no premium tiers, no credit card required.</p>
+          </div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-3">
+            <div class="feature-icon">📝</div>
+            <h4>No Sign-Up</h4>
+            <p>Start processing immediately with zero registration required.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-content">
+      <div class="container">
+        <h2>What Is a PDF Bookmark Viewer?</h2>
+        <p>A PDF Bookmark Viewer lets you examine the page structure and layout of PDF documents. While true bookmark/outline extraction requires advanced PDF libraries, this tool provides a comprehensive view of all pages including their indices, dimensions, and rotation information. It helps you understand the document structure before editing or reorganizing pages.</p>
+
+        <h2>Why Use Our PDF Bookmark Viewer?</h2>
+        <p>Most online PDF bookmark viewers require uploading your files to a server. Our tool runs entirely in your browser using pdf-lib, keeping your documents private and secure. You get instant analysis without file size limits, watermarks, or paid subscriptions.</p>
+
+        <h2>Key Features of Our PDF Bookmark Viewer</h2>
+        <ul>
+          <li><strong>Browser-Based:</strong> 100% client-side processing. No uploads, no servers.</li>
+          <li><strong>Page Listing:</strong> View all pages with their indices in the document.</li>
+          <li><strong>Page Dimensions:</strong> See width and height of each page.</li>
+          <li><strong>Rotation Info:</strong> Check page rotation settings.</li>
+          <li><strong>Total Count:</strong> Quick overview of total pages in the document.</li>
+        </ul>
+
+        <h2>Use Cases for PDF Bookmark Viewer</h2>
+        <p>Our PDF Bookmark Viewer is useful for document reviewers who need to understand document structure, editors preparing PDFs for reorganization, and quality assurance teams verifying document integrity. It helps identify how many pages a document has and their properties before processing.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Can this tool read PDF bookmarks/outlines? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">pdf-lib has limited support for reading bookmarks (PDF outlines). This tool shows page structure and indices. For full bookmark navigation, use a dedicated PDF reader like Adobe Acrobat or browser PDF viewers.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is my PDF uploaded to any server? <span class="faq-toggle">+</span></button>
+          <div class="faq-answer">No. All processing happens entirely in your browser using JavaScript. Your files never leave your computer.</div>
+        </div>
+
+        <h2>Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+          <a href="pdf-toc-generator.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📋</div>
+            <h3>PDF TOC Generator</h3>
+            <p>Generate table of contents for PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-page-extractor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📄</div>
+            <h3>PDF Page Extractor</h3>
+            <p>Extract specific pages from PDF documents.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+          <a href="pdf-metadata-editor.html" class="tool-card" style="display:block;">
+            <div class="card-icon pdf-icon">📝</div>
+            <h3>PDF Metadata Editor</h3>
+            <p>Edit PDF metadata and properties.</p>
+            <span class="card-link">Use Tool →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../assets/js/header.js" defer></script>
+  <script src="../../assets/js/footer.js" defer></script>
+  <script src="../../assets/js/animations.js" defer></script>
+  <script src="../../assets/js/tool-utils.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    let loadedFile = null;
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfoContainer = document.getElementById('fileInfoContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const progressBar = document.getElementById('progressBar');
+    const actionBtn = document.getElementById('actionBtn');
+    const bookmarkResults = document.getElementById('bookmarkResults');
+    const bookmarkList = document.getElementById('bookmarkList');
+
+    let isProcessing = false;
+
+    utils.initDropZone('dropZone', handleFile);
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!utils.validateFileType(file)) {
+        utils.showError('errorContainer', 'Please select a valid PDF file.');
+        return;
+      }
+      errorContainer.innerHTML = '';
+      utils.showFileInfo('fileInfoContainer', file);
+      loadedFile = file;
+      document.getElementById('toolActions').style.display = 'flex';
+      bookmarkResults.style.display = 'none';
+    }
+
+    actionBtn.addEventListener('click', function() {
+      if (!loadedFile || isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      actionBtn.textContent = '⏳ Analyzing...';
+
+      utils.simulateProgress('progressBar', 1500, function() {
+        try {
+          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+              displayPageStructure(pdfDoc);
+            });
+          });
+        } catch (err) {
+          utils.showError('errorContainer', 'Error analyzing PDF: ' + err.message);
+          isProcessing = false;
+          actionBtn.disabled = false;
+          actionBtn.textContent = 'View Page Structure';
+        }
+      });
+    });
+
+    function displayPageStructure(pdfDoc) {
+      var pages = pdfDoc.getPages();
+      var html = '<table style="width:100%;border-collapse:collapse;">';
+      html += '<thead><tr style="background:var(--primary);color:#fff;">';
+      html += '<th style="padding:10px;text-align:left;">Page #</th>';
+      html += '<th style="padding:10px;text-align:left;">Width</th>';
+      html += '<th style="padding:10px;text-align:left;">Height</th>';
+      html += '<th style="padding:10px;text-align:left;">Rotation</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var i = 0; i < pages.length; i++) {
+        var page = pages[i];
+        var size = page.getSize();
+        var rotation = page.getRotation().angle;
+        var bgColor = i % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
+        html += '<tr style="background:' + bgColor + ';">';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">Page ' + (i + 1) + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + Math.round(size.width) + ' pts</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + Math.round(size.height) + ' pts</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + rotation + '°</td>';
+        html += '</tr>';
+      }
+
+      html += '</tbody></table>';
+      html += '<p style="margin-top:16px;font-weight:600;">Total Pages: ' + pages.length + '</p>';
+
+      bookmarkList.innerHTML = html;
+      bookmarkResults.style.display = 'block';
+      utils.hideProgress('progressBar');
+      utils.showSuccess('fileInfoContainer', 'PDF analyzed successfully! Found ' + pages.length + ' pages.');
+      isProcessing = false;
+      actionBtn.disabled = false;
+      actionBtn.textContent = 'View Page Structure';
+    }
+  });
+  </script>
+</body>
+</html>
