@@ -447,7 +447,8 @@
 
     function getModel() {
       const tab = getActiveTab();
-      return document.getElementById(tab + '-model').value;
+      const id = tab === 'openrouter' ? 'or-model' : 'gm-model';
+      return document.getElementById(id).value;
     }
 
     function getApiKey() {
