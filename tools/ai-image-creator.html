@@ -5,7 +5,7 @@
   <link rel="icon" type="image/png" href="../assets/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Image Creator — Generate Images from Text | Ali Tools Company</title>
-  <meta name="description" content="Generate stunning AI images from text prompts using FLUX.1-schnell. Choose size, style & download for free.">
+  <meta name="description" content="Generate stunning AI images from text prompts using Modern Image Creator. Choose size, style & download for free.">
   <link rel="canonical" href="https://alitoolscompany.com/tools/ai-image-creator.html">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -189,7 +189,7 @@
     <section class="tool-page-hero scroll-animate fade-in-up">
       <div class="tool-page-icon">🎨</div>
       <h1>AI Image Creator</h1>
-      <p>Generate stunning images from text using FLUX.1-schnell — free, no sign-up</p>
+      <p>Generate stunning images from text using Modern Image Creator — free, no sign-up</p>
     </section>
 
     <section class="tool-interface">
@@ -198,12 +198,12 @@
 
           <!-- API Key -->
           <div class="control-group">
-            <label for="hf-api-key">Hugging Face API Key</label>
+            <label for="hh-api-key">HH API Key</label>
             <div class="api-key-row">
-              <input type="password" id="hf-api-key" placeholder="Enter your Hugging Face API key (hf_...)" autocomplete="off" style="flex:1;padding:10px 14px;border:2px solid var(--gray-200);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
-              <button class="btn btn-primary" id="hf-save-key">Save</button>
+              <input type="password" id="hh-api-key" placeholder="Enter your HH API key (hh_...)" autocomplete="off" style="flex:1;padding:10px 14px;border:2px solid var(--gray-200);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+              <button class="btn btn-primary" id="hh-save-key">Save</button>
             </div>
-            <div class="api-status" id="hf-api-status" style="font-size:0.82rem;margin-top:4px;"></div>
+            <div class="api-status" id="hh-api-status" style="font-size:0.82rem;margin-top:4px;"></div>
           </div>
 
           <!-- Prompt -->
@@ -302,37 +302,37 @@
   document.addEventListener('DOMContentLoaded', function() {
 
     // ---- API Key ----
-    const hfKeyInput = document.getElementById('hf-api-key');
-    const hfStatus = document.getElementById('hf-api-status');
+    const hhKeyInput = document.getElementById('hh-api-key');
+    const hhStatus = document.getElementById('hh-api-status');
 
     function loadKey() {
-      const key = localStorage.getItem('alitools_hf_key') || '';
-      hfKeyInput.value = key;
+      const key = localStorage.getItem('alitools_hh_key') || '';
+      hhKeyInput.value = key;
       updateStatus();
     }
 
     function saveKey() {
-      const key = hfKeyInput.value.trim();
+      const key = hhKeyInput.value.trim();
       if (!key) {
-        alert('Please enter a valid Hugging Face API key.');
+        alert('Please enter a valid HH API key.');
         return;
       }
-      localStorage.setItem('alitools_hf_key', key);
+      localStorage.setItem('alitools_hh_key', key);
       updateStatus();
     }
 
     function updateStatus() {
-      const key = localStorage.getItem('alitools_hf_key');
+      const key = localStorage.getItem('alitools_hh_key');
       if (key) {
-        hfStatus.textContent = '✓ API key saved';
-        hfStatus.style.color = '#10B981';
+        hhStatus.textContent = '✓ API key saved';
+        hhStatus.style.color = '#10B981';
       } else {
-        hfStatus.textContent = '✗ No API key saved';
-        hfStatus.style.color = '#E53935';
+        hhStatus.textContent = '✗ No API key saved';
+        hhStatus.style.color = '#E53935';
       }
     }
 
-    document.getElementById('hf-save-key').addEventListener('click', saveKey);
+    document.getElementById('hh-save-key').addEventListener('click', saveKey);
 
     // ---- Size Selection ----
     let selectedWidth = 1024;
@@ -384,9 +384,9 @@
         return;
       }
 
-      const apiKey = localStorage.getItem('alitools_hf_key');
+      const apiKey = localStorage.getItem('alitools_hh_key');
       if (!apiKey) {
-        alert('Please save your Hugging Face API key first.');
+        alert('Please save your HH API key first.');
         return;
       }
 
