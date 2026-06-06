@@ -15,11 +15,26 @@
   }
 
   function getBasePath() {
-    const path = window.location.pathname.replace(/\/$/, '');
-    const inTools = path.includes('/tools/');
-    const inAssets = path.includes('/assets/');
-    if (inTools) return '../';
-    if (inAssets) return '../';
+    const script = document.querySelector('script[src$="header.js"]');
+    if (!script) return '';
+    const src = script.src;
+    const rootUrl = src.replace(/\/assets\/js\/header\.js.*$/, '');
+    let rootPath = '';
+    try {
+      rootPath = new URL(rootUrl).pathname.replace(/\/$/, '');
+    } catch {
+      return '';
+    }
+    const currentPath = window.location.pathname.replace(/\/$/, '');
+    if (currentPath === rootPath) return '';
+    if (currentPath.startsWith(rootPath + '/')) {
+      const relative = currentPath.substring(rootPath.length + 1);
+      const parts = relative.split('/');
+      const lastPart = parts[parts.length - 1] || '';
+      const isFile = lastPart.includes('.');
+      const depth = isFile ? parts.length - 1 : parts.length;
+      return '../'.repeat(Math.max(0, depth));
+    }
     return '';
   }
 

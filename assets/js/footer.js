@@ -6,11 +6,30 @@
   'use strict';
 
   function getBasePath() {
-    var path = window.location.pathname.replace(/\/$/, '');
-    var inTools = path.indexOf('/tools/') !== -1;
-    var inAssets = path.indexOf('/assets/') !== -1;
-    if (inTools) return '../';
-    if (inAssets) return '../';
+    var script = document.querySelector('script[src$="footer.js"]');
+    if (!script) return '';
+    var src = script.src;
+    var rootUrl = src.replace(/\/assets\/js\/footer\.js.*$/, '');
+    var rootPath = '';
+    try {
+      rootPath = new URL(rootUrl).pathname.replace(/\/$/, '');
+    } catch (e) {
+      return '';
+    }
+    var currentPath = window.location.pathname.replace(/\/$/, '');
+    if (currentPath === rootPath) return '';
+    if (currentPath.startsWith(rootPath + '/')) {
+      var relative = currentPath.substring(rootPath.length + 1);
+      var parts = relative.split('/');
+      var lastPart = parts[parts.length - 1] || '';
+      var isFile = lastPart.indexOf('.') !== -1;
+      var depth = isFile ? parts.length - 1 : parts.length;
+      var result = '';
+      for (var i = 0; i < Math.max(0, depth); i++) {
+        result += '../';
+      }
+      return result;
+    }
     return '';
   }
 
