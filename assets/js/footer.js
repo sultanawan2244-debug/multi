@@ -9,7 +9,7 @@
     var path = window.location.pathname.replace(/\/$/, '');
     var inTools = path.indexOf('/tools/') !== -1;
     var inAssets = path.indexOf('/assets/') !== -1;
-    if (inTools) return '../../';
+    if (inTools) return '../';
     if (inAssets) return '../';
     return '';
   }

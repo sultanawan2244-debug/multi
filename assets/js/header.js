@@ -18,7 +18,7 @@
     const path = window.location.pathname.replace(/\/$/, '');
     const inTools = path.includes('/tools/');
     const inAssets = path.includes('/assets/');
-    if (inTools) return '../../';
+    if (inTools) return '../';
     if (inAssets) return '../';
     return '';
   }
