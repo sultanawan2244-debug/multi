@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Image Creator — Generate Images from Text | Ali Tools Company</title>
+  <meta name="description" content="Generate stunning AI images from text prompts using FLUX.1-schnell. Choose size, style & download for free.">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/ai-image-creator.html">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/tool-page.css">
+  <style>
+    .size-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .size-option {
+      padding: 10px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      background: var(--white);
+      cursor: pointer;
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      transition: all var(--transition-fast);
+    }
+    .size-option:hover {
+      border-color: var(--primary-light);
+      background: var(--primary-light);
+    }
+    .size-option.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--white);
+    }
+    .size-option .size-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .size-option .size-desc {
+      display: block;
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+    .style-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .style-option {
+      padding: 8px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 50px;
+      background: var(--white);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      transition: all var(--transition-fast);
+    }
+    .style-option:hover {
+      border-color: var(--primary-light);
+      background: var(--primary-light);
+    }
+    .style-option.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--white);
+    }
+    .generated-image-container {
+      margin-top: 24px;
+      text-align: center;
+      display: none;
+    }
+    .generated-image-container.show {
+      display: block;
+    }
+    .generated-image-container img {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      max-height: 600px;
+      margin: 0 auto;
+    }
+    .generation-progress {
+      margin-top: 16px;
+      text-align: center;
+      display: none;
+    }
+    .generation-progress.show {
+      display: block;
+    }
+    .generation-progress .spinner {
+      width: 32px;
+      height: 32px;
+      border-width: 3px;
+    }
+    .generation-progress p {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    .action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .action-row .btn {
+      min-width: 160px;
+      justify-content: center;
+    }
+    .prompt-row {
+      display: flex;
+      gap: 8px;
+    }
+    .prompt-row textarea {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+    .prompt-row textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+    .example-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .example-prompt {
+      padding: 6px 14px;
+      background: var(--gray-100);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border: 1px solid transparent;
+    }
+    .example-prompt:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    .control-group .hint {
+      font-size: 0.8rem;
+      color: var(--gray-600);
+      margin-top: 4px;
+    }
+    @media (max-width: 600px) {
+      .size-grid { grid-template-columns: repeat(2, 1fr); }
+      .prompt-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../index.html">Home</a> &gt; <span>AI Image Creator</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">🎨</div>
+      <h1>AI Image Creator</h1>
+      <p>Generate stunning images from text using FLUX.1-schnell — free, no sign-up</p>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+
+          <!-- API Key -->
+          <div class="control-group">
+            <label for="hf-api-key">Hugging Face API Key</label>
+            <div class="api-key-row">
+              <input type="password" id="hf-api-key" placeholder="Enter your Hugging Face API key (hf_...)" autocomplete="off" style="flex:1;padding:10px 14px;border:2px solid var(--gray-200);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+              <button class="btn btn-primary" id="hf-save-key">Save</button>
+            </div>
+            <div class="api-status" id="hf-api-status" style="font-size:0.82rem;margin-top:4px;"></div>
+          </div>
+
+          <!-- Prompt -->
+          <div class="control-group">
+            <label for="promptInput">Prompt</label>
+            <div class="prompt-row">
+              <textarea id="promptInput" placeholder="Describe the image you want to generate..."></textarea>
+            </div>
+            <div class="example-prompts" id="examplePrompts">
+              <span class="example-prompt">A serene mountain lake at sunset, photorealistic</span>
+              <span class="example-prompt">Cyberpunk city street at night, neon lights</span>
+              <span class="example-prompt">A cute cat wearing a wizard hat, digital art</span>
+              <span class="example-prompt">Fantasy castle floating in clouds, epic</span>
+            </div>
+          </div>
+
+          <!-- Image Size -->
+          <div class="control-group">
+            <label>Image Size</label>
+            <div class="size-grid" id="sizeGrid">
+              <div class="size-option active" data-width="1024" data-height="1024">
+                <span class="size-label">1:1</span>
+                <span class="size-desc">Square</span>
+              </div>
+              <div class="size-option" data-width="1024" data-height="576">
+                <span class="size-label">16:9</span>
+                <span class="size-desc">Landscape</span>
+              </div>
+              <div class="size-option" data-width="576" data-height="1024">
+                <span class="size-label">9:16</span>
+                <span class="size-desc">Portrait</span>
+              </div>
+              <div class="size-option" data-width="1024" data-height="768">
+                <span class="size-label">4:3</span>
+                <span class="size-desc">Standard</span>
+              </div>
+              <div class="size-option" data-width="1024" data-height="683">
+                <span class="size-label">3:2</span>
+                <span class="size-desc">Photo</span>
+              </div>
+              <div class="size-option" data-width="768" data-height="1024">
+                <span class="size-label">3:4</span>
+                <span class="size-desc">Portrait</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Style -->
+          <div class="control-group">
+            <label>Style</label>
+            <div class="style-grid" id="styleGrid">
+              <span class="style-option" data-style="realistic">Realistic</span>
+              <span class="style-option active" data-style="no-style">None</span>
+              <span class="style-option" data-style="anime">Anime</span>
+              <span class="style-option" data-style="cartoon">Cartoon</span>
+              <span class="style-option" data-style="vector">Vector</span>
+              <span class="style-option" data-style="cinematic">Cinematic</span>
+              <span class="style-option" data-style="fantasy">Fantasy</span>
+              <span class="style-option" data-style="pixel-art">Pixel Art</span>
+              <span class="style-option" data-style="oil-painting">Oil Painting</span>
+              <span class="style-option" data-style="sketch">Sketch</span>
+            </div>
+          </div>
+
+          <!-- Generate Button -->
+          <div class="action-row">
+            <button class="btn btn-primary" id="generateBtn">🎨 Generate Image</button>
+          </div>
+
+          <!-- Progress -->
+          <div class="generation-progress" id="generationProgress">
+            <div class="spinner"></div>
+            <p>Generating your image... This may take 20–40 seconds.</p>
+          </div>
+
+          <!-- Generated Image -->
+          <div class="generated-image-container" id="generatedImageContainer">
+            <img id="generatedImage" alt="Generated AI image">
+            <div class="action-row">
+              <button class="btn btn-success" id="downloadBtn">⬇️ Download Image</button>
+              <button class="btn btn-secondary" id="regenerateBtn">🔄 Regenerate</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../assets/js/header.js" defer></script>
+  <script src="../assets/js/footer.js" defer></script>
+  <script src="../assets/js/animations.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // ---- API Key ----
+    const hfKeyInput = document.getElementById('hf-api-key');
+    const hfStatus = document.getElementById('hf-api-status');
+
+    function loadKey() {
+      const key = localStorage.getItem('alitools_hf_key') || '';
+      hfKeyInput.value = key;
+      updateStatus();
+    }
+
+    function saveKey() {
+      const key = hfKeyInput.value.trim();
+      if (!key) {
+        alert('Please enter a valid Hugging Face API key.');
+        return;
+      }
+      localStorage.setItem('alitools_hf_key', key);
+      updateStatus();
+    }
+
+    function updateStatus() {
+      const key = localStorage.getItem('alitools_hf_key');
+      if (key) {
+        hfStatus.textContent = '✓ API key saved';
+        hfStatus.style.color = '#10B981';
+      } else {
+        hfStatus.textContent = '✗ No API key saved';
+        hfStatus.style.color = '#E53935';
+      }
+    }
+
+    document.getElementById('hf-save-key').addEventListener('click', saveKey);
+
+    // ---- Size Selection ----
+    let selectedWidth = 1024;
+    let selectedHeight = 1024;
+
+    document.querySelectorAll('.size-option').forEach(function(el) {
+      el.addEventListener('click', function() {
+        document.querySelectorAll('.size-option').forEach(function(s) { s.classList.remove('active'); });
+        this.classList.add('active');
+        selectedWidth = parseInt(this.dataset.width);
+        selectedHeight = parseInt(this.dataset.height);
+      });
+    });
+
+    // ---- Style Selection ----
+    let selectedStyle = 'no-style';
+
+    document.querySelectorAll('.style-option').forEach(function(el) {
+      el.addEventListener('click', function() {
+        document.querySelectorAll('.style-option').forEach(function(s) { s.classList.remove('active'); });
+        this.classList.add('active');
+        selectedStyle = this.dataset.style;
+      });
+    });
+
+    // ---- Example Prompts ----
+    const promptInput = document.getElementById('promptInput');
+    document.querySelectorAll('.example-prompt').forEach(function(el) {
+      el.addEventListener('click', function() {
+        promptInput.value = this.textContent;
+        promptInput.focus();
+      });
+    });
+
+    // ---- State ----
+    let lastGeneratedBlobUrl = null;
+    let isGenerating = false;
+
+    // ---- Generate ----
+    document.getElementById('generateBtn').addEventListener('click', generateImage);
+    document.getElementById('regenerateBtn').addEventListener('click', generateImage);
+
+    async function generateImage() {
+      if (isGenerating) return;
+
+      const prompt = promptInput.value.trim();
+      if (!prompt) {
+        alert('Please enter a prompt first.');
+        return;
+      }
+
+      const apiKey = localStorage.getItem('alitools_hf_key');
+      if (!apiKey) {
+        alert('Please save your Hugging Face API key first.');
+        return;
+      }
+
+      isGenerating = true;
+      document.getElementById('generateBtn').disabled = true;
+      document.getElementById('generatedImageContainer').classList.remove('show');
+      document.getElementById('generationProgress').classList.add('show');
+
+      // Build the full prompt with style
+      let fullPrompt = prompt;
+      if (selectedStyle && selectedStyle !== 'no-style') {
+        const styleMap = {
+          'realistic': 'photorealistic, highly detailed, realistic ',
+          'anime': 'anime style, anime art, manga style, ',
+          'cartoon': 'cartoon style, colorful cartoon, ',
+          'vector': 'vector art, flat design, clean vector, ',
+          'cinematic': 'cinematic, dramatic lighting, movie still, film grain, ',
+          'fantasy': 'fantasy art, magical, ethereal, ',
+          'pixel-art': 'pixel art style, 8-bit, retro pixel, ',
+          'oil-painting': 'oil painting, canvas texture, brush strokes, ',
+          'sketch': 'pencil sketch, hand-drawn, black and white sketch, '
+        };
+        const prefix = styleMap[selectedStyle] || '';
+        fullPrompt = prefix + prompt;
+      }
+
+      // Add aspect ratio guidance
+      const aspect = selectedWidth / selectedHeight;
+      let sizeHint = '';
+      if (Math.abs(aspect - 1) < 0.01) sizeHint = 'square composition, ';
+      else if (aspect > 1.7) sizeHint = 'wide landscape composition, ';
+      else if (aspect < 0.6) sizeHint = 'tall portrait composition, ';
+      fullPrompt = sizeHint + fullPrompt;
+
+      try {
+        const res = await fetch('https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + apiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            inputs: fullPrompt,
+            parameters: {
+              width: selectedWidth,
+              height: selectedHeight,
+              num_inference_steps: 4
+            }
+          })
+        });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error('API error (' + res.status + '): ' + errText);
+        }
+
+        // The response is the image blob
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Revoke old URL
+        if (lastGeneratedBlobUrl) URL.revokeObjectURL(lastGeneratedBlobUrl);
+        lastGeneratedBlobUrl = blobUrl;
+
+        // Display image
+        const img = document.getElementById('generatedImage');
+        img.src = blobUrl;
+
+        // Download button
+        document.getElementById('downloadBtn').onclick = function() {
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = 'ai-generated-' + Date.now() + '.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+
+        document.getElementById('generatedImageContainer').classList.add('show');
+      } catch (err) {
+        alert('Generation failed: ' + err.message);
+      }
+
+      document.getElementById('generationProgress').classList.remove('show');
+      document.getElementById('generateBtn').disabled = false;
+      isGenerating = false;
+    }
+
+    // ---- Init ----
+    loadKey();
+  });
+  </script>
+</body>
+</html>

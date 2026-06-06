@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Text Companion — Chat with AI | Ali Tools Company</title>
+  <meta name="description" content="Chat with AI using OpenRouter or Gemini models. Attach images for visual analysis. Free online AI chat tool.">
+  <link rel="canonical" href="https://alitoolscompany.com/tools/ai-text-companion.html">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/tool-page.css">
+  <style>
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid var(--gray-200);
+      background: var(--gray-100);
+    }
+    .tab-bar button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      color: var(--gray-600);
+    }
+    .tab-bar button.active {
+      background: var(--primary);
+      color: var(--white);
+    }
+    .tab-bar button:not(.active):hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .api-key-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .api-key-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .api-key-row input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+    .api-key-row .btn {
+      padding: 10px 20px;
+      white-space: nowrap;
+    }
+    .api-status {
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+    .api-status.saved { color: #10B981; }
+    .api-status.not-saved { color: #E53935; }
+    .chat-area {
+      margin-top: 20px;
+    }
+    .chat-messages {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 16px;
+      background: var(--gray-100);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .chat-messages:empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-600);
+      font-size: 0.9rem;
+      min-height: 120px;
+    }
+    .chat-messages:empty::after {
+      content: 'Send a message to start chatting with AI';
+    }
+    .message {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+    .message.user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: var(--white);
+      border-bottom-right-radius: 4px;
+    }
+    .message.ai {
+      align-self: flex-start;
+      background: var(--white);
+      color: var(--gray-900);
+      border: 1px solid var(--gray-200);
+      border-bottom-left-radius: 4px;
+    }
+    .message.ai.loading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message .msg-image {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+    .input-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .input-row textarea {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      resize: none;
+      min-height: 48px;
+      max-height: 120px;
+      line-height: 1.4;
+    }
+    .input-row textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+    .input-row .attach-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .input-row .attach-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .input-row .send-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: var(--white);
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .input-row .send-btn:hover { background: var(--primary-dark); }
+    .input-row .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .attached-image {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--primary-light);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .attached-image img {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .attached-image .remove-attach {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: #E53935;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    .model-select-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .model-select-row select {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      background: var(--white);
+    }
+    .model-select-row select:focus {
+      border-color: var(--primary);
+    }
+    @media (max-width: 600px) {
+      .message { max-width: 95%; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <a href="../index.html">Home</a> &gt; <span>AI Text Companion</span>
+      </div>
+    </nav>
+
+    <section class="tool-page-hero scroll-animate fade-in-up">
+      <div class="tool-page-icon">💬</div>
+      <h1>AI Text Companion</h1>
+      <p>Chat with AI using OpenRouter or Gemini — attach images for visual analysis</p>
+    </section>
+
+    <section class="tool-interface">
+      <div class="container">
+        <div class="tool-box scroll-animate fade-in-up">
+
+          <!-- Tab Bar -->
+          <div class="tab-bar" role="tablist">
+            <button class="active" data-tab="openrouter" role="tab">OpenRouter</button>
+            <button data-tab="gemini" role="tab">Gemini</button>
+          </div>
+
+          <!-- OpenRouter Tab -->
+          <div class="tab-content active" id="tab-openrouter">
+            <div class="api-key-row">
+              <input type="password" id="or-api-key" placeholder="Enter your OpenRouter API key (sk-or-...)" autocomplete="off">
+              <button class="btn btn-primary" id="or-save-key">Save</button>
+            </div>
+            <div class="api-status" id="or-api-status"></div>
+            <div class="model-select-row" style="margin-top:16px;">
+              <select id="or-model">
+                <option value="openai/gpt-4o">GPT-4o</option>
+                <option value="openai/gpt-4o-mini" selected>GPT-4o Mini</option>
+                <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                <option value="google/gemini-2.0-flash-001">Gemini 2.0 Flash</option>
+                <option value="mistralai/mistral-7b-instruct">Mistral 7B</option>
+                <option value="meta-llama/llama-3.2-3b-instruct">Llama 3.2 3B</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Gemini Tab -->
+          <div class="tab-content" id="tab-gemini">
+            <div class="api-key-row">
+              <input type="password" id="gm-api-key" placeholder="Enter your Gemini API key" autocomplete="off">
+              <button class="btn btn-primary" id="gm-save-key">Save</button>
+            </div>
+            <div class="api-status" id="gm-api-status"></div>
+            <div class="model-select-row" style="margin-top:16px;">
+              <select id="gm-model">
+                <option value="gemini-2.0-flash" selected>Gemini 2.0 Flash</option>
+                <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Attached Image Preview -->
+          <div id="attachedImageContainer" style="display:none;"></div>
+
+          <!-- Chat Messages -->
+          <div class="chat-area">
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <!-- Input Row -->
+            <div class="input-row">
+              <button class="attach-btn" id="attachBtn" title="Attach image">📎</button>
+              <input type="file" id="imageInput" accept="image/*" hidden>
+              <textarea id="messageInput" placeholder="Type your message..." rows="1"></textarea>
+              <button class="send-btn" id="sendBtn" title="Send">➤</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../assets/js/header.js" defer></script>
+  <script src="../assets/js/footer.js" defer></script>
+  <script src="../assets/js/animations.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // ---- Tab Switching ----
+    const tabButtons = document.querySelectorAll('.tab-bar button');
+    const tabContents = {
+      openrouter: document.getElementById('tab-openrouter'),
+      gemini: document.getElementById('tab-gemini')
+    };
+
+    tabButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        tabButtons.forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        Object.keys(tabContents).forEach(function(k) {
+          tabContents[k].classList.toggle('active', k === this.dataset.tab);
+        }.bind(this));
+        updateApiStatus();
+      });
+    });
+
+    // ---- State ----
+    let attachedImage = null; // { dataUrl, file }
+    let isSending = false;
+
+    // ---- API Key Persistence ----
+    function loadKeys() {
+      const orKey = localStorage.getItem('alitools_openrouter_key') || '';
+      const gmKey = localStorage.getItem('alitools_gemini_key') || '';
+      document.getElementById('or-api-key').value = orKey;
+      document.getElementById('gm-api-key').value = gmKey;
+    }
+
+    function saveKey(provider) {
+      const input = provider === 'openrouter'
+        ? document.getElementById('or-api-key')
+        : document.getElementById('gm-api-key');
+      const key = input.value.trim();
+      if (!key) {
+        alert('Please enter a valid API key.');
+        return;
+      }
+      localStorage.setItem('alitools_' + provider + '_key', key);
+      updateApiStatus();
+    }
+
+    function updateApiStatus() {
+      const activeTab = document.querySelector('.tab-bar button.active');
+      if (!activeTab) return;
+      const tab = activeTab.dataset.tab;
+      const statusEl = document.getElementById(tab + '-api-status');
+      const key = localStorage.getItem('alitools_' + tab + '_key');
+      if (key) {
+        statusEl.textContent = '✓ API key saved';
+        statusEl.className = 'api-status saved';
+      } else {
+        statusEl.textContent = '✗ No API key saved';
+        statusEl.className = 'api-status not-saved';
+      }
+    }
+
+    document.getElementById('or-save-key').addEventListener('click', function() { saveKey('openrouter'); });
+    document.getElementById('gm-save-key').addEventListener('click', function() { saveKey('gemini'); });
+
+    // ---- Image Attachment ----
+    document.getElementById('attachBtn').addEventListener('click', function() {
+      document.getElementById('imageInput').click();
+    });
+
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+        if (!file.type.startsWith('image/')) {
+          alert('Please select an image file.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          attachedImage = { dataUrl: ev.target.result, file: file };
+          showAttachedImage();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function showAttachedImage() {
+      const container = document.getElementById('attachedImageContainer');
+      if (!attachedImage) {
+        container.style.display = 'none';
+        return;
+      }
+      container.style.display = 'block';
+      container.innerHTML = '<div class="attached-image">' +
+        '<img src="' + attachedImage.dataUrl + '" alt="Attached">' +
+        '<span>' + attachedImage.file.name + '</span>' +
+        '<button class="remove-attach" id="removeAttach">✕</button>' +
+        '</div>';
+      document.getElementById('removeAttach').addEventListener('click', function() {
+        attachedImage = null;
+        document.getElementById('imageInput').value = '';
+        container.style.display = 'none';
+      });
+    }
+
+    // ---- Auto-resize textarea ----
+    const msgInput = document.getElementById('messageInput');
+    msgInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+    msgInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // ---- Send Message ----
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+    function getActiveTab() {
+      return document.querySelector('.tab-bar button.active').dataset.tab;
+    }
+
+    function getModel() {
+      const tab = getActiveTab();
+      return document.getElementById(tab + '-model').value;
+    }
+
+    function getApiKey() {
+      const tab = getActiveTab();
+      return localStorage.getItem('alitools_' + tab + '_key') || '';
+    }
+
+    function addMessage(role, content, imageUrl) {
+      const container = document.getElementById('chatMessages');
+      const el = document.createElement('div');
+      el.className = 'message ' + role;
+      if (role === 'ai' && content === 'loading') {
+        el.innerHTML = '<span class="spinner"></span> Thinking...';
+        el.classList.add('loading');
+        el.id = 'loadingMessage';
+      } else {
+        el.textContent = content;
+        if (imageUrl) {
+          const img = document.createElement('img');
+          img.src = imageUrl;
+          img.className = 'msg-image';
+          el.appendChild(img);
+        }
+      }
+      container.appendChild(el);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function removeLoading() {
+      const el = document.getElementById('loadingMessage');
+      if (el) el.remove();
+    }
+
+    async function sendMessage() {
+      if (isSending) return;
+      const text = msgInput.value.trim();
+      if (!text && !attachedImage) return;
+
+      const apiKey = getApiKey();
+      if (!apiKey) {
+        alert('Please save your API key first.');
+        return;
+      }
+
+      isSending = true;
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+
+      // Show user message
+      if (attachedImage) {
+        addMessage('user', text || 'Describe this image', attachedImage.dataUrl);
+      } else {
+        addMessage('user', text);
+      }
+
+      // Show loading
+      addMessage('ai', 'loading');
+      msgInput.value = '';
+      msgInput.style.height = 'auto';
+      attachedImage = null;
+      document.getElementById('attachedImageContainer').style.display = 'none';
+      document.getElementById('imageInput').value = '';
+
+      try {
+        const tab = getActiveTab();
+        let response;
+        if (tab === 'openrouter') {
+          response = await callOpenRouter(text, apiKey, getModel());
+        } else {
+          response = await callGemini(text, apiKey, getModel());
+        }
+        removeLoading();
+        addMessage('ai', response);
+      } catch (err) {
+        removeLoading();
+        addMessage('ai', 'Error: ' + err.message);
+      }
+
+      isSending = false;
+      sendBtn.disabled = false;
+    }
+
+    // ---- OpenRouter API ----
+    async function callOpenRouter(text, apiKey, model) {
+      const messages = [{ role: 'user', content: [] }];
+
+      if (attachedImage) {
+        messages[0].content.push({
+          type: 'image_url',
+          image_url: { url: attachedImage.dataUrl }
+        });
+      }
+
+      if (text) {
+        messages[0].content.push({
+          type: 'text',
+          text: text
+        });
+      }
+
+      // If no image, use simple text format
+      if (!attachedImage) {
+        messages[0].content = text;
+      }
+
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + apiKey,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'Ali Tools Company'
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          max_tokens: 4096
+        })
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error('OpenRouter API error (' + res.status + '): ' + errText);
+      }
+
+      const data = await res.json();
+      return data.choices[0].message.content;
+    }
+
+    // ---- Gemini API ----
+    async function callGemini(text, apiKey, model) {
+      const parts = [];
+
+      if (text) {
+        parts.push({ text: text });
+      }
+
+      if (attachedImage) {
+        const base64Data = attachedImage.dataUrl.split(',')[1];
+        const mimeType = attachedImage.file.type;
+        parts.push({
+          inline_data: {
+            mime_type: mimeType,
+            data: base64Data
+          }
+        });
+      }
+
+      const requestBody = {
+        contents: [{
+          parts: parts
+        }]
+      };
+
+      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error('Gemini API error (' + res.status + '): ' + errText);
+      }
+
+      const data = await res.json();
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+        return data.candidates[0].content.parts.map(function(p) { return p.text; }).join(' ');
+      }
+      throw new Error('No response from Gemini');
+    }
+
+    // ---- Init ----
+    loadKeys();
+    updateApiStatus();
+  });
+  </script>
+</body>
+</html>
