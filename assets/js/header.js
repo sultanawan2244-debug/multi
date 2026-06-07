@@ -162,6 +162,7 @@
       this.classList.toggle('active');
       mobileNav.classList.toggle('open');
       closeMegaMenu();
+      renderDropdown();
     });
 
     mobileNav.querySelectorAll('a').forEach(function(link) {
@@ -275,55 +276,56 @@
     });
   }
 
+  function getLinks() {
+    try {
+      return JSON.parse(localStorage.getItem('alitools_external_links')) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderDropdown() {
+    const dropdown = document.getElementById('externalLinksDropdown');
+    const mobileContainer = document.getElementById('mobileExternalLinks');
+    const links = getLinks();
+
+    var html = '<div class="links-dropdown-list">';
+    if (links.length === 0) {
+      html += '<div class="links-dropdown-empty">No links added</div>';
+    } else {
+      for (var i = 0; i < links.length; i++) {
+        html += '<a href="' + links[i].url + '" target="_blank" rel="noopener noreferrer" class="links-dropdown-item">';
+        html += '<span class="links-item-name">' + escapeHtml(links[i].name) + '</span>';
+        html += '</a>';
+      }
+    }
+    html += '</div>';
+    if (dropdown) dropdown.innerHTML = html;
+
+    var mobileHtml = '';
+    if (links.length === 0) {
+      mobileHtml = '<div class="mobile-links-empty">No links added</div>';
+    } else {
+      for (var j = 0; j < links.length; j++) {
+        mobileHtml += '<a href="' + links[j].url + '" target="_blank" rel="noopener noreferrer" class="mobile-links-item">';
+        mobileHtml += escapeHtml(links[j].name) + '</a>';
+      }
+    }
+    if (mobileContainer) mobileContainer.innerHTML = mobileHtml;
+  }
+
   function initExternalLinks() {
-    function getLinks() {
-      try {
-        return JSON.parse(localStorage.getItem('alitools_external_links')) || [];
-      } catch {
-        return [];
-      }
-    }
-
-    function renderDropdown() {
-      const dropdown = document.getElementById('externalLinksDropdown');
-      const mobileContainer = document.getElementById('mobileExternalLinks');
-      const links = getLinks();
-
-      var html = '<div class="links-dropdown-list">';
-      if (links.length === 0) {
-        html += '<div class="links-dropdown-empty">No links added</div>';
-      } else {
-        for (var i = 0; i < links.length; i++) {
-          html += '<a href="' + links[i].url + '" target="_blank" rel="noopener noreferrer" class="links-dropdown-item">';
-          html += '<span class="links-item-name">' + escapeHtml(links[i].name) + '</span>';
-          html += '</a>';
-        }
-      }
-      html += '</div>';
-      dropdown.innerHTML = html;
-
-      var mobileHtml = '';
-      if (links.length === 0) {
-        mobileHtml = '<div class="mobile-links-empty">No links added</div>';
-      } else {
-        for (var j = 0; j < links.length; j++) {
-          mobileHtml += '<a href="' + links[j].url + '" target="_blank" rel="noopener noreferrer" class="mobile-links-item">';
-          mobileHtml += escapeHtml(links[j].name) + '</a>';
-        }
-      }
-      mobileContainer.innerHTML = mobileHtml;
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
     var toggle = document.getElementById('externalLinksToggle');
     var dropdown = document.getElementById('externalLinksDropdown');
 
     if (toggle && dropdown) {
       document.addEventListener('click', function(e) {
         if (toggle.contains(e.target) || dropdown.contains(e.target)) {
+          renderDropdown();
           dropdown.classList.toggle('open');
           toggle.classList.toggle('open');
         } else {
