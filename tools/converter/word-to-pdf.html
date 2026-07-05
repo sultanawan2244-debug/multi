@@ -31,7 +31,7 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+</head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -237,39 +237,36 @@
       actionBtn.textContent = '⏳ Converting...';
       downloadBtn.style.display = 'none';
       utils.simulateProgress('progressBar', 2000, function() {
-        try {
-          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-  mammoth.convertToHtml({ arrayBuffer: buffer }).then(function(result) {
-    var text = result.value;
-    var div = document.createElement('div');
-    div.innerHTML = text;
-    var plainText = div.textContent || div.innerText || '';
-    var { jsPDF } = window.jspdf;
-    var doc = new jsPDF();
-    var lines = plainText.split(/\r?\n/);
-    var y = 20;
-    var lineHeight = 7;
-    var pageHeight = doc.internal.pageSize.height;
-    for (var i = 0; i < lines.length; i++) {
-      if (y + lineHeight > pageHeight - 20) {
-        doc.addPage();
-        y = 20;
-      }
-      doc.text(lines[i], 10, y);
-      y += lineHeight;
-    }
-    var blob = doc.output('blob');
-    setupDownload(blob, loadedFile.name.replace(/\.[^.]+$/, '') + '.pdf');
-  }).catch(function(err) {
-    throw err;
-  });
-});
-        } catch (err) {
+        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+          return mammoth.convertToHtml({ arrayBuffer: buffer });
+        }).then(function(result) {
+          var div = document.createElement('div');
+          div.innerHTML = result.value;
+          var plainText = div.textContent || div.innerText || '';
+          var { jsPDF } = window.jspdf;
+          var doc = new jsPDF();
+          var lines = plainText.split(/\r?\n/);
+          var y = 20;
+          var lineHeight = 7;
+          var pageHeight = doc.internal.pageSize.height;
+          var pageWidth = doc.internal.pageSize.width - 20;
+          for (var i = 0; i < lines.length; i++) {
+            var wrapped = doc.splitTextToSize(lines[i], pageWidth);
+            if (y + wrapped.length * lineHeight > pageHeight - 20) {
+              doc.addPage();
+              y = 20;
+            }
+            doc.text(wrapped, 10, y);
+            y += wrapped.length * lineHeight;
+          }
+          var blob = doc.output('blob');
+          setupDownload(blob, loadedFile.name.replace(/\.[^.]+$/, '') + '.pdf');
+        }).catch(function(err) {
           utils.showError('errorContainer', 'Error: ' + err.message);
           isProcessing = false;
           actionBtn.disabled = false;
           actionBtn.textContent = 'Convert to PDF';
-        }
+        });
       });
     });
   });

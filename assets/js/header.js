@@ -5,6 +5,18 @@
 (function() {
   'use strict';
 
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  // Disable inspect element keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12') e.preventDefault();
+    if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) e.preventDefault();
+    if (e.ctrlKey && e.key.toUpperCase() === 'U') e.preventDefault();
+  });
+
   function getCurrentPage() {
     const path = window.location.pathname.split('/').pop() || 'index.html';
     return path;
