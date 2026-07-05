@@ -314,26 +314,19 @@
         utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
           return mammoth.convertToHtml({ arrayBuffer: buffer });
         }).then(function(result) {
-          var div = document.createElement('div');
-          div.innerHTML = result.value;
-          var plainText = div.textContent || div.innerText || '';
+          var html = '<div style="padding:40px 40px 20px;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;background:#fff;">' + result.value + '</div>';
           var { jsPDF } = window.jspdf;
-          var doc = new jsPDF();
-          var lines = plainText.split(/\r?\n/);
-          var y = 20;
-          var lh = 7;
-          var ph = doc.internal.pageSize.height;
-          var pw = doc.internal.pageSize.width - 20;
-          for (var i = 0; i < lines.length; i++) {
-            var w = doc.splitTextToSize(lines[i], pw);
-            if (y + w.length * lh > ph - 20) { doc.addPage(); y = 20; }
-            doc.text(w, 10, y);
-            y += w.length * lh;
-          }
-          item.blob = doc.output('blob');
-          item.status = 'done';
-          idx++;
-          next();
+          var doc = new jsPDF('p', 'pt', 'a4');
+          doc.html(html, {
+            callback: function(d) {
+              item.blob = d.output('blob');
+              item.status = 'done';
+              idx++;
+              next();
+            },
+            margin: [0, 0, 0, 0],
+            autoPaging: 'text'
+          });
         }).catch(function(err) {
           utils.showError('errorContainer', 'Error converting ' + item.file.name + ': ' + err.message);
           item.status = 'pending';
