@@ -314,25 +314,46 @@
         utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
           return mammoth.convertToHtml({ arrayBuffer: buffer });
         }).then(function(result) {
-          var container = document.createElement('div');
-          container.style.cssText = 'position:fixed;top:0;left:0;width:794px;padding:40px;background:#fff;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;z-index:99999;opacity:0;pointer-events:none;';
-          container.innerHTML = result.value;
-          document.body.appendChild(container);
-          var opt = {
-            margin: [10, 10, 10, 10],
-            filename: item.file.name.replace(/\.[^.]+$/, '') + '.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, letterRendering: true, logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-          };
-          return html2pdf().set(opt).from(container).outputPdf('blob').then(function(pdfBlob) {
-            document.body.removeChild(container);
-            item.blob = pdfBlob;
-            item.status = 'done';
-          }).catch(function(err) {
-            document.body.removeChild(container);
-            throw err;
+          var renderDiv = document.createElement('div');
+          renderDiv.style.cssText = 'position:fixed;top:0;left:0;width:794px;z-index:99999;background:#fff;padding:40px;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;';
+          renderDiv.innerHTML = result.value;
+          document.body.appendChild(renderDiv);
+          return new Promise(function(resolve, reject) {
+            var imgs = renderDiv.querySelectorAll('img');
+            var loaded = 0;
+            var total = imgs.length;
+            function checkDone() {
+              loaded++;
+              if (loaded >= total) doCapture();
+            }
+            function doCapture() {
+              var opt = {
+                margin: [10, 10, 10, 10],
+                filename: item.file.name.replace(/\.[^.]+$/, '') + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+              };
+              html2pdf().set(opt).from(renderDiv).outputPdf('blob').then(function(pdfBlob) {
+                document.body.removeChild(renderDiv);
+                item.blob = pdfBlob;
+                item.status = 'done';
+                resolve();
+              }).catch(function(err) {
+                document.body.removeChild(renderDiv);
+                reject(err);
+              });
+            }
+            if (total === 0) { doCapture(); return; }
+            for (var j = 0; j < total; j++) {
+              if (imgs[j].complete) { checkDone(); }
+              else {
+                imgs[j].onload = checkDone;
+                imgs[j].onerror = checkDone;
+              }
+            }
+            setTimeout(function() { if (loaded < total) doCapture(); }, 5000);
           });
         }).then(function() { idx++; next(); }).catch(function(err) {
           utils.showError('errorContainer', 'Error converting ' + item.file.name + ': ' + err.message);
