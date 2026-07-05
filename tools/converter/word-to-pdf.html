@@ -314,18 +314,32 @@
         utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
           return mammoth.convertToHtml({ arrayBuffer: buffer });
         }).then(function(result) {
-          var html = '<div style="padding:40px 40px 20px;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;background:#fff;">' + result.value + '</div>';
-          var { jsPDF } = window.jspdf;
-          var doc = new jsPDF('p', 'pt', 'a4');
-          doc.html(html, {
-            callback: function(d) {
-              item.blob = d.output('blob');
-              item.status = 'done';
-              idx++;
-              next();
-            },
-            margin: [0, 0, 0, 0],
-            autoPaging: 'text'
+          var container = document.createElement('div');
+          container.style.cssText = 'padding:40px 40px 20px;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;background:#fff;width:525px;';
+          container.innerHTML = result.value;
+          document.body.appendChild(container);
+          return new Promise(function(resolve, reject) {
+            var t = setTimeout(function() { reject(new Error('Conversion timed out')); }, 45000);
+            var { jsPDF } = window.jspdf;
+            var doc = new jsPDF('p', 'pt', 'a4');
+            doc.html(container, {
+              callback: function(d) {
+                clearTimeout(t);
+                try { item.blob = d.output('blob'); item.status = 'done'; resolve(); }
+                catch(e) { reject(e); }
+              },
+              margin: [0, 0, 0, 0],
+              autoPaging: 'text'
+            });
+          }).then(function() {
+            if (container.parentNode) container.parentNode.removeChild(container);
+            idx++; next();
+          }, function(err) {
+            if (container.parentNode) container.parentNode.removeChild(container);
+            utils.showError('errorContainer', 'Error converting ' + item.file.name + ': ' + err.message);
+            item.status = 'pending';
+            idx++;
+            next();
           });
         }).catch(function(err) {
           utils.showError('errorContainer', 'Error converting ' + item.file.name + ': ' + err.message);
