@@ -29,8 +29,8 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/docx-preview@latest/dist/docx-preview.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
@@ -111,7 +111,7 @@
           <div class="feature-card scroll-animate fade-in-up">
             <div class="feature-icon">⚡</div>
             <h4>Fast</h4>
-            <p>Convert Word to PDF instantly with Mammoth + jsPDF.</p>
+            <p>Convert Word to PDF instantly with docx-preview + html2pdf.</p>
           </div>
           <div class="feature-card scroll-animate fade-in-up stagger-delay-1">
             <div class="feature-icon">🔒</div>
@@ -312,21 +312,39 @@
         renderFileList();
 
         utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
-          return mammoth.convertToHtml({ arrayBuffer: buffer });
-        }).then(function(result) {
-          var fullHtml = '<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><style>body{margin:40px 40px 20px;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;background:#fff;}</style></head><body>' + result.value + '</body></html>';
-          return new Promise(function(resolve, reject) {
-            var t = setTimeout(function() { reject(new Error('Conversion timed out')); }, 60000);
-            var { jsPDF } = window.jspdf;
-            var doc = new jsPDF('p', 'pt', 'a4');
-            doc.html(fullHtml, {
-              callback: function(d) {
-                clearTimeout(t);
-                try { item.blob = d.output('blob'); item.status = 'done'; resolve(); }
-                catch(e) { reject(e); }
-              },
-              margin: [0, 0, 0, 0],
-              autoPaging: 'text'
+          var container = document.createElement('div');
+          container.style.cssText = 'position:absolute;left:-9999px;top:0;width:794px;padding:40px;background:#fff;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;';
+          document.body.appendChild(container);
+          return docx.renderAsync(buffer, container, null, {
+            className: 'docx-render',
+            inWrapper: true,
+            ignoreWidth: false,
+            ignoreHeight: false,
+            ignoreFonts: false,
+            breakPages: true,
+            ignoreLastRenderedPageBreak: false,
+            experimental: false,
+            trimXmlDeclaration: true,
+            debug: false
+          }).then(function() {
+            return new Promise(function(resolve, reject) {
+              var opt = {
+                margin: [10, 10, 10, 10],
+                filename: item.file.name.replace(/\.[^.]+$/, '') + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+              };
+              html2pdf().set(opt).from(container).outputPdf('blob').then(function(pdfBlob) {
+                document.body.removeChild(container);
+                item.blob = pdfBlob;
+                item.status = 'done';
+                resolve();
+              }).catch(function(err) {
+                document.body.removeChild(container);
+                reject(err);
+              });
             });
           });
         }).then(function() { idx++; next(); }).catch(function(err) {
