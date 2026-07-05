@@ -29,6 +29,16 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -57,10 +67,10 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file" multiple>
             <div class="drop-icon">📁</div>
-            <p>Drag & drop an image here or click to browse</p>
-            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <p>Drag & drop image files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP (multiple files)</p>
             <div class="drop-text">Drop here!</div>
           </div>
           <div id="fileInfoContainer"></div>
@@ -124,6 +134,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="resizeBtn">📏 Resize Image</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">?? Download All as ZIP</button>
             <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Processed File</button>
           </div>
         </div>
@@ -268,142 +279,162 @@
   <script src="../../assets/js/animations.js" defer></script>
   <script src="../../assets/js/tool-utils.js" defer></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let originalImage = null;
-    let originalDataUrl = null;
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var toolActions = document.getElementById('toolActions');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var actionBtn = document.getElementById('resizeBtn');
+    var progressBar = document.getElementById('progressBar');
+    var toolControls = document.getElementById('toolControls');
+    var previewArea = document.getElementById('previewArea');
+    var originalPreview = document.getElementById('originalPreview');
+    var downloadBtn = document.getElementById('downloadBtn');
 
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileInfoContainer = document.getElementById('fileInfoContainer');
-    const errorContainer = document.getElementById('errorContainer');
-    const toolControls = document.getElementById('toolControls');
-    const toolActions = document.getElementById('toolActions');
-    const previewArea = document.getElementById('previewArea');
-    const originalPreview = document.getElementById('originalPreview');
-    const resizedPreview = document.getElementById('resizedPreview');
-    const originalSize = document.getElementById('originalSize');
-    const resizedSize = document.getElementById('resizedSize');
-    const widthInput = document.getElementById('widthInput');
-    const heightInput = document.getElementById('heightInput');
-    const maintainAspect = document.getElementById('maintainAspect');
-    const formatSelect = document.getElementById('formatSelect');
-    const qualityRange = document.getElementById('qualityRange');
-    const qualityValue = document.getElementById('qualityValue');
-    const resizeBtn = document.getElementById('resizeBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const progressBar = document.getElementById('progressBar');
-
-    let aspectRatio = 1;
-    let isProcessing = false;
-
-    utils.initDropZone('dropZone', handleFile);
-
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid file type.');
-        return;
+    function dataURLToBlob(dataUrl) {
+      var parts = dataUrl.split(','); var mime = parts[0].match(/:(.*?);/)[1];
+      var bytes = atob(parts[1]); var ab = new ArrayBuffer(bytes.length);
+      var ia = new Uint8Array(ab); for (var i = 0; i < bytes.length; i++) ia[i] = bytes.charCodeAt(i);
+      return new Blob([ab], { type: mime });
+    }
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Resizing...' : (hasFiles ? '\uD83D\uDD04 Resize Image All' : 'Resize Image');
+      if (downloadBtn) downloadBtn.style.display = 'none';
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
+    }
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
       }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      toolControls.style.display = 'block';
-      toolActions.style.display = 'flex';
-      downloadBtn.style.display = 'none';
-
-      utils.loadImage(file).then(function(result) {
-        originalImage = result.image;
-        originalDataUrl = result.dataUrl;
-        originalPreview.src = originalDataUrl;
-        originalPreview.style.display = 'block';
-        previewArea.classList.add('show');
-
-        widthInput.value = originalImage.width;
-        heightInput.value = originalImage.height;
-        aspectRatio = originalImage.width / originalImage.height;
-
-        originalSize.textContent = 'Original: ' + originalImage.width + 'x' + originalImage.height + ' (' + utils.formatFileSize(file.size) + ')';
-        resizedSize.textContent = 'Resized: —';
-
-        updateDimensions();
-      }).catch(function() {
-        utils.showError('errorContainer', 'Failed to load image. The file may be corrupted or unsupported.');
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
       });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
     }
-
-    function updateDimensions() {
-      if (!maintainAspect.checked) return;
-      // This will be set properly on resize
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.png');
     }
-
-    widthInput.addEventListener('input', function() {
-      if (maintainAspect.checked && originalImage) {
-        heightInput.value = Math.round(this.value / aspectRatio);
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a'); link.href = url; link.download = filename;
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+    function addFiles(files) {
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!file.type.startsWith('image/')) { utils.showError('errorContainer', file.name + ' is not a supported image file.'); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
       }
-    });
-
-    heightInput.addEventListener('input', function() {
-      if (maintainAspect.checked && originalImage) {
-        widthInput.value = Math.round(this.value * aspectRatio);
-      }
-    });
-
-    qualityRange.addEventListener('input', function() {
-      qualityValue.textContent = this.value;
-    });
-
-    resizeBtn.addEventListener('click', function() {
-      if (!originalImage || isProcessing) return;
-
+      renderFileList(); updateUI();
+    }
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      resizeBtn.disabled = true;
-      resizeBtn.textContent = '⏳ Resizing...';
-      downloadBtn.style.display = 'none';
-
-      const w = parseInt(widthInput.value) || originalImage.width;
-      const h = parseInt(heightInput.value) || originalImage.height;
-      const format = formatSelect.value;
-      const quality = parseInt(qualityRange.value) / 100;
-
-      utils.simulateProgress('progressBar', 800, function() {
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(originalImage, 0, 0, w, h);
-
-          const mimeType = format;
-          const dataUrl = canvas.toDataURL(mimeType, quality);
-
-          resizedPreview.src = dataUrl;
-          resizedPreview.style.display = 'block';
-          resizedSize.textContent = 'Resized: ' + w + 'x' + h;
-
-          downloadBtn.onclick = function() {
-            const ext = mimeType.split('/')[1].replace('jpeg', 'jpg');
-            const originalName = fileInput.files && fileInput.files[0] ? fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
-            utils.triggerDownload(dataUrl, originalName + '_resized.' + ext);
-          };
-
-          downloadBtn.style.display = 'inline-flex';
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      if (previewArea) previewArea.classList.remove('show');
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
           utils.hideProgress('progressBar');
-          utils.showSuccess('fileInfoContainer', 'Image resized successfully! Click download to save.');
-        } catch (err) {
-          utils.showError('errorContainer', 'Error resizing image: ' + err.message);
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All images resized!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
         }
-
-        isProcessing = false;
-        resizeBtn.disabled = false;
-        resizeBtn.textContent = '📏 Resize Image';
-      });
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadImage(item.file).then(function(result) {
+          var originalImage = result.image;
+          var originalDataUrl = result.dataUrl;
+          if (originalPreview) { originalPreview.src = originalDataUrl; originalPreview.style.display = 'block'; }
+          if (previewArea) previewArea.classList.add('show');
+                    var widthInput = document.getElementById('widthInput'); var heightInput = document.getElementById('heightInput');
+          var formatSelect = document.getElementById('formatSelect'); var qualityRange = document.getElementById('qualityRange');
+          var resizedPreview = document.getElementById('resizedPreview');
+          var w = widthInput ? parseInt(widthInput.value) || originalImage.width : originalImage.width;
+          var h = heightInput ? parseInt(heightInput.value) || originalImage.height : originalImage.height;
+          var format = formatSelect ? formatSelect.value : 'image/png';
+          var quality = qualityRange ? parseInt(qualityRange.value) / 100 : 0.92;
+          var canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(originalImage, 0, 0, w, h);
+          canvas.toBlob(function(blob) {
+            if (resizedPreview) { resizedPreview.src = URL.createObjectURL(blob); resizedPreview.style.display = 'block'; }
+            item.blob = blob; item.status = 'done'; idx++; next();
+          }, format, quality);
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.[^.]+$/, '') + '.png', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) { triggerDownload(zipBlob, 'processed_images.zip'); });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.png');
+        });
+      }
     });
   });
-  </script>
+</script>
 </body>
 </html>

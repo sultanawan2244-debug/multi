@@ -29,7 +29,17 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -57,7 +67,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
@@ -82,7 +92,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">♿ Check Accessibility</button>
-            <button class="btn btn-secondary" id="downloadReportBtn" style="display:none;">⬇️ Download Report</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -194,60 +204,95 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    let lastReport = null;
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var toolActions = document.getElementById('toolActions');
+    var a11yResults = document.getElementById('a11yResults');
+    var a11yReport = document.getElementById('a11yReport');
 
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileInfoContainer = document.getElementById('fileInfoContainer');
-    const errorContainer = document.getElementById('errorContainer');
-    const progressBar = document.getElementById('progressBar');
-    const actionBtn = document.getElementById('actionBtn');
-    const downloadReportBtn = document.getElementById('downloadReportBtn');
-    const a11yResults = document.getElementById('a11yResults');
-    const a11yReport = document.getElementById('a11yReport');
-
-    let isProcessing = false;
-
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      a11yResults.style.display = 'none';
-      downloadReportBtn.style.display = 'none';
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Checking...' : (hasFiles ? '\uD83D\uDD04 Check All' : (actionBtn.dataset.origText || '\u267F Check Accessibility'));
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
     }
 
-    actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
-      isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Checking...';
-
-      utils.simulateProgress('progressBar', 2000, function() {
-        try {
-          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-              checkAccessibility(pdfDoc, loadedFile);
-            });
-          });
-        } catch (err) {
-          utils.showError('errorContainer', 'Error: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = '♿ Check Accessibility';
-        }
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
       });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
+    }
+
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, 'accessibility_report_' + item.file.name.replace(/\.pdf$/i, '') + '.json');
+    }
+
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
     });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) { utils.showError("errorContainer", file.name + " is not a valid PDF file."); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList();
+      updateUI();
+    }
 
     function checkAccessibility(pdfDoc, file) {
       var checks = [];
@@ -256,64 +301,32 @@
 
       var title = '';
       var author = '';
-      var subject = '';
       try { title = pdfDoc.getTitle(); } catch(e) {}
       try { author = pdfDoc.getAuthor(); } catch(e) {}
-      try { subject = pdfDoc.getSubject(); } catch(e) {}
 
       var hasTitle = title && title.trim().length > 0;
       var hasAuthor = author && author.trim().length > 0;
-      checks.push({
-        name: 'Document Title',
-        status: hasTitle ? 'pass' : 'fail',
-        detail: hasTitle ? 'Title: "' + title + '"' : 'No title found. Add a title for better accessibility.'
-      });
+
+      checks.push({ name: 'Document Title', status: hasTitle ? 'pass' : 'fail', detail: hasTitle ? 'Title: "' + title + '"' : 'No title found. Add a title for better accessibility.' });
       if (hasTitle) passed++; else failed++;
 
-      checks.push({
-        name: 'Document Author',
-        status: hasAuthor ? 'pass' : 'fail',
-        detail: hasAuthor ? 'Author: "' + author + '"' : 'No author metadata found.'
-      });
+      checks.push({ name: 'Document Author', status: hasAuthor ? 'pass' : 'fail', detail: hasAuthor ? 'Author: "' + author + '"' : 'No author metadata found.' });
       if (hasAuthor) passed++; else failed++;
 
       var pages = pdfDoc.getPages();
-      checks.push({
-        name: 'Page Count',
-        status: 'pass',
-        detail: 'Document has ' + pages.length + ' page(s).'
-      });
+      checks.push({ name: 'Page Count', status: 'pass', detail: 'Document has ' + pages.length + ' page(s).' });
       passed++;
 
       var hasText = false;
-      try {
-        for (var i = 0; i < pages.length && !hasText; i++) {
-          var page = pages[i];
-          hasText = page.getSize().width > 0;
-        }
-        hasText = pages.length > 0;
-      } catch(e) { hasText = false; }
-
-      checks.push({
-        name: 'Text Content',
-        status: hasText ? 'pass' : 'fail',
-        detail: hasText ? 'Document contains pages with content.' : 'Could not verify text content. May be a scanned document.'
-      });
+      try { hasText = pages.length > 0; } catch(e) { hasText = false; }
+      checks.push({ name: 'Text Content', status: hasText ? 'pass' : 'fail', detail: hasText ? 'Document contains pages with content.' : 'Could not verify text content. May be a scanned document.' });
       if (hasText) passed++; else failed++;
 
       var fileSizeKB = Math.round(file.size / 1024);
-      checks.push({
-        name: 'File Size',
-        status: 'pass',
-        detail: 'File size: ' + fileSizeKB + ' KB'
-      });
+      checks.push({ name: 'File Size', status: 'pass', detail: 'File size: ' + fileSizeKB + ' KB' });
       passed++;
 
-      checks.push({
-        name: 'Structure Elements',
-        status: hasTitle && hasAuthor ? 'pass' : 'warn',
-        detail: (hasTitle && hasAuthor) ? 'Basic metadata present.' : 'Add title and author for better structure.'
-      });
+      checks.push({ name: 'Structure Elements', status: hasTitle && hasAuthor ? 'pass' : 'warn', detail: (hasTitle && hasAuthor) ? 'Basic metadata present.' : 'Add title and author for better structure.' });
       if (hasTitle && hasAuthor) passed++; else failed++;
 
       var html = '<div style="margin-bottom:16px;">';
@@ -324,56 +337,90 @@
 
       html += '<table style="width:100%;border-collapse:collapse;">';
       html += '<thead><tr style="background:var(--primary);color:#fff;">';
-      html += '<th style="padding:10px;text-align:left;">Check</th>';
-      html += '<th style="padding:10px;text-align:center;">Status</th>';
-      html += '<th style="padding:10px;text-align:left;">Details</th>';
+      html += '<th style="padding:10px;text-align:left;">Check</th><th style="padding:10px;text-align:center;">Status</th><th style="padding:10px;text-align:left;">Details</th>';
       html += '</tr></thead><tbody>';
 
       for (var j = 0; j < checks.length; j++) {
         var c = checks[j];
         var bgColor = j % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
-        var statusIcon = c.status === 'pass' ? '✅' : (c.status === 'warn' ? '⚠️' : '❌');
-        var statusColor = c.status === 'pass' ? '#155724' : (c.status === 'warn' ? '#856404' : '#721c24');
+        var si = c.status === 'pass' ? '\u2705' : (c.status === 'warn' ? '\u26A0\uFE0F' : '\u274C');
+        var sc = c.status === 'pass' ? '#155724' : (c.status === 'warn' ? '#856404' : '#721c24');
         html += '<tr style="background:' + bgColor + ';">';
         html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);font-weight:600;">' + c.name + '</td>';
-        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);text-align:center;color:' + statusColor + ';">' + statusIcon + '</td>';
-        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + c.detail + '</td>';
-        html += '</tr>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);text-align:center;color:' + sc + ';">' + si + '</td>';
+        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + c.detail + '</td></tr>';
       }
-
       html += '</tbody></table></div>';
       a11yReport.innerHTML = html;
       a11yResults.style.display = 'block';
 
-      lastReport = {
-        fileName: file.name,
-        fileSize: fileSizeKB,
-        pages: pages.length,
-        checks: checks,
-        passed: passed,
-        failed: failed,
+      var report = {
+        fileName: file.name, fileSize: fileSizeKB, pages: pages.length,
+        checks: checks, passed: passed, failed: failed,
         timestamp: new Date().toISOString()
       };
 
-      downloadReportBtn.style.display = 'inline-flex';
-      utils.hideProgress('progressBar');
-      utils.showSuccess('fileInfoContainer', 'Accessibility check complete. ' + passed + ' passed, ' + failed + ' issues found.');
-      isProcessing = false;
-      actionBtn.disabled = false;
-      actionBtn.textContent = '♿ Check Accessibility';
+      var blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+      return blob;
     }
 
-    downloadReportBtn.addEventListener('click', function() {
-      if (!lastReport) return;
-      var json = JSON.stringify(lastReport, null, 2);
-      var blob = new Blob([json], { type: 'application/json' });
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement('a');
-      link.href = url;
-      link.download = 'accessibility_report_' + loadedFile.name.replace(/\.pdf$/i, '') + '.json';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
+      isProcessing = true;
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All files checked successfully!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
+        }
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+          return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+        }).then(function(pdfDoc) {
+          var blob = checkAccessibility(pdfDoc, item.file);
+          item.blob = blob;
+          item.status = 'done';
+          idx++;
+          next();
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file('accessibility_report_' + item.file.name.replace(/\.pdf$/i, '') + '.json', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) {
+          triggerDownload(zipBlob, 'accessibility_reports.zip');
+        });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, 'accessibility_report_' + item.file.name.replace(/\.pdf$/i, '') + '.json');
+        });
+      }
     });
   });
   </script>

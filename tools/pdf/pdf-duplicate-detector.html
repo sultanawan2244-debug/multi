@@ -29,7 +29,17 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -82,7 +92,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">🔁 Detect Duplicates</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Report</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -190,75 +200,104 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    let duplicateReport = null;
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var toolActions = document.getElementById('toolActions');
+    var duplicateResults = document.getElementById('duplicateResults');
+    var duplicateList = document.getElementById('duplicateList');
 
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileInfoContainer = document.getElementById('fileInfoContainer');
-    const errorContainer = document.getElementById('errorContainer');
-    const progressBar = document.getElementById('progressBar');
-    const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const duplicateResults = document.getElementById('duplicateResults');
-    const duplicateList = document.getElementById('duplicateList');
-
-    let isProcessing = false;
-
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
-      duplicateResults.style.display = 'none';
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Analyzing...' : (hasFiles ? '\uD83D\uDD04 Detect All' : (actionBtn.dataset.origText || '\uD83D\uDD01 Detect Duplicates'));
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
     }
 
-    actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
-      isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Analyzing...';
-
-      utils.simulateProgress('progressBar', 2000, function() {
-        try {
-          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-              detectDuplicates(pdfDoc);
-            });
-          });
-        } catch (err) {
-          utils.showError('errorContainer', 'Error: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = '🔁 Detect Duplicates';
-        }
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
       });
-    });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
+    }
 
-    function detectDuplicates(pdfDoc) {
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.pdf$/i, '') + '_duplicate_report.json');
+    }
+
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) { utils.showError("errorContainer", file.name + " is not a valid PDF file."); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList();
+      updateUI();
+    }
+
+    function detectDuplicates(pdfDoc, file) {
       var pages = pdfDoc.getPages();
       var pageData = [];
 
       for (var i = 0; i < pages.length; i++) {
         var size = pages[i].getSize();
         var rotation = pages[i].getRotation().angle;
-        pageData.push({
-          index: i + 1,
-          width: Math.round(size.width),
-          height: Math.round(size.height),
-          rotation: rotation,
-          key: Math.round(size.width) + 'x' + Math.round(size.height) + 'x' + rotation
-        });
+        pageData.push({ index: i + 1, width: Math.round(size.width), height: Math.round(size.height), rotation: rotation, key: Math.round(size.width) + 'x' + Math.round(size.height) + 'x' + rotation });
       }
 
       var groups = {};
@@ -271,79 +310,102 @@
       var duplicates = [];
       var keys = Object.keys(groups);
       for (var k = 0; k < keys.length; k++) {
-        if (groups[keys[k]].length > 1) {
-          duplicates.push({
-            key: keys[k],
-            pages: groups[keys[k]]
-          });
-        }
+        if (groups[keys[k]].length > 1) duplicates.push({ key: keys[k], pages: groups[keys[k]] });
       }
 
       var html = '';
       if (duplicates.length === 0) {
-        html = '<div style="background:#d4edda;color:#155724;padding:16px;border-radius:8px;"><strong>✅ No duplicate pages detected.</strong> All pages have unique dimensions.</div>';
+        html = '<div style="background:#d4edda;color:#155724;padding:16px;border-radius:8px;"><strong>\u2705 No duplicate pages detected.</strong> All pages have unique dimensions.</div>';
       } else {
-        html = '<div style="background:#f8d7da;color:#721c24;padding:16px;border-radius:8px;margin-bottom:16px;"><strong>⚠️ Found ' + duplicates.length + ' group(s) of potential duplicates.</strong></div>';
+        html = '<div style="background:#f8d7da;color:#721c24;padding:16px;border-radius:8px;margin-bottom:16px;"><strong>\u26A0\uFE0F Found ' + duplicates.length + ' group(s) of potential duplicates.</strong></div>';
         html += '<table style="width:100%;border-collapse:collapse;">';
         html += '<thead><tr style="background:var(--primary);color:#fff;">';
-        html += '<th style="padding:10px;text-align:left;">Group</th>';
-        html += '<th style="padding:10px;text-align:left;">Dimensions</th>';
-        html += '<th style="padding:10px;text-align:left;">Duplicate Pages</th>';
+        html += '<th style="padding:10px;text-align:left;">Group</th><th style="padding:10px;text-align:left;">Dimensions</th><th style="padding:10px;text-align:left;">Duplicate Pages</th>';
         html += '</tr></thead><tbody>';
-
         for (var m = 0; m < duplicates.length; m++) {
           var dup = duplicates[m];
           var bgColor = m % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
           html += '<tr style="background:' + bgColor + ';">';
           html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">#' + (m + 1) + '</td>';
-          html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + dup.key.replace('x', ' × ') + '</td>';
-          html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);font-weight:600;">' + dup.pages.map(function(p) { return 'Page ' + p; }).join(', ') + '</td>';
-          html += '</tr>';
+          html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + dup.key.replace('x', ' \u00D7 ') + '</td>';
+          html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);font-weight:600;">' + dup.pages.map(function(p) { return 'Page ' + p; }).join(', ') + '</td></tr>';
         }
-
         html += '</tbody></table>';
       }
 
       html += '<div style="margin-top:16px;background:var(--bg-primary);border-radius:8px;padding:16px;">';
-      html += '<p><strong>Summary:</strong></p>';
-      html += '<p>Total Pages: ' + pages.length + '</p>';
-      html += '<p>Unique Page Types: ' + keys.length + '</p>';
-      html += '<p>Duplicate Groups: ' + duplicates.length + '</p>';
-      html += '</div>';
+      html += '<p><strong>Summary:</strong></p><p>Total Pages: ' + pages.length + '</p><p>Unique Page Types: ' + keys.length + '</p><p>Duplicate Groups: ' + duplicates.length + '</p></div>';
 
       duplicateList.innerHTML = html;
       duplicateResults.style.display = 'block';
 
-      duplicateReport = {
-        fileName: loadedFile.name,
-        fileSize: loadedFile.size,
-        totalPages: pages.length,
+      var report = {
+        fileName: file.name, fileSize: file.size, totalPages: pages.length,
         uniqueTypes: keys.length,
-        duplicateGroups: duplicates.map(function(d) {
-          return { dimensionKey: d.key, pages: d.pages };
-        }),
+        duplicateGroups: duplicates.map(function(d) { return { dimensionKey: d.key, pages: d.pages }; }),
         timestamp: new Date().toISOString()
       };
 
-      downloadBtn.style.display = 'inline-flex';
-      utils.hideProgress('progressBar');
-      utils.showSuccess('fileInfoContainer', 'Analysis complete. ' + duplicates.length + ' duplicate group(s) found.');
-      isProcessing = false;
-      actionBtn.disabled = false;
-      actionBtn.textContent = '🔁 Detect Duplicates';
+      return new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
     }
 
-    downloadBtn.addEventListener('click', function() {
-      if (!duplicateReport) return;
-      var json = JSON.stringify(duplicateReport, null, 2);
-      var blob = new Blob([json], { type: 'application/json' });
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement('a');
-      link.href = url;
-      link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_duplicate_report.json';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
+      isProcessing = true;
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All files analyzed!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
+        }
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+          return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+        }).then(function(pdfDoc) {
+          var blob = detectDuplicates(pdfDoc, item.file);
+          item.blob = blob;
+          item.status = 'done';
+          idx++;
+          next();
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.pdf$/i, '') + '_duplicate_report.json', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) {
+          triggerDownload(zipBlob, 'duplicate_reports.zip');
+        });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.pdf$/i, '') + '_duplicate_report.json');
+        });
+      }
     });
   });
   </script>

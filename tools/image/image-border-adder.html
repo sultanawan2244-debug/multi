@@ -17,6 +17,16 @@
   <link rel="stylesheet" href="../../assets/css/animations.css">
   <link rel="stylesheet" href="../../assets/css/tool-page.css">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Border Adder Online Free","url":"https://alitoolscompany.com/tools/image/image-border-adder.html","description":"Free online browser-based image border tool. Add custom borders to images without uploading.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -42,10 +52,10 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file" multiple>
             <div class="drop-icon">📁</div>
-            <p>Drag & drop an image here or click to browse</p>
-            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <p>Drag & drop image files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP (multiple files)</p>
             <div class="drop-text">Drop here!</div>
           </div>
           <div id="fileInfoContainer"></div>
@@ -84,6 +94,7 @@
           </div>
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="applyBtn">🖼️ Add Border</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">?? Download All as ZIP</button>
             <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Image</button>
           </div>
         </div>
@@ -181,93 +192,172 @@
   <script src="../../assets/js/animations.js" defer></script>
   <script src="../../assets/js/tool-utils.js" defer></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let originalImage = null;
-    const ids = ['dropZone','fileInput','fileInfoContainer','errorContainer','toolControls','toolActions','previewArea','originalPreview','borderedPreview','borderWidth','borderColor','borderRadius','applyBtn','downloadBtn','progressBar'];
-    const el = {}; ids.forEach(function(id) { el[id] = document.getElementById(id); });
-    let isProcessing = false;
-    utils.initDropZone('dropZone', function(file) { handleFile(file); });
-    el.fileInput.addEventListener('change', function() { if (this.files && this.files[0]) handleFile(this.files[0]); });
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) { utils.showError('errorContainer', 'Please select a valid file type.'); return; }
-      el.errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      el.toolControls.style.display = 'block';
-      el.toolActions.style.display = 'flex';
-      el.downloadBtn.style.display = 'none';
-      utils.loadImage(file).then(function(result) {
-        originalImage = result.image;
-        el.originalPreview.src = result.dataUrl;
-        el.originalPreview.style.display = 'block';
-        el.previewArea.classList.add('show');
-      }).catch(function() { utils.showError('errorContainer', 'Failed to load image.'); });
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var toolActions = document.getElementById('toolActions');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var actionBtn = document.getElementById('applyBtn');
+    var progressBar = document.getElementById('progressBar');
+    var toolControls = document.getElementById('toolControls');
+    var previewArea = document.getElementById('previewArea');
+    var originalPreview = document.getElementById('originalPreview');
+    var downloadBtn = document.getElementById('downloadBtn');
+
+    function dataURLToBlob(dataUrl) {
+      var parts = dataUrl.split(','); var mime = parts[0].match(/:(.*?);/)[1];
+      var bytes = atob(parts[1]); var ab = new ArrayBuffer(bytes.length);
+      var ia = new Uint8Array(ab); for (var i = 0; i < bytes.length; i++) ia[i] = bytes.charCodeAt(i);
+      return new Blob([ab], { type: mime });
     }
-    el.applyBtn.addEventListener('click', function() {
-      if (!originalImage || isProcessing) return;
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Applying...' : (hasFiles ? '\uD83D\uDD04 Add Border All' : 'Add Border');
+      if (downloadBtn) downloadBtn.style.display = 'none';
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
+    }
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
+      });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
+    }
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.png');
+    }
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a'); link.href = url; link.download = filename;
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+    function addFiles(files) {
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!file.type.startsWith('image/')) { utils.showError('errorContainer', file.name + ' is not a supported image file.'); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList(); updateUI();
+    }
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      el.applyBtn.disabled = true;
-      el.applyBtn.textContent = '⏳ Adding Border...';
-      el.downloadBtn.style.display = 'none';
-      utils.simulateProgress('progressBar', 600, function() {
-        try {
-          var bw = parseInt(el.borderWidth.value) || 20;
-          var color = el.borderColor.value || '#ffffff';
-          var radius = parseInt(el.borderRadius.value) || 0;
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      if (previewArea) previewArea.classList.remove('show');
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All images processed!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
+        }
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadImage(item.file).then(function(result) {
+          var originalImage = result.image;
+          var originalDataUrl = result.dataUrl;
+          if (originalPreview) { originalPreview.src = originalDataUrl; originalPreview.style.display = 'block'; }
+          if (previewArea) previewArea.classList.add('show');
+                    var borderWidth = document.getElementById('borderWidth'); var borderColor = document.getElementById('borderColor');
+          var borderRadius = document.getElementById('borderRadius'); var borderedPreview = document.getElementById('borderedPreview');
+          var bw = borderWidth ? parseInt(borderWidth.value) : 10;
+          var bc = borderColor ? borderColor.value : '#ffffff';
+          var br = borderRadius ? parseInt(borderRadius.value) : 0;
           var canvas = document.createElement('canvas');
-          canvas.width = originalImage.width + bw * 2;
-          canvas.height = originalImage.height + bw * 2;
+          canvas.width = originalImage.width + bw * 2; canvas.height = originalImage.height + bw * 2;
           var ctx = canvas.getContext('2d');
-          ctx.fillStyle = color;
-          if (radius > 0) {
-            ctx.beginPath();
-            ctx.moveTo(radius, 0);
-            ctx.lineTo(canvas.width - radius, 0);
-            ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
-            ctx.lineTo(canvas.width, canvas.height - radius);
-            ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
-            ctx.lineTo(radius, canvas.height);
-            ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
-            ctx.lineTo(0, radius);
-            ctx.quadraticCurveTo(0, 0, radius, 0);
-            ctx.closePath();
-            ctx.fill();
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(radius + 1, bw + 1);
-            ctx.lineTo(canvas.width - radius - 1, bw + 1);
-            ctx.quadraticCurveTo(canvas.width - bw - 1, bw + 1, canvas.width - bw - 1, radius + 1);
-            ctx.lineTo(canvas.width - bw - 1, canvas.height - radius - 1);
-            ctx.quadraticCurveTo(canvas.width - bw - 1, canvas.height - bw - 1, canvas.width - radius - 1, canvas.height - bw - 1);
-            ctx.lineTo(bw + radius + 1, canvas.height - bw - 1);
-            ctx.quadraticCurveTo(bw + 1, canvas.height - bw - 1, bw + 1, canvas.height - radius - 1);
-            ctx.lineTo(bw + 1, bw + radius + 1);
-            ctx.quadraticCurveTo(bw + 1, bw + 1, bw + radius + 1, bw + 1);
-            ctx.closePath();
-            ctx.clip();
-            ctx.drawImage(originalImage, bw, bw);
-            ctx.restore();
+          if (br > 0) {
+            ctx.beginPath(); ctx.moveTo(br, 0); ctx.lineTo(canvas.width - br, 0); ctx.quadraticCurveTo(canvas.width, 0, canvas.width, br);
+            ctx.lineTo(canvas.width, canvas.height - br); ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - br, canvas.height);
+            ctx.lineTo(br, canvas.height); ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - br);
+            ctx.lineTo(0, br); ctx.quadraticCurveTo(0, 0, br, 0); ctx.closePath();
+            ctx.fillStyle = bc; ctx.fill();
+            ctx.save(); ctx.beginPath(); ctx.rect(bw, bw, originalImage.width, originalImage.height); ctx.clip();
+            ctx.drawImage(originalImage, bw, bw); ctx.restore();
           } else {
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bc; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(originalImage, bw, bw);
           }
-          var dataUrl = canvas.toDataURL('image/png');
-          el.borderedPreview.src = dataUrl;
-          el.borderedPreview.style.display = 'block';
-          el.downloadBtn.onclick = function() {
-            var name = el.fileInput.files && el.fileInput.files[0] ? el.fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
-            utils.triggerDownload(dataUrl, name + '_bordered.png');
-          };
-          el.downloadBtn.style.display = 'inline-flex';
-          utils.hideProgress('progressBar');
-          utils.showSuccess('fileInfoContainer', 'Border added successfully!');
-        } catch (err) { utils.showError('errorContainer', 'Error: ' + err.message); }
-        isProcessing = false;
-        el.applyBtn.disabled = false;
-        el.applyBtn.textContent = '🖼️ Add Border';
-      });
+          canvas.toBlob(function(blob) {
+            if (borderedPreview) { borderedPreview.src = URL.createObjectURL(blob); borderedPreview.style.display = 'block'; }
+            item.blob = blob; item.status = 'done'; idx++; next();
+          }, 'image/png');
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.[^.]+$/, '') + '.png', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) { triggerDownload(zipBlob, 'processed_images.zip'); });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.png');
+        });
+      }
     });
   });
-  </script>
+</script>
 </body>
 </html>

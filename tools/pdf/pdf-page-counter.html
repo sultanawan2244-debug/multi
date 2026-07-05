@@ -29,7 +29,8 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -79,7 +80,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Count Pages</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download PDF</button>
+            <button class="btn btn-success" <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>id="downloadBtn" style="display:none;">⬇️ Download PDF</button>
           </div>
         </div>
       </div>

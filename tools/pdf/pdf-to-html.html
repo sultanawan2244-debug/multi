@@ -31,7 +31,17 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -59,7 +69,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
@@ -79,7 +89,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Convert to HTML</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download HTML File</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -214,125 +224,201 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
+    var filesList = [];
+    var isProcessing = false;
 
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
-    const fileInfoContainer = document.getElementById('fileInfoContainer');
     const errorContainer = document.getElementById('errorContainer');
     const progressBar = document.getElementById('progressBar');
     const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
     const htmlOutput = document.getElementById('htmlOutput');
     const outputGroup = document.getElementById('outputGroup');
-
-    let isProcessing = false;
 
     function escapeHtml(str) {
       return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    utils.initDropZone('dropZone', handleFile);
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById('toolActions').style.display = 'flex';
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === 'done'; });
+      downloadAllBtn.style.display = hasCompleted ? 'inline-flex' : 'none';
+      actionBtn.style.display = filesList.some(function(f) { return f.status === 'pending'; }) ? 'inline-flex' : 'none';
+    }
+
+    function renderFileList() {
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === 'done' ? '\u2705' : (f.status === 'error' ? '\u274C' : '\u23F3');
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + '...';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + '</span>';
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + '</span>';
+        if (f.status === 'done') {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">\u2B07\uFE0F Download</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">\u2715</button>';
+        html += '</div>';
+      }
+      document.getElementById('fileInfoContainer').innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.blob) triggerDownload(item.blob, item.outputName || item.file.name);
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
+    dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
     fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = '';
     });
 
-    function handleFile(file) {
-      if (!file.type.match('application/pdf')) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
+    function addFiles(files) {
       errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
       outputGroup.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!file.type.match('application/pdf')) {
+          utils.showError('errorContainer', 'Skipped: ' + file.name + ' - not a valid PDF file.');
+          continue;
+        }
+        filesList.push({ file: file, status: 'pending', blob: null, outputName: null });
+      }
+      renderFileList();
+      updateUI();
     }
 
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing) return;
       isProcessing = true;
       actionBtn.disabled = true;
-      actionBtn.textContent = '⌛ Converting...';
-      downloadBtn.style.display = 'none';
-      outputGroup.style.display = 'none';
+      next();
+    });
 
-      utils.simulateProgress('progressBar', 2000, function() {
-        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-          var pdfData = new Uint8Array(buffer);
-          pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
-            var totalPages = pdf.numPages;
-            var pagePromises = [];
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === 'pending') {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === -1) {
+        isProcessing = false;
+        actionBtn.disabled = false;
+        utils.hideProgress('progressBar');
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = 'processing';
+      renderFileList();
+      utils.showProgress('progressBar');
 
-            for (var i = 1; i <= totalPages; i++) {
-              (function(pageNum) {
-                pagePromises.push(pdf.getPage(pageNum).then(function(page) {
-                  return page.getTextContent().then(function(textContent) {
-                    var text = textContent.items.map(function(item) { return item.str; }).join(' ');
-                    return { pageNum: pageNum, text: text };
-                  });
-                }));
-              })(i);
+      utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+        var pdfData = new Uint8Array(buffer);
+        return pdfjsLib.getDocument({ data: pdfData }).promise;
+      }).then(function(pdf) {
+        var totalPages = pdf.numPages;
+        var pagePromises = [];
+
+        for (var i = 1; i <= totalPages; i++) {
+          (function(pageNum) {
+            pagePromises.push(pdf.getPage(pageNum).then(function(page) {
+              return page.getTextContent().then(function(textContent) {
+                var text = textContent.items.map(function(item) { return item.str; }).join(' ');
+                return { pageNum: pageNum, text: text };
+              });
+            }));
+          })(i);
+        }
+
+        return Promise.all(pagePromises).then(function(pages) {
+          var htmlParts = [];
+          htmlParts.push('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Converted from ' + escapeHtml(item.file.name) + '</title><style>body{font-family:Georgia,serif;line-height:1.6;max-width:800px;margin:2em auto;padding:0 20px;color:#333;}h1{color:#2c3e50;border-bottom:2px solid #3498db;padding-bottom:10px;}.page-break{text-align:center;color:#95a5a6;font-size:0.9em;margin:2em 0;border-top:1px dashed #bdc3c7;padding-top:1em;}</style></head><body>');
+          htmlParts.push('<h1>Converted from ' + escapeHtml(item.file.name) + '</h1>');
+          htmlParts.push('<p><em>Total pages: ' + totalPages + '</em></p>');
+
+          for (var p = 0; p < pages.length; p++) {
+            if (p > 0) {
+              htmlParts.push('<div class="page-break">\u2014 Page ' + pages[p].pageNum + ' \u2014</div>');
             }
-
-            Promise.all(pagePromises).then(function(pages) {
-              var htmlParts = [];
-              htmlParts.push('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Converted from ' + escapeHtml(loadedFile.name) + '</title><style>body{font-family:Georgia,serif;line-height:1.6;max-width:800px;margin:0 auto;padding:20px;color:#333}h1{font-size:24px;border-bottom:2px solid #333;padding-bottom:8px}.page-break{border-top:1px dashed #999;margin:30px 0;padding-top:10px;font-size:12px;color:#999;text-align:center}p{margin:12px 0}</style></head><body>');
-              htmlParts.push('<h1>Converted from ' + escapeHtml(loadedFile.name) + '</h1>');
-              htmlParts.push('<p><em>Total pages: ' + totalPages + '</em></p>');
-
-              for (var p = 0; p < pages.length; p++) {
-                if (p > 0) {
-                  htmlParts.push('<div class="page-break">— Page ' + pages[p].pageNum + ' —</div>');
-                }
-                var paragraphs = pages[p].text.split(/\n+/);
-                for (var j = 0; j < paragraphs.length; j++) {
-                  var para = paragraphs[j].trim();
-                  if (para.length > 0) {
-                    htmlParts.push('<p>' + escapeHtml(para) + '</p>');
-                  }
-                }
+            var paragraphs = pages[p].text.split(/\n+/);
+            for (var j = 0; j < paragraphs.length; j++) {
+              var para = paragraphs[j].trim();
+              if (para.length > 0) {
+                htmlParts.push('<p>' + escapeHtml(para) + '</p>');
               }
-              htmlParts.push('</body></html>');
+            }
+          }
+          htmlParts.push('</body></html>');
 
-              var htmlContent = htmlParts.join('\n');
-              htmlOutput.value = htmlContent;
-              outputGroup.style.display = 'block';
+          var htmlContent = htmlParts.join('\n');
+          htmlOutput.value = htmlContent;
+          outputGroup.style.display = 'block';
 
-              utils.hideProgress('progressBar');
-              utils.showSuccess('fileInfoContainer', 'Converted ' + totalPages + ' page(s) to HTML successfully!');
-
-              downloadBtn.onclick = function() {
-                var blob = new Blob([htmlContent], { type: 'text/html' });
-                var url = URL.createObjectURL(blob);
-                var link = document.createElement('a');
-                link.href = url;
-                link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_converted.html';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-              };
-              downloadBtn.style.display = 'inline-flex';
-              isProcessing = false;
-              actionBtn.disabled = false;
-              actionBtn.textContent = 'Convert to HTML';
-            });
-          }).catch(function(err) {
-            utils.showError('errorContainer', 'Error converting PDF: ' + err.message);
-            isProcessing = false;
-            actionBtn.disabled = false;
-            actionBtn.textContent = 'Convert to HTML';
-            utils.hideProgress('progressBar');
-          });
-        }).catch(function(err) {
-          utils.showError('errorContainer', 'Error reading file: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Convert to HTML';
-          utils.hideProgress('progressBar');
+          var blob = new Blob([htmlContent], { type: 'text/html' });
+          item.blob = blob;
+          item.outputName = item.file.name.replace(/\.pdf$/i, '') + '_converted.html';
+          item.status = 'done';
+          renderFileList();
+          updateUI();
+          idx++;
+          next();
         });
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error: ' + err.message);
+        item.status = 'error';
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      });
+    }
+
+    downloadAllBtn.addEventListener('click', function() {
+      if (typeof JSZip === 'undefined') {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === 'done' && filesList[i].blob) downloadSingle(i);
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === 'done' && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        triggerDownload(content, 'converted_files.zip');
       });
     });
   });

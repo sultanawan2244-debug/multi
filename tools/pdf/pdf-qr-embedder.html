@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="../../assets/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF QR Embedder Online Free � Embed QR Codes in PDF | Ali Tools Company</title>
+  <title>PDF QR Embedder Online Free — Embed QR Codes in PDF | Ali Tools Company</title>
   <meta name="description" content="Embed QR codes in PDF online free. Add QR codes to PDF documents. No upload needed.">
   <meta name="keywords" content="PDF QR Embedder, pdf qr embedder online, free pdf qr embedder, add qr to pdf, pdf tools">
   <link rel="canonical" href="https://alitoolscompany.com/tools/pdf/pdf-qr-embedder.html">
-  <meta property="og:title" content="PDF QR Embedder Online Free � Embed QR Codes in PDF">
+  <meta property="og:title" content="PDF QR Embedder Online Free — Embed QR Codes in PDF">
   <meta property="og:description" content="Embed QR codes in PDF online free. Add QR codes to PDF documents. No upload needed.">
   <meta property="og:type" content="website">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" as="style">
@@ -31,7 +31,17 @@
   </script>
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script src="https://unpkg.com/qrcode-generator@1.4.4/qrcode.min.js"></script>
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -42,22 +52,22 @@
       </div>
     </nav>
     <section class="tool-page-hero scroll-animate fade-in-up">
-      <div class="tool-page-icon">??</div>
+      <div class="tool-page-icon">📱</div>
       <h1>PDF QR Embedder</h1>
       <p>PDF QR Embedder Online Free - No Upload, No Watermark, Works in Browser</p>
       <div class="feature-badges" style="justify-content:center;">
-        <span class="feature-badge">? Free</span>
-        <span class="feature-badge">? No Sign-Up</span>
-        <span class="feature-badge">? Secure</span>
-        <span class="feature-badge">? Fast</span>
+        <span class="feature-badge">✅ Free</span>
+        <span class="feature-badge">✅ No Sign-Up</span>
+        <span class="feature-badge">✅ Secure</span>
+        <span class="feature-badge">✅ Fast</span>
       </div>
     </section>
     <section class="tool-interface">
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
-            <div class="drop-icon">??</div>
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
+            <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
             <div class="drop-text">Drop here!</div>
@@ -94,8 +104,8 @@
             </div>
           </div>
           <div class="tool-actions" id="toolActions" style="display:none;">
-            <button class="btn btn-primary" id="actionBtn">?? Embed QR Code</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">?? Download PDF with QR</button>
+            <button class="btn btn-primary" id="actionBtn">📱 Embed QR Code</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -114,9 +124,9 @@
       <div class="container">
         <h2 class="scroll-animate fade-in-up" style="margin-bottom:32px;text-align:center;">Why Use Our PDF QR Embedder?</h2>
         <div class="features-grid">
-          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">?</div><h4>Fast</h4><p>Embed QR codes instantly in your browser.</p></div>
-          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">??</div><h4>Secure</h4><p>Your PDF never leaves your device.</p></div>
-          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">??</div><h4>Customizable</h4><p>Position, size, and content fully configurable.</p></div>
+          <div class="feature-card scroll-animate fade-in-up"><div class="feature-icon">⚡</div><h4>Fast</h4><p>Embed QR codes instantly in your browser.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-1"><div class="feature-icon">🔒</div><h4>Secure</h4><p>Your PDF never leaves your device.</p></div>
+          <div class="feature-card scroll-animate fade-in-up stagger-delay-2"><div class="feature-icon">🎨</div><h4>Customizable</h4><p>Position, size, and content fully configurable.</p></div>
         </div>
       </div>
     </section>
@@ -133,9 +143,9 @@
         </ul>
         <h2>Related Tools</h2>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
-          <a href="pdf-watermark.html" class="tool-card"><div class="card-icon">??</div><h3>PDF Watermark</h3><p>Add watermarks to PDF.</p><span class="card-link">Use Tool ?</span></a>
-          <a href="pdf-signature-block.html" class="tool-card"><div class="card-icon">??</div><h3>PDF Signature Block</h3><p>Add signature blocks to PDF.</p><span class="card-link">Use Tool ?</span></a>
-          <a href="pdf-header-footer.html" class="tool-card"><div class="card-icon">??</div><h3>PDF Header Footer</h3><p>Add headers and footers.</p><span class="card-link">Use Tool ?</span></a>
+          <a href="pdf-watermark.html" class="tool-card"><div class="card-icon">💧</div><h3>PDF Watermark</h3><p>Add watermarks to PDF.</p><span class="card-link">Use Tool →</span></a>
+          <a href="pdf-signature-block.html" class="tool-card"><div class="card-icon">✍️</div><h3>PDF Signature Block</h3><p>Add signature blocks to PDF.</p><span class="card-link">Use Tool →</span></a>
+          <a href="pdf-header-footer.html" class="tool-card"><div class="card-icon">📐</div><h3>PDF Header Footer</h3><p>Add headers and footers.</p><span class="card-link">Use Tool →</span></a>
         </div>
       </div>
     </section>
@@ -146,7 +156,246 @@
   <script src="../../assets/js/animations.js" defer></script>
   <script src="../../assets/js/tool-utils.js" defer></script>
   <script>
-  document.addEventListener("DOMContentLoaded",function(){var e=window.AlToolsUtils,t=null,n=null,o=document.getElementById("dropZone"),i=document.getElementById("fileInput"),a=document.getElementById("fileInfoContainer"),r=document.getElementById("errorContainer"),l=document.getElementById("progressBar"),s=document.getElementById("actionBtn"),c=document.getElementById("downloadBtn"),d=document.getElementById("qrControls"),u=document.getElementById("qrText"),p=document.getElementById("qrPage"),g=document.getElementById("qrPosition"),f=document.getElementById("qrSize"),m=document.getElementById("qrSizeValue"),h=document.getElementById("qrPreview"),b=!1;e.initDropZone("dropZone",(function(e){v(e)})),i.addEventListener("change",(function(){this.files&&this.files[0]&&v(this.files[0])})),f.addEventListener("input",(function(){m.textContent=this.value,y()}));function y(){var e=u.value.trim();if(e){var t=document.createElement("div"),n=qrcode(0,"M");n.addData(e),n.make(),t.innerHTML=n.createImgTag(4,0);var o=t.querySelector("img");o&&(o.style.width="100px",o.style.height="100px",h.innerHTML="",h.appendChild(o))}}u.addEventListener("input",y);function v(n){e.validateFileType(n)?(r.innerHTML="",e.showFileInfo("fileInfoContainer",n),t=n,document.getElementById("toolActions").style.display="flex",c.style.display="none",d.style.display="block",e.loadFileAsArrayBuffer(n).then((function(e){PDFLib.PDFDocument.load(e,{ignoreEncryption:!0}).then((function(e){n=e;var t=e.getPages();p.innerHTML="";for(var o=0;o<t.length;o++){var i=document.createElement("option");i.value=o,i.textContent="Page "+(o+1),p.appendChild(i)}y()}))}))):e.showError("errorContainer","Please select a valid PDF file.")}s.addEventListener("click",(function(){if(t&&n&&!b){var o=u.value.trim();if(!o)return void e.showError("errorContainer","Please enter QR code content.");b=!0,s.disabled=!0,s.textContent="? Embedding...",c.style.display="none",e.simulateProgress("progressBar",2e3,(function(){!function(){var e=parseInt(p.value),t=n.getPages()[e],i=n.getPages()[e].getSize(),a=document.createElement("div"),r=qrcode(0,"M");r.addData(u.value.trim()),r.make(),a.innerHTML=r.createImgTag(6,0);var l=a.querySelector("img"),s=l.src.split(",")[1],c=Uint8Array.from(atob(s),function(e){return e.charCodeAt(0)}),d=n.embedPng(c),f=parseInt(f.value),m=g.value,h=20,b=20;m.indexOf("right")>-1?h=i.width-f-20:m.indexOf("left")>-1&&(h=20),m.indexOf("bottom")>-1?b=20:b=i.height-f-20,t.drawImage(d,{x:h,y:b-f,width:f,height:f}),n.save().then((function(n){var o=new Blob([n],{type:"application/pdf"}),i=URL.createObjectURL(o);c.onclick=function(){var e=document.createElement("a");e.href=i,e.download=t.name.replace(/\.pdf$/i,"")+"_with_qr.pdf",document.body.appendChild(e),e.click(),document.body.removeChild(e)},c.style.display="inline-flex",e.hideProgress("progressBar"),e.showSuccess("fileInfoContainer","QR code embedded successfully!"),b=!1,s.disabled=!1,s.textContent="?? Embed QR Code"}))}()}))}}))});
+  document.addEventListener("DOMContentLoaded", function() {
+    const utils = window.AlToolsUtils;
+    var filesList = [];
+    var isProcessing = false;
+
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const fileInfoContainer = document.getElementById("fileInfoContainer");
+    const errorContainer = document.getElementById("errorContainer");
+    const progressBar = document.getElementById("progressBar");
+    const actionBtn = document.getElementById("actionBtn");
+    const downloadAllBtn = document.getElementById("downloadAllBtn");
+    const qrControls = document.getElementById("qrControls");
+    const qrText = document.getElementById("qrText");
+    const qrPage = document.getElementById("qrPage");
+    const qrPosition = document.getElementById("qrPosition");
+    const qrSize = document.getElementById("qrSize");
+    const qrSizeValue = document.getElementById("qrSizeValue");
+    const qrPreview = document.getElementById("qrPreview");
+
+    qrSize.addEventListener("input", function() {
+      qrSizeValue.textContent = this.value;
+      updateQRPreview();
+    });
+
+    function updateQRPreview() {
+      var text = qrText.value.trim();
+      if (text) {
+        var div = document.createElement("div");
+        var qr = qrcode(0, "M");
+        qr.addData(text);
+        qr.make();
+        div.innerHTML = qr.createImgTag(4, 0);
+        var img = div.querySelector("img");
+        if (img) {
+          img.style.width = "100px";
+          img.style.height = "100px";
+          qrPreview.innerHTML = "";
+          qrPreview.appendChild(img);
+        }
+      }
+    }
+    qrText.addEventListener("input", updateQRPreview);
+
+    dropZone.addEventListener("dragover", function(e) { e.preventDefault(); dropZone.classList.add("drag-over"); });
+    dropZone.addEventListener("dragleave", function() { dropZone.classList.remove("drag-over"); });
+    dropZone.addEventListener("drop", function(e) {
+      e.preventDefault();
+      dropZone.classList.remove("drag-over");
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener("change", function() {
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = "";
+    });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = "";
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError("errorContainer", "Skipped: " + file.name + " - not a valid PDF file.");
+          continue;
+        }
+        filesList.push({ file: file, status: "pending", blob: null, outputName: null });
+      }
+      renderFileList();
+      updateUI();
+    }
+
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById("toolActions").style.display = "flex";
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === "done"; });
+      downloadAllBtn.style.display = hasCompleted ? "inline-flex" : "none";
+      actionBtn.style.display = filesList.some(function(f) { return f.status === "pending"; }) ? "inline-flex" : "none";
+    }
+
+    function renderFileList() {
+      var html = "";
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === "done" ? "✅" : (f.status === "error" ? "❌" : "⏳");
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + "...";
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + "</span>";
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + "</span>";
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + "</span>";
+        if (f.status === "done") {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">⬇️ Download</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">✕</button>';
+        html += "</div>";
+      }
+      document.getElementById("fileInfoContainer").innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.blob) window.triggerDownload(item.blob, item.outputName || item.file.name);
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
+    actionBtn.addEventListener("click", function() {
+      if (isProcessing) return;
+      var text = qrText.value.trim();
+      if (!text) {
+        utils.showError("errorContainer", "Please enter QR code content.");
+        return;
+      }
+      isProcessing = true;
+      actionBtn.disabled = true;
+      qrControls.style.display = "block";
+      next();
+    });
+
+    function embedQR(item) {
+      var text = qrText.value.trim();
+      var pageIdx = parseInt(qrPage.value);
+      var pos = qrPosition.value;
+      var qrSizeVal = parseInt(qrSize.value);
+
+      return utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+        return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+          var pages = pdfDoc.getPages();
+          qrPage.innerHTML = "";
+          for (var i = 0; i < pages.length; i++) {
+            var opt = document.createElement("option");
+            opt.value = i;
+            opt.textContent = "Page " + (i + 1);
+            qrPage.appendChild(opt);
+          }
+          if (pageIdx >= pages.length) pageIdx = 0;
+
+          var page = pages[pageIdx];
+          var size = page.getSize();
+
+          var div = document.createElement("div");
+          var qr = qrcode(0, "M");
+          qr.addData(text);
+          qr.make();
+          div.innerHTML = qr.createImgTag(6, 0);
+          var imgEl = div.querySelector("img");
+          var b64 = imgEl.src.split(",")[1];
+          var imageBytes = Uint8Array.from(atob(b64), function(c) { return c.charCodeAt(0); });
+          var pngImage = pdfDoc.embedPng(imageBytes);
+
+          var x = 20;
+          var y = 20;
+          if (pos.indexOf("right") > -1) x = size.width - qrSizeVal - 20;
+          if (pos.indexOf("bottom") > -1) y = 20;
+          else y = size.height - qrSizeVal;
+
+          page.drawImage(pngImage, {
+            x: x,
+            y: y,
+            width: qrSizeVal,
+            height: qrSizeVal
+          });
+
+          return pdfDoc.save().then(function(bytes) {
+            var blob = new Blob([bytes], { type: "application/pdf" });
+            item.blob = blob;
+            item.outputName = item.file.name.replace(/\.pdf$/i, "") + "_with_qr.pdf";
+            item.status = "done";
+          });
+        });
+      });
+    }
+
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === "pending") {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === -1) {
+        isProcessing = false;
+        actionBtn.disabled = false;
+        utils.hideProgress("progressBar");
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = "processing";
+      renderFileList();
+
+      embedQR(item).then(function() {
+        utils.hideProgress("progressBar");
+        utils.showSuccess("fileInfoContainer", item.file.name + " — QR code embedded successfully!");
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      }).catch(function(err) {
+        utils.showError("errorContainer", "Error processing " + item.file.name + ": " + err.message);
+        item.status = "error";
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      });
+    }
+
+    downloadAllBtn.addEventListener("click", function() {
+      if (typeof JSZip === "undefined") {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === "done" && filesList[i].blob) window.downloadSingle(i);
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === "done" && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: "blob" }).then(function(content) {
+        window.triggerDownload(content, "qr_embedded_files.zip");
+      });
+    });
+  });
   </script>
 </body>
 </html>

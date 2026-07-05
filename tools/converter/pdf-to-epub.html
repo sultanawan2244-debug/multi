@@ -59,9 +59,9 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose PDF file files" multiple>
             <div class="drop-icon">📁</div>
-            <p>Drag & drop your PDF file here or click to browse</p>
+            <p>Drag & drop your PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
             <div class="drop-text">Drop here!</div>
           </div>
@@ -76,6 +76,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Convert</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">?? Download All as ZIP</button>
             <button class="btn btn-success" id="downloadBtn" style="display:none;">Download EPUB</button>
           </div>
         </div>
@@ -219,60 +220,125 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const errorContainer = document.getElementById('errorContainer');
-    const progressBar = document.getElementById('progressBar');
-    const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    let isProcessing = false;
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var toolActions = document.getElementById('toolActions');
 
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid file type.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Converting...' : (hasFiles ? '\uD83D\uDD04 Convert All' : (actionBtn.dataset.origText || 'Convert'));
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
     }
 
-    function setupDownload(blob, filename) {
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          downloadSingle(parseInt(this.dataset.idx));
+        });
+      });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
+    }
+
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.epub');
+    }
+
+    function triggerDownload(blob, filename) {
       var url = URL.createObjectURL(blob);
-      downloadBtn.onclick = function() {
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
-      downloadBtn.style.display = 'inline-flex';
-      utils.hideProgress('progressBar');
-      utils.showSuccess('fileInfoContainer', 'Conversion complete! Click download to save.');
-      isProcessing = false;
-      actionBtn.disabled = false;
-      actionBtn.textContent = 'Convert';
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError('errorContainer', 'Please select a valid file type.');
+          continue;
+        }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList();
+      updateUI();
     }
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = 'Converting...';
-      downloadBtn.style.display = 'none';
-      utils.simulateProgress('progressBar', 3000, function() {
-        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All files converted successfully!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
+        }
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
           var data = new Uint8Array(buffer);
           return pdfjsLib.getDocument({ data: data }).promise.then(function(pdf) {
             var numPages = pdf.numPages;
@@ -288,35 +354,49 @@
               var zip = new JSZip();
               zip.file('mimetype', 'application/epub+zip');
               zip.folder('META-INF').file('container.xml', '<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>');
-              var chapterFiles = pageTexts.map(function(text, idx) {
-                var num = idx + 1;
-                var body = '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Page ' + num + '</title></head><body><h1>Page ' + num + '</h1><p>' + text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p></body></html>';
+              var chapterFiles = pageTexts.map(function(text, pidx) {
+                var num = pidx + 1;
+                var escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                var body = '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Page ' + num + '</title></head><body><h1>Page ' + num + '</h1><p>' + escaped + '</p></body></html>';
                 var filename = 'chapter' + num + '.xhtml';
                 zip.folder('OEBPS').file(filename, body);
                 return { id: 'chapter' + num, href: filename };
               });
-              var manifest = chapterFiles.map(function(f) {
-                return '<item id="' + f.id + '" href="' + f.href + '" media-type="application/xhtml+xml"/>';
-              }).join('');
-              var spine = chapterFiles.map(function(f) {
-                return '<itemref idref="' + f.id + '"/>';
-              }).join('');
+              var manifest = chapterFiles.map(function(f) { return '<item id="' + f.id + '" href="' + f.href + '" media-type="application/xhtml+xml"/>'; }).join('');
+              var spine = chapterFiles.map(function(f) { return '<itemref idref="' + f.id + '"/>'; }).join('');
               var opf = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="bookid"><metadata><dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Converted Document</dc:title><dc:language xmlns:dc="http://purl.org/dc/elements/1.1/">en</dc:language></metadata><manifest><item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>' + manifest + '</manifest><spine toc="ncx">' + spine + '</spine></package>';
               zip.folder('OEBPS').file('content.opf', opf);
-              var ncx = '<?xml version="1.0"?><!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd"><ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1"><head><meta name="dtb:uid" content="bookid"/></head><docTitle><text>Converted Document</text></docTitle><navMap>' + chapterFiles.map(function(f, idx) { return '<navPoint id="' + f.id + '" playOrder="' + (idx + 1) + '"><navLabel><text>Page ' + (idx + 1) + '</text></navLabel><content src="' + f.href + '"/></navPoint>'; }).join('') + '</navMap></ncx>';
+              var ncx = '<?xml version="1.0"?><!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd"><ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1"><head><meta name="dtb:uid" content="bookid"/><meta name="dtb:depth" content="1"/></head><docTitle><text>Converted Document</text></docTitle><navMap>' + chapterFiles.map(function(f, cidx) { return '<navPoint id="' + f.id + '" playOrder="' + (cidx + 1) + '"><navLabel><text>Page ' + (cidx + 1) + '</text></navLabel><content src="' + f.href + '"/></navPoint>'; }).join('') + '</navMap></ncx>';
               zip.folder('OEBPS').file('toc.ncx', ncx);
-              return zip.generateAsync({ type: 'blob', mimeType: 'application/epub+zip' }).then(function(blob) {
-                setupDownload(blob, loadedFile.name.replace(/\.[^.]+$/, '') + '.epub');
-              });
+              return zip.generateAsync({ type: 'blob', mimeType: 'application/epub+zip' });
             });
           });
+        }).then(function(blob) {
+          item.blob = blob; item.status = 'done'; idx++; next();
         }).catch(function(err) {
           utils.showError('errorContainer', 'Error: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Convert';
+          item.status = 'pending'; idx++; next();
         });
-      });
+      }
+      next();
+    });
+
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.[^.]+$/, '') + '.epub', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) {
+          triggerDownload(zipBlob, 'converted_files.zip');
+        });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.epub');
+        });
+      }
     });
   });
   </script>

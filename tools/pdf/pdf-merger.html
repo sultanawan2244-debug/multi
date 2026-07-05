@@ -30,7 +30,8 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -75,7 +76,7 @@
           </div>
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="mergeBtn">📎 Merge PDFs</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Merged PDF</button>
+            <button class="btn btn-success" <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>id="downloadBtn" style="display:none;">⬇️ Download Merged PDF</button>
           </div>
         </div>
       </div>
@@ -207,145 +208,170 @@
   <script src="../../assets/js/animations.js" defer></script>
   <script src="../../assets/js/tool-utils.js" defer></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let pdfFiles = [];
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var toolActions = document.getElementById('toolActions');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var actionBtn = document.getElementById('mergeBtn');
+    var progressBar = document.getElementById('progressBar');
+    var toolControls = document.getElementById('toolControls');
+    var downloadBtn = document.getElementById('downloadBtn');
 
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileListContainer = document.getElementById('fileListContainer');
-    const fileList = document.getElementById('fileList');
-    const fileCount = document.getElementById('fileCount');
-    const errorContainer = document.getElementById('errorContainer');
-    const toolControls = document.getElementById('toolControls');
-    const toolActions = document.getElementById('toolActions');
-    const mergeBtn = document.getElementById('mergeBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const progressBar = document.getElementById('progressBar');
-
-    let isProcessing = false;
-
-    // Manual drop-zone setup (supports multiple files)
-    dropZone.addEventListener('click', function() {
-      fileInput.click();
-    });
-
-    ['dragenter', 'dragover'].forEach(function(evt) {
-      dropZone.addEventListener(evt, function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.add('drag-over');
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Merging...' : (hasFiles ? '\uD83D\uDD04 Merge PDFs All' : 'Merge PDFs');
+      if (downloadBtn) downloadBtn.style.display = 'none';
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
+    }
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
       });
-    });
-
-    ['dragleave', 'drop'].forEach(function(evt) {
-      dropZone.addEventListener(evt, function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.remove('drag-over');
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
       });
+      updateUI();
+    }
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + .pdf);
+    }
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a'); link.href = url; link.download = filename;
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
     });
-
-    dropZone.addEventListener('drop', function(e) {
-      var files = e.dataTransfer.files;
-      if (files && files.length) handleFiles(files);
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
     });
-
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files.length) handleFiles(this.files);
-    });
-
-    function handleFiles(files) {
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+    function addFiles(files) {
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        if (!utils.validateFileType(file)) {
-          utils.showError('errorContainer', 'Please select a valid PDF file.');
+        var ext = file.name.split('.').pop().toLowerCase();
+        if (ext !== 'pdf') { utils.showError('errorContainer', file.name + ' is not a PDF file.'); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList(); updateUI();
+    }
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
+      isProcessing = true;
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      if (toolControls) toolControls.style.display = 'block';
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All PDFs merged!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
           return;
         }
-        pdfFiles.push(file);
-      }
-      errorContainer.innerHTML = '';
-      updateFileList();
-      toolControls.style.display = 'block';
-      toolActions.style.display = 'flex';
-      downloadBtn.style.display = 'none';
-    }
-
-    function updateFileList() {
-      fileCount.textContent = pdfFiles.length;
-      fileList.innerHTML = '';
-      pdfFiles.forEach(function(file, index) {
-        var div = document.createElement('div');
-        div.className = 'file-info';
-        div.innerHTML = '<span>📄</span><span class="file-name">' + file.name + '</span><span class="file-size">(' + utils.formatFileSize(file.size) + ')</span><button class="remove-file" data-index="' + index + '" aria-label="Remove file">✕</button>';
-        div.querySelector('.remove-file').addEventListener('click', function() {
-          pdfFiles.splice(parseInt(this.dataset.index), 1);
-          updateFileList();
-          if (pdfFiles.length === 0) {
-            toolControls.style.display = 'none';
-            toolActions.style.display = 'none';
-          }
-        });
-        fileList.appendChild(div);
-      });
-    }
-
-    mergeBtn.addEventListener('click', function() {
-      if (pdfFiles.length < 2) {
-        utils.showError('errorContainer', 'Please select at least 2 PDF files to merge.');
-        return;
-      }
-      if (isProcessing) return;
-      isProcessing = true;
-      mergeBtn.disabled = true;
-      mergeBtn.textContent = '⏳ Merging...';
-      downloadBtn.style.display = 'none';
-
-      utils.simulateProgress('progressBar', 1500, function() {
-        var promises = pdfFiles.map(function(file) {
-          return utils.loadFileAsArrayBuffer(file);
-        });
-        Promise.all(promises).then(function(buffers) {
-          return PDFLib.PDFDocument.create().then(function(mergedPdf) {
-            var chain = Promise.resolve();
-            buffers.forEach(function(buffer) {
-              chain = chain.then(function() {
-                return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(doc) {
-                  var pageIndices = doc.getPageIndices();
-                  return mergedPdf.copyPages(doc, pageIndices).then(function(pages) {
-                    pages.forEach(function(page) { mergedPdf.addPage(page); });
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+                if (filesList.length < 2) { utils.showError('errorContainer', 'Please select at least 2 PDF files to merge.'); item.status = 'pending'; idx++; next(); return; }
+        var allItems = filesList.filter(function(i) { return i.status === 'converting' || i.status === 'pending'; });
+        var buffers = [];
+        var loadIdx = 0;
+        function loadPdf() {
+          if (loadIdx >= allItems.length) {
+            PDFLib.PDFDocument.create().then(function(mergedPdf) {
+              var chain = Promise.resolve();
+              buffers.forEach(function(buffer) {
+                chain = chain.then(function() {
+                  return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(doc) {
+                    return mergedPdf.copyPages(doc, doc.getPageIndices()).then(function(pages) {
+                      pages.forEach(function(page) { mergedPdf.addPage(page); });
+                    });
                   });
                 });
               });
+              return chain.then(function() { return mergedPdf.save(); });
+            }).then(function(pdfBytes) {
+              var blob = new Blob([pdfBytes], { type: 'application/pdf' });
+              allItems.forEach(function(ai) { ai.blob = blob; ai.status = 'done'; });
+              idx = filesList.length; next();
+            }).catch(function(err) {
+              utils.showError('errorContainer', 'Error merging PDFs: ' + err.message);
+              allItems.forEach(function(ai) { ai.status = 'pending'; });
+              isProcessing = false; renderFileList();
             });
-            return chain.then(function() { return mergedPdf.save(); });
+            return;
+          }
+          utils.loadFileAsArrayBuffer(allItems[loadIdx].file).then(function(buf) {
+            buffers.push(buf);
+            loadIdx++;
+            loadPdf();
+          }).catch(function(err) {
+            utils.showError('errorContainer', 'Error loading ' + allItems[loadIdx].file.name + ': ' + err.message);
+            loadIdx++;
+            loadPdf();
           });
-        }).then(function(pdfBytes) {
-          var blob = new Blob([pdfBytes], { type: 'application/pdf' });
-          var url = URL.createObjectURL(blob);
-          downloadBtn.onclick = function() {
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = 'merged_document.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          };
-          downloadBtn.style.display = 'inline-flex';
-          utils.hideProgress('progressBar');
-          utils.showSuccess('fileInfoContainer', pdfFiles.length + ' PDFs merged successfully! Click download to save.');
-          isProcessing = false;
-          mergeBtn.disabled = false;
-          mergeBtn.textContent = '📎 Merge PDFs';
-        }).catch(function(err) {
-          utils.showError('errorContainer', 'Error merging PDFs: ' + err.message);
-          isProcessing = false;
-          mergeBtn.disabled = false;
-          mergeBtn.textContent = '📎 Merge PDFs';
+        }
+        loadPdf();
+      }
+      next();
+    });
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.[^.]+$/, '') + .pdf, item.blob);
         });
-      });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) { triggerDownload(zipBlob, 'processed_files.zip'); });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + .pdf);
+        });
+      }
     });
   });
-  </script>
+</script>
 </body>
 </html>

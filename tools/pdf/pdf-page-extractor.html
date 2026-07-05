@@ -29,7 +29,8 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -57,7 +58,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
@@ -79,7 +80,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Extract Pages</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Extracted PDF</button>
+            <button class="btn btn-success" <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>id="downloadBtn" style="display:none;">⬇️ Download Extracted PDF</button>
           </div>
         </div>
       </div>
@@ -223,25 +224,18 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileInfoContainer = document.getElementById('fileInfoContainer');
-    const errorContainer = document.getElementById('errorContainer');
-    const progressBar = document.getElementById('progressBar');
-    const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const pagesInput = document.getElementById('pagesInput');
-    const pageCountHint = document.getElementById('pageCountHint');
-
-    let isProcessing = false;
-    var totalPages = 0;
-
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var toolActions = document.getElementById('toolActions');
+    var pagesInput = document.getElementById('pagesInput');
+    var pageCountHint = document.getElementById('pageCountHint');
 
     function parsePageRanges(input, maxPages) {
       var parts = input.split(',').map(function(s) { return s.trim(); });
@@ -272,83 +266,173 @@
       return unique;
     }
 
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '⏳ Extracting...' : (hasFiles ? 'Extract Pages' : 'Extract Pages');
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
+    }
 
-      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
-        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-          totalPages = pdfDoc.getPageCount();
-          pageCountHint.textContent = 'PDF has ' + totalPages + ' page' + (totalPages === 1 ? '' : 's') + '. Enter pages to extract (1-' + totalPages + ').';
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '✅' : (item.status === 'converting' ? '⏳' : '📄');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">⬇️ Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">✕</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
+      });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
         });
+      });
+      updateUI();
+    }
+
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.pdf$/i, '') + '_extracted.pdf');
+    }
+
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+
+    function loadPageInfoForLastFile() {
+      var last = filesList[filesList.length - 1];
+      if (!last || !last.file) return;
+      utils.loadFileAsArrayBuffer(last.file).then(function(buffer) {
+        return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+      }).then(function(pdfDoc) {
+        var totalPages = pdfDoc.getPageCount();
+        pageCountHint.textContent = 'PDF has ' + totalPages + ' page' + (totalPages === 1 ? '' : 's') + '. Enter pages to extract (1-' + totalPages + ').';
       });
     }
 
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) { utils.showError("errorContainer", file.name + " is not a valid PDF file."); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList();
+      updateUI();
+      loadPageInfoForLastFile();
+    }
+
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing || filesList.length === 0) return;
       var input = pagesInput.value.trim();
       if (!input) {
         utils.showError('errorContainer', 'Please enter page numbers or ranges to extract.');
         return;
       }
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Extracting...';
-      downloadBtn.style.display = 'none';
-
-      utils.simulateProgress('progressBar', 1200, function() {
-        try {
-          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-              var pagesToExtract = parsePageRanges(input, pdfDoc.getPageCount());
-              if (!pagesToExtract || pagesToExtract.length === 0) {
-                utils.showError('errorContainer', 'No valid pages found. Check your input and try again.');
-                isProcessing = false;
-                actionBtn.disabled = false;
-                actionBtn.textContent = 'Extract Pages';
-                return;
-              }
-
-              var newDoc = PDFLib.PDFDocument.create();
-              var copiedPages = newDoc.copyPages(pdfDoc, pagesToExtract);
-              for (var i = 0; i < copiedPages.length; i++) {
-                newDoc.addPage(copiedPages[i]);
-              }
-
-              newDoc.save().then(function(bytes) {
-                var blob = new Blob([bytes], { type: 'application/pdf' });
-                var url = URL.createObjectURL(blob);
-                downloadBtn.onclick = function() {
-                  var link = document.createElement('a');
-                  link.href = url;
-                  link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_extracted.pdf';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                };
-                downloadBtn.style.display = 'inline-flex';
-                utils.hideProgress('progressBar');
-                utils.showSuccess('fileInfoContainer', 'Extracted ' + pagesToExtract.length + ' page' + (pagesToExtract.length === 1 ? '' : 's') + ' successfully!');
-                isProcessing = false;
-                actionBtn.disabled = false;
-                actionBtn.textContent = 'Extract Pages';
-              });
-            });
-          });
-        } catch (err) {
-          utils.showError('errorContainer', 'Error extracting pages: ' + err.message);
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>✅</span> All files processed successfully!</div>';
+          errorContainer.style.display = 'block';
           isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Extract Pages';
+          renderFileList();
+          return;
         }
-      });
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+          return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+        }).then(function(pdfDoc) {
+          var pagesToExtract = parsePageRanges(input, pdfDoc.getPageCount());
+          if (!pagesToExtract || pagesToExtract.length === 0) {
+            utils.showError('errorContainer', 'No valid pages found in ' + item.file.name + '. Check your input and try again.');
+            item.status = 'pending';
+            idx++;
+            next();
+            return;
+          }
+          var newDoc = PDFLib.PDFDocument.create();
+          var copiedPages = newDoc.copyPages(pdfDoc, pagesToExtract);
+          for (var i = 0; i < copiedPages.length; i++) {
+            newDoc.addPage(copiedPages[i]);
+          }
+          return newDoc.save();
+        }).then(function(bytes) {
+          if (!bytes) return;
+          var blob = new Blob([bytes], { type: 'application/pdf' });
+          item.blob = blob;
+          item.status = 'done';
+          idx++;
+          next();
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.pdf$/i, '') + '_extracted.pdf', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) {
+          triggerDownload(zipBlob, 'extracted_pdfs.zip');
+        });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.pdf$/i, '') + '_extracted.pdf');
+        });
+      }
     });
   });
   </script>

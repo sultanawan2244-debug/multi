@@ -31,6 +31,17 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+</head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -58,10 +69,10 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".json,application/json" class="file-input" hidden aria-label="Choose a JSON file">
+            <input type="file" id="fileInput" accept=".json,application/json" class="file-input" hidden aria-label="Choose JSON file files" multiple>
             <div class="drop-icon">📁</div>
-            <p>Drag & drop your JSON file here or click to browse</p>
-            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: JSON files</p>
+            <p>Drag & drop your JSON files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: JSON files (multiple)</p>
             <div class="drop-text">Drop here!</div>
           </div>
           <div id="fileInfoContainer"></div>
@@ -73,6 +84,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Convert to YAML</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">?? Download All as ZIP</button>
             <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download YAML File</button>
           </div>
         </div>
@@ -185,73 +197,154 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const errorContainer = document.getElementById('errorContainer');
-    const progressBar = document.getElementById('progressBar');
-    const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    let isProcessing = false;
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var toolActions = document.getElementById('toolActions');
 
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid JSON file.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Converting...' : (hasFiles ? '\uD83D\uDD04 Convert All' : (actionBtn.dataset.origText || 'Convert'));
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
     }
 
-    function setupDownload(blob, filename) {
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          downloadSingle(parseInt(this.dataset.idx));
+        });
+      });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
+    }
+
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.yaml');
+    }
+
+    function triggerDownload(blob, filename) {
       var url = URL.createObjectURL(blob);
-      downloadBtn.onclick = function() {
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
-      downloadBtn.style.display = 'inline-flex';
-      utils.hideProgress('progressBar');
-      utils.showSuccess('fileInfoContainer', 'Conversion complete! Click download to save.');
-      isProcessing = false;
-      actionBtn.disabled = false;
-      actionBtn.textContent = 'Convert to YAML';
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var ext = file.name.split('.').pop().toLowerCase();
+        if (ext !== "json") { utils.showError("errorContainer", file.name + " is not a JSON file."); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList();
+      updateUI();
     }
 
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Converting...';
-      downloadBtn.style.display = 'none';
-      utils.simulateProgress('progressBar', 1000, function() {
-        try {
-          utils.loadFileAsText(loadedFile).then(function(text) {
-  var data = JSON.parse(text);
-  var yaml = jsyaml.dump(data);
-  var blob = new Blob([yaml], { type: 'text/yaml' });
-  setupDownload(blob, loadedFile.name.replace(/\.[^.]+$/, '') + '.yaml');
-});
-        } catch (err) {
-          utils.showError('errorContainer', 'Error: ' + err.message);
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All files converted successfully!</div>';
+          errorContainer.style.display = 'block';
           isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Convert to YAML';
+          renderFileList();
+          return;
         }
-      });
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+                utils.loadFileAsText(item.file).then(function(data) {
+          var result = (function(){var d=JSON.parse(data),yaml=jsyaml.dump(d);return new Blob([yaml],{type:"text/yaml"});})();
+          item.blob = result;
+          item.status = 'done';
+          idx++;
+          next();
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error converting ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.[^.]+$/, '') + '.yaml', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) {
+          triggerDownload(zipBlob, 'converted_files.zip');
+        });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.yaml');
+        });
+      }
     });
   });
-  </script>
+</script>
 </body>
 </html>

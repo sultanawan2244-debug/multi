@@ -29,6 +29,16 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -57,10 +67,10 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".png,image/png" class="file-input" hidden aria-label="Choose a PNG image">
+            <input type="file" id="fileInput" accept=".png,image/png" class="file-input" hidden aria-label="Choose PNG image files" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop your PNG image here or click to browse</p>
-            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG files</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG files (multiple)</p>
             <div class="drop-text">Drop here!</div>
           </div>
           <div id="fileInfoContainer"></div>
@@ -80,6 +90,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Convert to SVG</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">?? Download All as ZIP</button>
             <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download SVG</button>
           </div>
         </div>
@@ -215,53 +226,100 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    let loadedImage = null;
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const errorContainer = document.getElementById('errorContainer');
-    const progressBar = document.getElementById('progressBar');
-    const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const modeGroup = document.getElementById('modeGroup');
-    const modeSelect = document.getElementById('modeSelect');
-    let isProcessing = false;
+    var filesList = [];
+    var isProcessing = false;
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
+    var errorContainer = document.getElementById('errorContainer');
+    var progressBar = document.getElementById('progressBar');
+    var actionBtn = document.getElementById('actionBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var toolActions = document.getElementById('toolActions');
+    var modeGroup = document.getElementById('modeGroup');
+    var modeSelect = document.getElementById('modeSelect');
 
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!file.type.match(/^image\//) || !file.name.match(/\.png$/i)) {
-        utils.showError('errorContainer', 'Please select a valid .png file.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      loadedImage = null;
-      modeGroup.style.display = 'block';
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      modeGroup.style.display = hasFiles ? 'block' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Converting...' : (hasFiles ? '\uD83D\uDD04 Convert All' : (actionBtn.dataset.origText || 'Convert to SVG'));
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
     }
 
-    function setupDownload(blob, filename) {
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
+      }
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          downloadSingle(parseInt(this.dataset.idx));
+        });
+      });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
+    }
+
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.png$/i, '') + '.svg');
+    }
+
+    function triggerDownload(blob, filename) {
       var url = URL.createObjectURL(blob);
-      downloadBtn.onclick = function() {
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
-      downloadBtn.style.display = 'inline-flex';
-      utils.hideProgress('progressBar');
-      utils.showSuccess('fileInfoContainer', 'Conversion complete! Click download to save.');
-      isProcessing = false;
-      actionBtn.disabled = false;
-      actionBtn.textContent = 'Convert to SVG';
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
+    }
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!file.type.match(/^image\//) || !file.name.match(/\.png$/i)) {
+          utils.showError('errorContainer', 'Please select a valid .png file.');
+          continue;
+        }
+        filesList.push({ file: file, blob: null, status: 'pending' });
+      }
+      renderFileList();
+      updateUI();
     }
 
     function loadImage(file) {
@@ -269,7 +327,7 @@
         var reader = new FileReader();
         reader.onload = function(e) {
           var img = new Image();
-          img.onload = function() { resolve(img); };
+          img.onload = function() { resolve({ img: img, dataUrl: e.target.result }); };
           img.onerror = function() { reject(new Error('Failed to decode image.')); };
           img.src = e.target.result;
         };
@@ -375,47 +433,68 @@
     }
 
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Converting...';
-      downloadBtn.style.display = 'none';
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = '';
+      errorContainer.style.display = 'none';
       var mode = modeSelect.value;
-      utils.simulateProgress('progressBar', 800, function() {
-        try {
-          loadImage(loadedFile).then(function(img) {
-            var svgContent;
-            if (mode === 'trace') {
-              svgContent = traceToSvg(img);
-              if (!svgContent) {
-                utils.showError('errorContainer', 'Trace mode did not find clear edges. Try Embedded Image mode instead.');
-                isProcessing = false;
-                actionBtn.disabled = false;
-                actionBtn.textContent = 'Convert to SVG';
-                return;
-              }
-            } else {
-              var reader = new FileReader();
-              reader.onload = function(e) {
-                svgContent = createEmbeddedSvg(img, e.target.result);
-                var blob = new Blob([svgContent], {type: 'image/svg+xml'});
-                var filename = loadedFile.name.replace(/\.png$/i, '') + '.svg';
-                setupDownload(blob, filename);
-              };
-              reader.readAsDataURL(loadedFile);
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
+          utils.hideProgress('progressBar');
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All files converted successfully!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
+        }
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        loadImage(item.file).then(function(result) {
+          var img = result.img;
+          var svgContent;
+          if (mode === 'trace') {
+            svgContent = traceToSvg(img);
+            if (!svgContent) {
+              utils.showError('errorContainer', 'Trace mode did not find clear edges for ' + item.file.name + '. Try Embedded Image mode instead.');
+              item.status = 'pending'; idx++; next();
               return;
             }
-            var blob = new Blob([svgContent], {type: 'image/svg+xml'});
-            var filename = loadedFile.name.replace(/\.png$/i, '') + '.svg';
-            setupDownload(blob, filename);
-          });
-        } catch (err) {
+          } else {
+            svgContent = createEmbeddedSvg(img, result.dataUrl);
+          }
+          var blob = new Blob([svgContent], {type: 'image/svg+xml'});
+          item.blob = blob; item.status = 'done'; idx++; next();
+        }).catch(function(err) {
           utils.showError('errorContainer', 'Error: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Convert to SVG';
-        }
-      });
+          item.status = 'pending'; idx++; next();
+        });
+      }
+      next();
+    });
+
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.png$/i, '') + '.svg', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) {
+          triggerDownload(zipBlob, 'converted_files.zip');
+        });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.png$/i, '') + '.svg');
+        });
+      }
     });
   });
   </script>

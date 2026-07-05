@@ -45,6 +45,16 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -73,10 +83,10 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file">
+            <input type="file" id="fileInput" accept="image/*" class="file-input" hidden aria-label="Choose an image file" multiple>
             <div class="drop-icon">📁</div>
-            <p>Drag & drop an image here or click to browse</p>
-            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP</p>
+            <p>Drag & drop image files here or click to browse</p>
+            <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PNG, JPG, WebP, GIF, BMP (multiple files)</p>
             <div class="drop-text">Drop here!</div>
           </div>
           <div id="fileInfoContainer"></div>
@@ -148,6 +158,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="cropBtn">✂️ Crop Image</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">?? Download All as ZIP</button>
             <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Cropped Image</button>
           </div>
         </div>
@@ -292,453 +303,162 @@
   <script src="../../assets/js/animations.js" defer></script>
   <script src="../../assets/js/tool-utils.js" defer></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var utils = window.AlToolsUtils;
-    var originalImage = null;
-
+document.addEventListener('DOMContentLoaded', function() {
+    const utils = window.AlToolsUtils;
+    var filesList = [];
+    var isProcessing = false;
     var dropZone = document.getElementById('dropZone');
     var fileInput = document.getElementById('fileInput');
+    var fileInfoContainer = document.getElementById('fileInfoContainer');
     var errorContainer = document.getElementById('errorContainer');
-    var toolControls = document.getElementById('toolControls');
     var toolActions = document.getElementById('toolActions');
-    var previewArea = document.getElementById('previewArea');
-    var resultPreview = document.getElementById('resultPreview');
-    var cropDisplayImage = document.getElementById('cropDisplayImage');
-    var cropContainer = document.getElementById('cropContainer');
-    var cropOverlay = document.getElementById('cropOverlay');
-    var cropSelection = document.getElementById('cropSelection');
-    var croppedPreview = document.getElementById('croppedPreview');
-    var originalSize = document.getElementById('originalSize');
-    var croppedSize = document.getElementById('croppedSize');
-    var cropX = document.getElementById('cropX');
-    var cropY = document.getElementById('cropY');
-    var cropWidth = document.getElementById('cropWidth');
-    var cropHeight = document.getElementById('cropHeight');
-    var aspectPresets = document.getElementById('aspectPresets');
-    var cropBtn = document.getElementById('cropBtn');
-    var downloadBtn = document.getElementById('downloadBtn');
+    var downloadAllBtn = document.getElementById('downloadAllBtn');
+    var actionBtn = document.getElementById('cropBtn');
     var progressBar = document.getElementById('progressBar');
+    var toolControls = document.getElementById('toolControls');
+    var previewArea = document.getElementById('previewArea');
+    var originalPreview = document.getElementById('originalPreview');
+    var downloadBtn = document.getElementById('downloadBtn');
 
-    var isProcessing = false;
-
-    var sel = { x: 0, y: 0, w: 100, h: 100 };
-    var displayScale = 1;
-
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid file type.');
-        return;
+    function dataURLToBlob(dataUrl) {
+      var parts = dataUrl.split(','); var mime = parts[0].match(/:(.*?);/)[1];
+      var bytes = atob(parts[1]); var ab = new ArrayBuffer(bytes.length);
+      var ia = new Uint8Array(ab); for (var i = 0; i < bytes.length; i++) ia[i] = bytes.charCodeAt(i);
+      return new Blob([ab], { type: mime });
+    }
+    function updateUI() {
+      var hasFiles = filesList.length > 0;
+      toolActions.style.display = hasFiles ? 'flex' : 'none';
+      downloadAllBtn.style.display = filesList.some(function(i) { return i.status === 'done'; }) ? 'inline-flex' : 'none';
+      actionBtn.textContent = isProcessing ? '\u23F3 Cropping...' : (hasFiles ? '\uD83D\uDD04 Crop All' : 'Crop');
+      if (downloadBtn) downloadBtn.style.display = 'none';
+      actionBtn.disabled = isProcessing || !hasFiles || filesList.every(function(i) { return i.status === 'done' || i.status === 'converting'; });
+    }
+    function renderFileList() {
+      if (filesList.length === 0) { fileInfoContainer.style.display = 'none'; fileInfoContainer.innerHTML = ''; updateUI(); return; }
+      fileInfoContainer.style.display = 'block';
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var item = filesList[i];
+        var statusIcon = item.status === 'done' ? '\u2705' : (item.status === 'converting' ? '\u23F3' : '\uD83D\uDCC4');
+        var dlBtn = item.status === 'done' ? '<button class="btn btn-primary btn-dl-single" data-idx="' + i + '">\u2B07\uFE0F Download</button>' : '';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name">' + item.file.name + '</span>';
+        html += '<span class="file-size">(' + utils.formatFileSize(item.file.size) + ')</span>';
+        html += dlBtn;
+        html += '<button class="remove-file-single" data-idx="' + i + '">\u2715</button>';
+        html += '</div>';
       }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      toolControls.style.display = 'block';
-      toolActions.style.display = 'flex';
-      downloadBtn.style.display = 'none';
-      resultPreview.style.display = 'none';
-
-      utils.loadImage(file).then(function(result) {
-        originalImage = result.image;
-        cropDisplayImage.src = result.dataUrl;
-        previewArea.style.display = 'block';
-
-        sel.x = 0;
-        sel.y = 0;
-        sel.w = originalImage.width;
-        sel.h = originalImage.height;
-
-        cropWidth.value = sel.w;
-        cropHeight.value = sel.h;
-        cropX.value = 0;
-        cropY.value = 0;
-
-        originalSize.textContent = 'Original: ' + originalImage.width + 'x' + originalImage.height + ' (' + utils.formatFileSize(file.size) + ')';
-        croppedSize.textContent = 'Cropped: —';
-
-        setTimeout(function() {
-          updateSelFromInputs();
-          renderCrop();
-        }, 50);
-      }).catch(function() {
-        utils.showError('errorContainer', 'Failed to load image. The file may be corrupted or unsupported.');
+      fileInfoContainer.innerHTML = html;
+      fileInfoContainer.querySelectorAll('.btn-dl-single').forEach(function(btn) {
+        btn.addEventListener('click', function() { downloadSingle(parseInt(this.dataset.idx)); });
       });
+      fileInfoContainer.querySelectorAll('.remove-file-single').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filesList.splice(parseInt(this.dataset.idx), 1);
+          renderFileList();
+          updateUI();
+        });
+      });
+      updateUI();
     }
-
-    function getDisplayRect() {
-      var rect = cropDisplayImage.getBoundingClientRect();
-      var cs = getComputedStyle(cropDisplayImage);
-      var w = parseFloat(cs.width) || rect.width;
-      var h = parseFloat(cs.height) || rect.height;
-      return { w: w, h: h };
+    function downloadSingle(idx) {
+      var item = filesList[idx];
+      if (!item || !item.blob) return;
+      triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.png');
     }
-
-    function updateScale() {
-      if (!originalImage) return;
-      var dr = getDisplayRect();
-      displayScale = dr.w / originalImage.width;
+    function triggerDownload(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a'); link.href = url; link.download = filename;
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 15000);
     }
-
-    function toDisplay(val) { return val * displayScale; }
-    function toImage(val) { return Math.round(val / displayScale); }
-
-    function renderCrop() {
-      if (!originalImage) return;
-      updateScale();
-      var dl = toDisplay(sel.x);
-      var dt = toDisplay(sel.y);
-      var dw = toDisplay(sel.w);
-      var dh = toDisplay(sel.h);
-      cropSelection.style.left = dl + 'px';
-      cropSelection.style.top = dt + 'px';
-      cropSelection.style.width = dw + 'px';
-      cropSelection.style.height = dh + 'px';
-    }
-
-    function updateInputs() {
-      cropX.value = sel.x;
-      cropY.value = sel.y;
-      cropWidth.value = sel.w;
-      cropHeight.value = sel.h;
-    }
-
-    function updateSelFromInputs() {
-      if (!originalImage) return;
-      sel.x = Math.max(0, parseInt(cropX.value) || 0);
-      sel.y = Math.max(0, parseInt(cropY.value) || 0);
-      sel.w = Math.min(parseInt(cropWidth.value) || originalImage.width, originalImage.width - sel.x);
-      sel.h = Math.min(parseInt(cropHeight.value) || originalImage.height, originalImage.height - sel.y);
-      if (sel.w < 1) { sel.w = 1; }
-      if (sel.h < 1) { sel.h = 1; }
-      renderCrop();
-    }
-
-    cropX.addEventListener('input', updateSelFromInputs);
-    cropY.addEventListener('input', updateSelFromInputs);
-    cropWidth.addEventListener('input', updateSelFromInputs);
-    cropHeight.addEventListener('input', updateSelFromInputs);
-
-    function constrainAspect(w, h, lockW) {
-      if (aspectPresets.value === 'free') return { w: w, h: h };
-      var parts = aspectPresets.value.split(':');
-      var rW = parseFloat(parts[0]);
-      var rH = parseFloat(parts[1]);
-      if (lockW) {
-        h = Math.round(w * rH / rW);
-      } else {
-        w = Math.round(h * rW / rH);
-      }
-      return { w: w, h: h };
-    }
-
-    aspectPresets.addEventListener('change', function() {
-      if (!originalImage) return;
-      if (this.value === 'free') {
-        cropWidth.disabled = false;
-        cropHeight.disabled = false;
-        updateSelFromInputs();
-        return;
-      }
-      cropWidth.disabled = true;
-      cropHeight.disabled = true;
-      var parts = this.value.split(':');
-      var rW = parseFloat(parts[0]);
-      var rH = parseFloat(parts[1]);
-      var maxW = originalImage.width;
-      var maxH = originalImage.height;
-      var w, h;
-      if (rW / rH > maxW / maxH) {
-        w = maxW;
-        h = Math.round(w * rH / rW);
-      } else {
-        h = maxH;
-        w = Math.round(h * rW / rH);
-      }
-      sel.x = 0;
-      sel.y = 0;
-      sel.w = w;
-      sel.h = h;
-      updateInputs();
-      renderCrop();
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    ['dragenter','dragover'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
     });
-
-    // Mouse/touch interaction
-    var dragMode = null;
-    var dragStartX = 0;
-    var dragStartY = 0;
-    var dragOrigSel = null;
-    var isDragging = false;
-
-    function getEventPos(e) {
-      var t = e.touches ? e.touches[0] : e;
-      return { x: t.clientX, y: t.clientY };
-    }
-
-    function getOverlayPos(clientX, clientY) {
-      var imgRect = cropDisplayImage.getBoundingClientRect();
-      var x = clientX - imgRect.left;
-      var y = clientY - imgRect.top;
-      return { x: Math.max(0, x), y: Math.max(0, y) };
-    }
-
-    function imgPos(clientX, clientY) {
-      var p = getOverlayPos(clientX, clientY);
-      return { x: toImage(p.x), y: toImage(p.y) };
-    }
-
-    function clampSel() {
-      sel.x = Math.max(0, Math.min(sel.x, originalImage.width - sel.w));
-      sel.y = Math.max(0, Math.min(sel.y, originalImage.height - sel.h));
-      if (sel.x + sel.w > originalImage.width) sel.w = originalImage.width - sel.x;
-      if (sel.y + sel.h > originalImage.height) sel.h = originalImage.height - sel.y;
-      if (sel.w < 1) sel.w = 1;
-      if (sel.h < 1) sel.h = 1;
-    }
-
-    function startDrag(e, mode) {
-      if (isProcessing) return;
-      e.preventDefault();
-      e.stopPropagation();
-      var pos = getEventPos(e);
-      dragMode = mode;
-      dragStartX = pos.x;
-      dragStartY = pos.y;
-      dragOrigSel = { x: sel.x, y: sel.y, w: sel.w, h: sel.h };
-      isDragging = true;
-    }
-
-    function onDragMove(e) {
-      if (!isDragging || !dragMode) return;
-      e.preventDefault();
-      var pos = getEventPos(e);
-      var dx = pos.x - dragStartX;
-      var dy = pos.y - dragStartY;
-      var dix = toImage(Math.abs(dx)) * (dx < 0 ? -1 : 1);
-      var diy = toImage(Math.abs(dy)) * (dy < 0 ? -1 : 1);
-
-      var o = dragOrigSel;
-      var minSize = 10;
-
-      if (dragMode === 'move') {
-        sel.x = o.x + dix;
-        sel.y = o.y + diy;
-        clampSel();
-      } else if (dragMode === 'se') {
-        sel.w = Math.max(minSize, o.w + dix);
-        sel.h = Math.max(minSize, o.h + diy);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, true);
-          sel.w = c.w;
-          sel.h = c.h;
-        }
-      } else if (dragMode === 'nw') {
-        sel.x = o.x + dix;
-        sel.y = o.y + diy;
-        sel.w = Math.max(minSize, o.w - dix);
-        sel.h = Math.max(minSize, o.h - diy);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, true);
-          sel.x = o.x + (o.w - c.w);
-          sel.y = o.y + (o.h - c.h);
-          sel.w = c.w;
-          sel.h = c.h;
-        }
-      } else if (dragMode === 'ne') {
-        sel.y = o.y + diy;
-        sel.w = Math.max(minSize, o.w + dix);
-        sel.h = Math.max(minSize, o.h - diy);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, true);
-          sel.y = o.y + (o.h - c.h);
-          sel.w = c.w;
-          sel.h = c.h;
-        }
-      } else if (dragMode === 'sw') {
-        sel.x = o.x + dix;
-        sel.w = Math.max(minSize, o.w - dix);
-        sel.h = Math.max(minSize, o.h + diy);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, true);
-          sel.x = o.x + (o.w - c.w);
-          sel.w = c.w;
-          sel.h = c.h;
-        }
-      } else if (dragMode === 'n') {
-        sel.y = o.y + diy;
-        sel.h = Math.max(minSize, o.h - diy);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, false);
-          sel.h = c.h;
-          sel.w = c.w;
-          sel.y = o.y + (o.h - c.h);
-        }
-      } else if (dragMode === 's') {
-        sel.h = Math.max(minSize, o.h + diy);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, false);
-          sel.h = c.h;
-          sel.w = c.w;
-        }
-      } else if (dragMode === 'e') {
-        sel.w = Math.max(minSize, o.w + dix);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, true);
-          sel.w = c.w;
-          sel.h = c.h;
-        }
-      } else if (dragMode === 'w') {
-        sel.x = o.x + dix;
-        sel.w = Math.max(minSize, o.w - dix);
-        if (aspectPresets.value !== 'free') {
-          var c = constrainAspect(sel.w, sel.h, true);
-          sel.x = o.x + (o.w - c.w);
-          sel.w = c.w;
-          sel.h = c.h;
-        }
+    ['dragleave','drop'].forEach(function(evt) {
+      dropZone.addEventListener(evt, function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', function(e) { var f = e.dataTransfer.files; if (f && f.length) addFiles(f); });
+    fileInput.addEventListener('change', function() { if (this.files && this.files.length) addFiles(this.files); });
+    function addFiles(files) {
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!file.type.startsWith('image/')) { utils.showError('errorContainer', file.name + ' is not a supported image file.'); continue; }
+        filesList.push({ file: file, blob: null, status: 'pending' });
       }
-
-      clampSel();
-      updateInputs();
-      renderCrop();
+      renderFileList(); updateUI();
     }
-
-    function endDrag(e) {
-      if (isDragging) {
-        isDragging = false;
-        dragMode = null;
-        dragOrigSel = null;
-      }
-    }
-
-    // Handle clicks on overlay (create new selection)
-    cropOverlay.addEventListener('mousedown', function(e) {
-      if (e.target === cropSelection || cropSelection.contains(e.target)) return;
-      if (isProcessing) return;
-      e.preventDefault();
-      var pos = imgPos(e.clientX, e.clientY);
-      dragMode = 'se';
-      dragStartX = e.clientX;
-      dragStartY = e.clientY;
-      sel.x = pos.x;
-      sel.y = pos.y;
-      sel.w = 1;
-      sel.h = 1;
-      dragOrigSel = { x: sel.x, y: sel.y, w: 0, h: 0 };
-      isDragging = true;
-    });
-
-    // Selection dragging
-    cropSelection.addEventListener('mousedown', function(e) {
-      if (e.target.classList.contains('crop-handle')) return;
-      startDrag(e, 'move');
-    });
-
-    // Handle dragging
-    document.querySelectorAll('.crop-handle').forEach(function(el) {
-      el.addEventListener('mousedown', function(e) { startDrag(e, this.dataset.handle); });
-    });
-
-    document.addEventListener('mousemove', onDragMove);
-    document.addEventListener('mouseup', endDrag);
-
-    // Touch support
-    cropOverlay.addEventListener('touchstart', function(e) {
-      if (e.target === cropSelection || cropSelection.contains(e.target)) return;
-      var t = e.touches[0];
-      var pos = imgPos(t.clientX, t.clientY);
-      dragMode = 'se';
-      dragStartX = t.clientX;
-      dragStartY = t.clientY;
-      sel.x = pos.x;
-      sel.y = pos.y;
-      sel.w = 1;
-      sel.h = 1;
-      dragOrigSel = { x: sel.x, y: sel.y, w: 0, h: 0 };
-      isDragging = true;
-    }, { passive: false });
-
-    cropSelection.addEventListener('touchstart', function(e) {
-      if (e.target.classList.contains('crop-handle')) return;
-      e.preventDefault();
-      var t = e.touches[0];
-      dragMode = 'move';
-      dragStartX = t.clientX;
-      dragStartY = t.clientY;
-      dragOrigSel = { x: sel.x, y: sel.y, w: sel.w, h: sel.h };
-      isDragging = true;
-    }, { passive: false });
-
-    document.querySelectorAll('.crop-handle').forEach(function(el) {
-      el.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var t = e.touches[0];
-        dragMode = this.dataset.handle;
-        dragStartX = t.clientX;
-        dragStartY = t.clientY;
-        dragOrigSel = { x: sel.x, y: sel.y, w: sel.w, h: sel.h };
-        isDragging = true;
-      }, { passive: false });
-    });
-
-    document.addEventListener('touchmove', function(e) {
-      if (!isDragging) return;
-      var t = e.touches[0];
-      var me = { clientX: t.clientX, clientY: t.clientY, preventDefault: function() { e.preventDefault(); } };
-      if (onDragMove(me) !== false) e.preventDefault();
-    }, { passive: false });
-
-    document.addEventListener('touchend', endDrag);
-
-    // Crop execution
-    cropBtn.addEventListener('click', function() {
-      if (!originalImage || isProcessing) return;
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing || filesList.length === 0) return;
+      var pending = filesList.filter(function(i) { return i.status === 'pending'; });
+      if (pending.length === 0) return;
       isProcessing = true;
-      cropBtn.disabled = true;
-      cropBtn.textContent = '\u23F3 Cropping...';
-      downloadBtn.style.display = 'none';
-      resultPreview.style.display = 'none';
-
-      var x = sel.x;
-      var y = sel.y;
-      var w = sel.w;
-      var h = sel.h;
-
-      utils.simulateProgress('progressBar', 600, function() {
-        try {
-          var canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(originalImage, x, y, w, h, 0, 0, w, h);
-
-          var dataUrl = canvas.toDataURL('image/png');
-
-          croppedPreview.src = dataUrl;
-          resultPreview.style.display = 'block';
-          croppedSize.textContent = 'Cropped Region: (' + x + ',' + y + ') ' + w + 'x' + h;
-
-          downloadBtn.onclick = function() {
-            var originalName = fileInput.files && fileInput.files[0] ? fileInput.files[0].name.replace(/\.[^/.]+$/, '') : 'image';
-            utils.triggerDownload(dataUrl, originalName + '_cropped.png');
-          };
-
-          downloadBtn.style.display = 'inline-flex';
+      utils.showProgress('progressBar');
+      updateUI();
+      errorContainer.innerHTML = ''; errorContainer.style.display = 'none';
+      if (previewArea) previewArea.classList.remove('show');
+      var idx = 0;
+      function next() {
+        while (idx < filesList.length && filesList[idx].status !== 'pending') idx++;
+        if (idx >= filesList.length) {
           utils.hideProgress('progressBar');
-          utils.showSuccess('fileInfoContainer', 'Image cropped successfully! Click download to save.');
-        } catch (err) {
-          utils.showError('errorContainer', 'Error cropping image: ' + err.message);
+          errorContainer.innerHTML = '<div class="file-info" style="background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;"><span>\u2705</span> All images cropped!</div>';
+          errorContainer.style.display = 'block';
+          isProcessing = false;
+          renderFileList();
+          return;
         }
-
-        isProcessing = false;
-        cropBtn.disabled = false;
-        cropBtn.textContent = '\u2702\ufe0f Crop Image';
-      });
+        var item = filesList[idx];
+        item.status = 'converting';
+        renderFileList();
+        utils.loadImage(item.file).then(function(result) {
+          var originalImage = result.image;
+          var originalDataUrl = result.dataUrl;
+          if (originalPreview) { originalPreview.src = originalDataUrl; originalPreview.style.display = 'block'; }
+          if (previewArea) previewArea.classList.add('show');
+                    var cropX = document.getElementById('cropX'); var cropY = document.getElementById('cropY');
+          var cropW = document.getElementById('cropW'); var cropH = document.getElementById('cropH');
+          var croppedPreview = document.getElementById('croppedPreview');
+          var x = cropX ? parseInt(cropX.value) : 0; var y = cropY ? parseInt(cropY.value) : 0;
+          var w = cropW ? parseInt(cropW.value) || originalImage.width : originalImage.width;
+          var h = cropH ? parseInt(cropH.value) || originalImage.height : originalImage.height;
+          x = Math.min(x, originalImage.width - 1); y = Math.min(y, originalImage.height - 1);
+          w = Math.min(w, originalImage.width - x); h = Math.min(h, originalImage.height - y);
+          var canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext('2d'); ctx.drawImage(originalImage, x, y, w, h, 0, 0, w, h);
+          canvas.toBlob(function(blob) {
+            if (croppedPreview) { croppedPreview.src = URL.createObjectURL(blob); croppedPreview.style.display = 'block'; }
+            item.blob = blob; item.status = 'done'; idx++; next();
+          }, 'image/png');
+        }).catch(function(err) {
+          utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+          item.status = 'pending';
+          idx++;
+          next();
+        });
+      }
+      next();
+    });
+    downloadAllBtn.addEventListener('click', function() {
+      var doneItems = filesList.filter(function(i) { return i.status === 'done'; });
+      if (doneItems.length === 0) return;
+      if (typeof JSZip !== 'undefined') {
+        var zip = new JSZip();
+        doneItems.forEach(function(item) {
+          zip.file(item.file.name.replace(/\.[^.]+$/, '') + '.png', item.blob);
+        });
+        zip.generateAsync({ type: 'blob' }).then(function(zipBlob) { triggerDownload(zipBlob, 'processed_images.zip'); });
+      } else {
+        doneItems.forEach(function(item) {
+          triggerDownload(item.blob, item.file.name.replace(/\.[^.]+$/, '') + '.png');
+        });
+      }
     });
   });
-  </script>
+</script>
 </body>
 </html>

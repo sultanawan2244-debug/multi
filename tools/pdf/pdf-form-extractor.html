@@ -29,7 +29,17 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -57,7 +67,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents with AcroForms</p>
@@ -75,8 +85,8 @@
               <h3 style="margin-bottom:16px;">Extracted Form Fields</h3>
               <div id="formDataTable"></div>
               <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
-                <button class="btn btn-primary" id="downloadJsonBtn">⬇️ Download as JSON</button>
-                <button class="btn btn-secondary" id="downloadCsvBtn">⬇️ Download as CSV</button>
+                <button class="btn btn-primary" id="downloadJsonBtn">⬇️ Download All as JSON</button>
+                <button class="btn btn-secondary" id="downloadCsvBtn">⬇️ Download All as CSV</button>
               </div>
             </div>
             <div id="noFormFieldsExtract" style="display:none;background:#fff3cd;border-radius:12px;padding:20px;margin-top:16px;">
@@ -86,6 +96,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Extract Form Data</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -202,8 +213,9 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    let extractedData = [];
+    var filesList = [];
+    var isProcessing = false;
+    var allExtractedData = [];
 
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
@@ -211,152 +223,238 @@
     const errorContainer = document.getElementById('errorContainer');
     const progressBar = document.getElementById('progressBar');
     const actionBtn = document.getElementById('actionBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
     const formResults = document.getElementById('formResults');
     const formDataTable = document.getElementById('formDataTable');
     const noFormFieldsExtract = document.getElementById('noFormFieldsExtract');
     const downloadJsonBtn = document.getElementById('downloadJsonBtn');
     const downloadCsvBtn = document.getElementById('downloadCsvBtn');
 
-    let isProcessing = false;
-
-    utils.initDropZone('dropZone', handleFile);
+    dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
     fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = '';
     });
 
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
+    function addFiles(files) {
       errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      formResults.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError('errorContainer', 'Skipped: ' + file.name + ' - not a valid PDF file.');
+          continue;
+        }
+        filesList.push({ file: file, status: 'pending', blob: null, outputName: null, formData: null });
+      }
+      renderFileList();
+      updateUI();
     }
 
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById('toolActions').style.display = 'flex';
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === 'done'; });
+      downloadAllBtn.style.display = hasCompleted ? 'inline-flex' : 'none';
+      actionBtn.style.display = filesList.some(function(f) { return f.status === 'pending'; }) ? 'inline-flex' : 'none';
+    }
+
+    function renderFileList() {
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === 'done' ? '✅' : (f.status === 'error' ? '❌' : '⏳');
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + '...';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + '</span>';
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + '</span>';
+        if (f.status === 'done') {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">⬇️ Download JSON</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">✕</button>';
+        html += '</div>';
+      }
+      document.getElementById('fileInfoContainer').innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.formData) {
+        var json = JSON.stringify(item.formData, null, 2);
+        var blob = new Blob([json], { type: 'application/json' });
+        triggerDownload(blob, item.file.name.replace(/\.pdf$/i, '') + '_form_data.json');
+      }
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing) return;
       isProcessing = true;
       actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Extracting...';
+      formResults.style.display = 'none';
+      allExtractedData = [];
+      next();
+    });
 
-      utils.simulateProgress('progressBar', 1500, function() {
-        try {
-          utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-            PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-              extractFormData(pdfDoc);
-            });
-          });
-        } catch (err) {
-          utils.showError('errorContainer', 'Error: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Extract Form Data';
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === 'pending') {
+          idx = i;
+          break;
         }
+      }
+      if (idx === -1) {
+        isProcessing = false;
+        actionBtn.disabled = false;
+        utils.hideProgress('progressBar');
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = 'processing';
+      renderFileList();
+
+      utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+          var extractedData = [];
+          try {
+            var form = pdfDoc.getForm();
+            var fields = form.getFields();
+            for (var j = 0; j < fields.length; j++) {
+              var field = fields[j];
+              var name = '';
+              var value = '';
+              var type = 'Unknown';
+              try { name = field.getName(); } catch(e) { name = 'Field ' + (j + 1); }
+              try { value = field.getText(); } catch(e) { value = ''; }
+              var cn = field.constructor.name;
+              if (cn.indexOf('CheckBox') > -1) type = 'CheckBox';
+              else if (cn.indexOf('RadioButton') > -1) type = 'RadioButton';
+              else if (cn.indexOf('Dropdown') > -1) type = 'Dropdown';
+              else if (cn.indexOf('TextField') > -1) type = 'TextField';
+              else if (cn.indexOf('Button') > -1) type = 'Button';
+              else type = 'Unknown';
+              extractedData.push({ name: name, type: type, value: value });
+            }
+          } catch (err) {}
+
+          item.formData = extractedData;
+          allExtractedData.push({ fileName: item.file.name, fields: extractedData });
+
+          if (extractedData.length > 0) {
+            var json = JSON.stringify(extractedData, null, 2);
+            item.blob = new Blob([json], { type: 'application/json' });
+            item.outputName = item.file.name.replace(/\.pdf$/i, '') + '_form_data.json';
+          }
+
+          formResults.style.display = 'block';
+
+          if (extractedData.length === 0) {
+            formDataTable.innerHTML = '';
+            noFormFieldsExtract.style.display = 'block';
+          } else {
+            noFormFieldsExtract.style.display = 'none';
+            var html = '<table style="width:100%;border-collapse:collapse;">';
+            html += '<thead><tr style="background:var(--primary);color:#fff;">';
+            html += '<th style="padding:10px;text-align:left;">#</th>';
+            html += '<th style="padding:10px;text-align:left;">Field Name</th>';
+            html += '<th style="padding:10px;text-align:left;">Type</th>';
+            html += '<th style="padding:10px;text-align:left;">Value</th>';
+            html += '</tr></thead><tbody>';
+            for (var k = 0; k < extractedData.length; k++) {
+              var d = extractedData[k];
+              var bgColor = k % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
+              html += '<tr style="background:' + bgColor + ';">';
+              html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + (k + 1) + '</td>';
+              html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + utils.escapeHtml(d.name) + '</td>';
+              html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + d.type + '</td>';
+              html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + utils.escapeHtml(d.value) + '</td>';
+              html += '</tr>';
+            }
+            html += '</tbody></table>';
+            html += '<p style="margin-top:12px;font-weight:600;">Total Fields: ' + extractedData.length + '</p>';
+            formDataTable.innerHTML = html;
+          }
+
+          utils.showSuccess('fileInfoContainer', 'Extracted ' + extractedData.length + ' form field(s) from ' + item.file.name);
+          item.status = 'done';
+          renderFileList();
+          updateUI();
+          idx++;
+          next();
+        });
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+        item.status = 'error';
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      });
+    }
+
+    downloadAllBtn.addEventListener('click', function() {
+      if (typeof JSZip === 'undefined') {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === 'done' && filesList[i].blob) {
+            window.downloadSingle(i);
+          }
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === 'done' && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        window.triggerDownload(content, 'form_data_files.zip');
       });
     });
 
-    function extractFormData(pdfDoc) {
-      extractedData = [];
-      try {
-        var form = pdfDoc.getForm();
-        var fields = form.getFields();
-
-        for (var i = 0; i < fields.length; i++) {
-          var field = fields[i];
-          var name = '';
-          var value = '';
-          var type = 'Unknown';
-
-          try { name = field.getName(); } catch(e) { name = 'Field ' + (i + 1); }
-          try { value = field.getText(); } catch(e) { value = ''; }
-
-          var cn = field.constructor.name;
-          if (cn.indexOf('CheckBox') > -1) type = 'CheckBox';
-          else if (cn.indexOf('RadioButton') > -1) type = 'RadioButton';
-          else if (cn.indexOf('Dropdown') > -1) type = 'Dropdown';
-          else if (cn.indexOf('TextField') > -1) type = 'TextField';
-          else if (cn.indexOf('Button') > -1) type = 'Button';
-          else type = 'Unknown';
-
-          extractedData.push({ name: name, type: type, value: value });
-        }
-      } catch (err) {}
-
-      formResults.style.display = 'block';
-
-      if (extractedData.length === 0) {
-        formDataTable.innerHTML = '';
-        noFormFieldsExtract.style.display = 'block';
-        utils.hideProgress('progressBar');
-        isProcessing = false;
-        actionBtn.disabled = false;
-        actionBtn.textContent = 'Extract Form Data';
-        return;
-      }
-
-      noFormFieldsExtract.style.display = 'none';
-
-      var html = '<table style="width:100%;border-collapse:collapse;">';
-      html += '<thead><tr style="background:var(--primary);color:#fff;">';
-      html += '<th style="padding:10px;text-align:left;">#</th>';
-      html += '<th style="padding:10px;text-align:left;">Field Name</th>';
-      html += '<th style="padding:10px;text-align:left;">Type</th>';
-      html += '<th style="padding:10px;text-align:left;">Value</th>';
-      html += '</tr></thead><tbody>';
-
-      for (var j = 0; j < extractedData.length; j++) {
-        var d = extractedData[j];
-        var bgColor = j % 2 === 0 ? 'var(--bg-secondary)' : 'transparent';
-        html += '<tr style="background:' + bgColor + ';">';
-        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + (j + 1) + '</td>';
-        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + utils.escapeHtml(d.name) + '</td>';
-        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + d.type + '</td>';
-        html += '<td style="padding:10px;border-bottom:1px solid var(--border-color);">' + utils.escapeHtml(d.value) + '</td>';
-        html += '</tr>';
-      }
-
-      html += '</tbody></table>';
-      html += '<p style="margin-top:12px;font-weight:600;">Total Fields: ' + extractedData.length + '</p>';
-      formDataTable.innerHTML = html;
-
-      utils.hideProgress('progressBar');
-      utils.showSuccess('fileInfoContainer', 'Extracted ' + extractedData.length + ' form field(s).');
-      isProcessing = false;
-      actionBtn.disabled = false;
-      actionBtn.textContent = 'Extract Form Data';
-    }
-
     downloadJsonBtn.addEventListener('click', function() {
-      if (extractedData.length === 0) return;
-      var json = JSON.stringify(extractedData, null, 2);
+      if (allExtractedData.length === 0) return;
+      var json = JSON.stringify(allExtractedData, null, 2);
       var blob = new Blob([json], { type: 'application/json' });
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement('a');
-      link.href = url;
-      link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_form_data.json';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      window.triggerDownload(blob, 'all_form_data.json');
     });
 
     downloadCsvBtn.addEventListener('click', function() {
-      if (extractedData.length === 0) return;
-      var csv = 'Field Name,Type,Value\n';
-      for (var i = 0; i < extractedData.length; i++) {
-        var d = extractedData[i];
-        csv += '"' + d.name.replace(/"/g, '""') + '","' + d.type + '","' + d.value.replace(/"/g, '""') + '"\n';
+      if (allExtractedData.length === 0) return;
+      var csv = 'File,Field Name,Type,Value\n';
+      for (var i = 0; i < allExtractedData.length; i++) {
+        var entry = allExtractedData[i];
+        for (var j = 0; j < entry.fields.length; j++) {
+          var d = entry.fields[j];
+          csv += '"' + entry.fileName.replace(/"/g, '""') + '","' + d.name.replace(/"/g, '""') + '","' + d.type + '","' + d.value.replace(/"/g, '""') + '"\n';
+        }
       }
       var blob = new Blob([csv], { type: 'text/csv' });
-      var url = URL.createObjectURL(blob);
-      var link = document.createElement('a');
-      link.href = url;
-      link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_form_data.csv';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      window.triggerDownload(blob, 'all_form_data.csv');
     });
   });
   </script>

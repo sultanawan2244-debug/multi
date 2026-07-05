@@ -29,7 +29,17 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -57,7 +67,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents with AcroForms</p>
@@ -82,7 +92,8 @@
           </div>
 
           <div class="tool-actions" id="toolActions" style="display:none;">
-            <button class="btn btn-primary" id="actionBtn" style="display:none;">📝 Fill Form & Download</button>
+            <button class="btn btn-primary" id="actionBtn">📝 Fill Forms</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -199,9 +210,9 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    let pdfDocRef = null;
-    let formFields = [];
+    var filesList = [];
+    var isProcessing = false;
+    var interactiveIdx = -1;
 
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
@@ -209,47 +220,145 @@
     const errorContainer = document.getElementById('errorContainer');
     const progressBar = document.getElementById('progressBar');
     const actionBtn = document.getElementById('actionBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
     const formFieldsDiv = document.getElementById('formFields');
     const fieldsContainer = document.getElementById('fieldsContainer');
     const noFormFieldsMsg = document.getElementById('noFormFieldsMsg');
 
-    let isProcessing = false;
-
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
-
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
-      errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      actionBtn.style.display = 'none';
+    function hideFormFields() {
       formFieldsDiv.style.display = 'none';
-      loadFormFields(file);
+      fieldsContainer.innerHTML = '';
+      noFormFieldsMsg.style.display = 'none';
     }
 
-    function loadFormFields(file) {
-      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
-        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-          pdfDocRef = pdfDoc;
-          var form = pdfDoc.getForm();
-          formFields = [];
+    dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = '';
+    });
 
+    function addFiles(files) {
+      errorContainer.innerHTML = '';
+      hideFormFields();
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError('errorContainer', 'Skipped: ' + file.name + ' - not a valid PDF file.');
+          continue;
+        }
+        filesList.push({ file: file, status: 'pending', blob: null, outputName: null, pdfDocRef: null, formFields: [] });
+      }
+      renderFileList();
+      updateUI();
+    }
+
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById('toolActions').style.display = 'flex';
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === 'done'; });
+      downloadAllBtn.style.display = hasCompleted ? 'inline-flex' : 'none';
+      var hasPending = filesList.some(function(f) { return f.status === 'pending'; });
+      if (interactiveIdx === -1) {
+        actionBtn.style.display = hasPending ? 'inline-flex' : 'none';
+        actionBtn.textContent = '📝 Fill Forms';
+      }
+    }
+
+    function renderFileList() {
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === 'done' ? '✅' : (f.status === 'error' ? '❌' : '⏳');
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + '...';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + '</span>';
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + '</span>';
+        if (f.status === 'done' && f.blob) {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">⬇️ Download</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">✕</button>';
+        html += '</div>';
+      }
+      document.getElementById('fileInfoContainer').innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      if (interactiveIdx === idx) {
+        interactiveIdx = -1;
+        hideFormFields();
+      }
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.blob) window.triggerDownload(item.blob, item.outputName || item.file.name);
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing) return;
+      if (interactiveIdx >= 0) {
+        applyFill(interactiveIdx);
+        return;
+      }
+      hideFormFields();
+      isProcessing = true;
+      actionBtn.disabled = true;
+      next();
+    });
+
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === 'pending') {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === -1) {
+        isProcessing = false;
+        actionBtn.disabled = false;
+        utils.hideProgress('progressBar');
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = 'processing';
+      renderFileList();
+
+      utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
+          item.pdfDocRef = pdfDoc;
+          var form = pdfDoc.getForm();
+          var fieldData = [];
           try {
             var fields = form.getFields();
-            var fieldData = [];
-
-            for (var i = 0; i < fields.length; i++) {
-              var field = fields[i];
+            for (var j = 0; j < fields.length; j++) {
+              var field = fields[j];
               var fieldType = 'text';
               var name = '';
-              try { name = field.getName(); } catch(e) { name = 'Field ' + (i + 1); }
+              try { name = field.getName(); } catch(e) { name = 'Field ' + (j + 1); }
               try {
                 var t = field.constructor.name;
                 if (t.indexOf('CheckBox') > -1) fieldType = 'checkbox';
@@ -257,54 +366,56 @@
                 else if (t.indexOf('Dropdown') > -1) fieldType = 'dropdown';
                 else fieldType = 'text';
               } catch(e) { fieldType = 'text'; }
-
               var currentValue = '';
               try { currentValue = field.getText(); } catch(e) { currentValue = ''; }
-
-              fieldData.push({
-                field: field,
-                name: name,
-                type: fieldType,
-                value: currentValue
-              });
+              fieldData.push({ field: field, name: name, type: fieldType, value: currentValue });
             }
+          } catch (err) {}
 
-            formFields = fieldData;
+          item.formFields = fieldData;
 
-            if (formFields.length === 0) {
-              formFieldsDiv.style.display = 'block';
-              fieldsContainer.innerHTML = '';
-              noFormFieldsMsg.style.display = 'block';
-              return;
-            }
-
-            noFormFieldsMsg.style.display = 'none';
-            renderFields();
-            formFieldsDiv.style.display = 'block';
-            actionBtn.style.display = 'inline-flex';
-            actionBtn.textContent = '📝 Fill Form & Download';
-
-            utils.showSuccess('fileInfoContainer', 'Found ' + formFields.length + ' form field(s). Fill in the values and download.');
-          } catch (err) {
+          if (fieldData.length === 0) {
             formFieldsDiv.style.display = 'block';
             fieldsContainer.innerHTML = '';
             noFormFieldsMsg.style.display = 'block';
+            item.status = 'done';
+            item.blob = null;
+            renderFileList();
+            updateUI();
+            next();
+            return;
           }
+
+          noFormFieldsMsg.style.display = 'none';
+          renderFormFields(fieldData);
+          formFieldsDiv.style.display = 'block';
+
+          interactiveIdx = idx;
+          actionBtn.textContent = '📝 Apply & Next';
+          actionBtn.style.display = 'inline-flex';
+          actionBtn.disabled = false;
+          isProcessing = false;
+
+          utils.showSuccess('fileInfoContainer', 'File: ' + item.file.name + ' — Found ' + fieldData.length + ' field(s). Fill in values and click "Apply & Next".');
         });
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error loading ' + item.file.name + ': ' + err.message);
+        item.status = 'error';
+        renderFileList();
+        updateUI();
+        next();
       });
     }
 
-    function renderFields() {
+    function renderFormFields(fields) {
       var html = '';
-      for (var i = 0; i < formFields.length; i++) {
-        var f = formFields[i];
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
         var fieldId = 'field_' + i;
         html += '<div style="margin-bottom:12px;">';
         html += '<label for="' + fieldId + '" style="display:block;margin-bottom:4px;font-weight:600;font-size:0.85rem;">' + utils.escapeHtml(f.name) + ' <span style="font-weight:400;color:var(--gray-500);font-size:0.75rem;">(' + f.type + ')</span></label>';
         if (f.type === 'checkbox') {
           html += '<input type="checkbox" id="' + fieldId + '" class="form-field" data-index="' + i + '" ' + (f.value ? 'checked' : '') + ' style="width:20px;height:20px;">';
-        } else if (f.type === 'radio') {
-          html += '<input type="text" id="' + fieldId + '" class="form-field" data-index="' + i + '" value="' + utils.escapeHtml(f.value) + '" placeholder="Enter value..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">';
         } else {
           html += '<input type="text" id="' + fieldId + '" class="form-field" data-index="' + i + '" value="' + utils.escapeHtml(f.value) + '" placeholder="Enter value..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:0.9rem;">';
         }
@@ -313,40 +424,61 @@
       fieldsContainer.innerHTML = html;
     }
 
-    actionBtn.addEventListener('click', function() {
-      if (!pdfDocRef || isProcessing) return;
+    function applyFill(idx) {
+      var item = filesList[idx];
       isProcessing = true;
       actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Filling...';
 
       var inputs = document.querySelectorAll('.form-field');
       for (var i = 0; i < inputs.length; i++) {
         var input = inputs[i];
-        var idx = parseInt(input.dataset.index);
-        var f = formFields[idx];
-        if (input.type === 'checkbox') {
-          try { f.field.setText(input.checked ? 'Yes' : 'Off'); } catch(e) {}
-        } else {
-          try { f.field.setText(input.value); } catch(e) {}
+        var fieldIdx = parseInt(input.dataset.index);
+        var f = item.formFields[fieldIdx];
+        if (f) {
+          if (input.type === 'checkbox') {
+            try { f.field.setText(input.checked ? 'Yes' : 'Off'); } catch(e) {}
+          } else {
+            try { f.field.setText(input.value); } catch(e) {}
+          }
         }
       }
 
-      utils.simulateProgress('progressBar', 1500, function() {
-        pdfDocRef.save().then(function(bytes) {
-          var blob = new Blob([bytes], { type: 'application/pdf' });
-          var url = URL.createObjectURL(blob);
-          var link = document.createElement('a');
-          link.href = url;
-          link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_filled.pdf';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          utils.hideProgress('progressBar');
-          utils.showSuccess('fileInfoContainer', 'Form filled and downloaded successfully!');
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = '📝 Fill Form & Download';
-        });
+      item.pdfDocRef.save().then(function(bytes) {
+        var blob = new Blob([bytes], { type: 'application/pdf' });
+        item.blob = blob;
+        item.outputName = item.file.name.replace(/\.pdf$/i, '') + '_filled.pdf';
+        item.status = 'done';
+        interactiveIdx = -1;
+        hideFormFields();
+        renderFileList();
+        updateUI();
+        utils.showSuccess('fileInfoContainer', item.file.name + ' — Form filled successfully!');
+        next();
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error saving ' + item.file.name + ': ' + err.message);
+        item.status = 'error';
+        interactiveIdx = -1;
+        hideFormFields();
+        renderFileList();
+        updateUI();
+        next();
+      });
+    }
+
+    downloadAllBtn.addEventListener('click', function() {
+      if (typeof JSZip === 'undefined') {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === 'done' && filesList[i].blob) window.downloadSingle(i);
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === 'done' && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        window.triggerDownload(content, 'filled_forms.zip');
       });
     });
   });

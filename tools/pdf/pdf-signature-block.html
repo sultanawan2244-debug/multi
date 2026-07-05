@@ -29,7 +29,17 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
   </script>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script></head>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -57,7 +67,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
@@ -107,7 +117,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">✍️ Add Signature Block</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download Signed PDF</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -224,10 +234,9 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    let pdfDocRef = null;
-    let totalPages = 0;
-    let signatureImageData = null;
+    var filesList = [];
+    var isProcessing = false;
+    var signatureImageData = null;
 
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
@@ -235,7 +244,7 @@
     const errorContainer = document.getElementById('errorContainer');
     const progressBar = document.getElementById('progressBar');
     const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
     const signatureControls = document.getElementById('signatureControls');
     const signerName = document.getElementById('signerName');
     const signerTitle = document.getElementById('signerTitle');
@@ -244,14 +253,7 @@
     const pageSelect = document.getElementById('pageSelect');
     const positionSelect = document.getElementById('positionSelect');
 
-    let isProcessing = false;
-
     signerDate.value = new Date().toISOString().split('T')[0];
-
-    utils.initDropZone('dropZone', handleFile);
-    fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
-    });
 
     signatureImage.addEventListener('change', function(e) {
       if (this.files && this.files[0]) {
@@ -263,187 +265,264 @@
       }
     });
 
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
+    dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = '';
+    });
+
+    function addFiles(files) {
       errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError('errorContainer', 'Skipped: ' + file.name + ' - not a valid PDF file.');
+          continue;
+        }
+        filesList.push({ file: file, status: 'pending', blob: null, outputName: null });
+      }
+      renderFileList();
+      updateUI();
       signatureControls.style.display = 'block';
-      loadPageInfo(file);
     }
 
-    function loadPageInfo(file) {
-      utils.loadFileAsArrayBuffer(file).then(function(buffer) {
-        PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
-          pdfDocRef = pdfDoc;
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById('toolActions').style.display = 'flex';
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === 'done'; });
+      downloadAllBtn.style.display = hasCompleted ? 'inline-flex' : 'none';
+      actionBtn.style.display = filesList.some(function(f) { return f.status === 'pending'; }) ? 'inline-flex' : 'none';
+    }
+
+    function renderFileList() {
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === 'done' ? '✅' : (f.status === 'error' ? '❌' : '⏳');
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + '...';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + '</span>';
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + '</span>';
+        if (f.status === 'done') {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">⬇️ Download</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">✕</button>';
+        html += '</div>';
+      }
+      document.getElementById('fileInfoContainer').innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.blob) window.triggerDownload(item.blob, item.outputName || item.file.name);
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing) return;
+      if (!signerName.value.trim()) {
+        utils.showError('errorContainer', 'Please enter the signer\'s name.');
+        return;
+      }
+      isProcessing = true;
+      actionBtn.disabled = true;
+      signatureControls.style.display = 'block';
+      pageSelect.innerHTML = '';
+      next();
+    });
+
+    function addSignatureBlock(item, pageIdx) {
+      return utils.loadFileAsArrayBuffer(item.file).then(function(buffer) {
+        return PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true }).then(function(pdfDoc) {
           var pages = pdfDoc.getPages();
-          totalPages = pages.length;
+
           pageSelect.innerHTML = '';
-          for (var i = 0; i < totalPages; i++) {
+          for (var i = 0; i < pages.length; i++) {
             var opt = document.createElement('option');
             opt.value = i;
             opt.textContent = 'Page ' + (i + 1);
             pageSelect.appendChild(opt);
           }
-        });
-      });
-    }
+          if (pageIdx >= pages.length) pageIdx = pages.length - 1;
+          if (pageIdx < 0) pageIdx = 0;
 
-    actionBtn.addEventListener('click', function() {
-      if (!pdfDocRef || isProcessing) return;
-      if (!signerName.value.trim()) {
-        utils.showError('errorContainer', 'Please enter the signer\'s name.');
-        return;
-      }
+          var page = pages[pageIdx];
+          var size = page.getSize();
 
-      isProcessing = true;
-      actionBtn.disabled = true;
-      actionBtn.textContent = '⏳ Adding Signature...';
-      downloadBtn.style.display = 'none';
+          var helveticaFont = pdfDoc.embedStandardFont(PDFLib.StandardFonts.Helvetica);
+          var helveticaBold = pdfDoc.embedStandardFont(PDFLib.StandardFonts.HelveticaBold);
 
-      utils.simulateProgress('progressBar', 2000, function() {
-        addSignatureBlock();
-      });
-    });
+          var pos = positionSelect.value;
+          var blockWidth = 300;
+          var blockHeight = 120;
+          var margin = 60;
+          var x, y;
 
-    function addSignatureBlock() {
-      var pageIdx = parseInt(pageSelect.value);
-      var pages = pdfDocRef.getPages();
-      var page = pages[pageIdx];
-      var size = page.getSize();
+          if (pos === 'bottom-right') {
+            x = size.width - blockWidth - margin;
+            y = margin;
+          } else if (pos === 'bottom-left') {
+            x = margin;
+            y = margin;
+          } else {
+            x = (size.width - blockWidth) / 2;
+            y = margin;
+          }
 
-      var helveticaFont = pdfDocRef.embedStandardFont(PDFLib.StandardFonts.Helvetica);
-      var helveticaBold = pdfDocRef.embedStandardFont(PDFLib.StandardFonts.HelveticaBold);
-
-      var pos = positionSelect.value;
-      var blockWidth = 300;
-      var blockHeight = 120;
-      var margin = 60;
-      var x, y;
-
-      if (pos === 'bottom-right') {
-        x = size.width - blockWidth - margin;
-        y = margin;
-      } else if (pos === 'bottom-left') {
-        x = margin;
-        y = margin;
-      } else {
-        x = (size.width - blockWidth) / 2;
-        y = margin;
-      }
-
-      var lineY = y + blockHeight - 10;
-      page.drawText('Signature Block', {
-        x: x,
-        y: lineY,
-        size: 10,
-        font: helveticaBold,
-        color: PDFLib.rgb(0.4, 0.4, 0.4)
-      });
-
-      lineY -= 25;
-
-      page.drawLine({
-        start: { x: x, y: lineY },
-        end: { x: x + 200, y: lineY },
-        thickness: 1,
-        color: PDFLib.rgb(0, 0, 0)
-      });
-      page.drawText('Signature', {
-        x: x,
-        y: lineY - 14,
-        size: 8,
-        font: helveticaFont,
-        color: PDFLib.rgb(0.5, 0.5, 0.5)
-      });
-
-      lineY -= 35;
-      var dateStr = signerDate.value || new Date().toLocaleDateString();
-      page.drawLine({
-        start: { x: x, y: lineY },
-        end: { x: x + 200, y: lineY },
-        thickness: 1,
-        color: PDFLib.rgb(0, 0, 0)
-      });
-      page.drawText('Date: ' + dateStr, {
-        x: x,
-        y: lineY - 14,
-        size: 8,
-        font: helveticaFont,
-        color: PDFLib.rgb(0.5, 0.5, 0.5)
-      });
-
-      lineY -= 30;
-      page.drawText(signerName.value.trim(), {
-        x: x,
-        y: lineY,
-        size: 12,
-        font: helveticaBold,
-        color: PDFLib.rgb(0.1, 0.1, 0.1)
-      });
-      if (signerTitle.value.trim()) {
-        page.drawText(signerTitle.value.trim(), {
-          x: x,
-          y: lineY - 16,
-          size: 10,
-          font: helveticaFont,
-          color: PDFLib.rgb(0.3, 0.3, 0.3)
-        });
-      }
-
-      if (signatureImageData) {
-        var img = new Image();
-        img.onload = function() {
-          var canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-          var imageData = canvas.toDataURL('image/png').split(',')[1];
-          var imageBytes = Uint8Array.from(atob(imageData), function(c) { return c.charCodeAt(0); });
-          var pngImage = pdfDocRef.embedPng(imageBytes);
-          var maxWidth = 150;
-          var maxHeight = 50;
-          var scale = Math.min(maxWidth / pngImage.width, maxHeight / pngImage.height, 1);
-          page.drawImage(pngImage, {
-            x: x + 210,
-            y: lineY - 40,
-            width: pngImage.width * scale,
-            height: pngImage.height * scale
+          var lineY = y + blockHeight - 10;
+          page.drawText('Signature Block', {
+            x: x, y: lineY, size: 10, font: helveticaBold,
+            color: PDFLib.rgb(0.4, 0.4, 0.4)
           });
-          finishSave();
-        };
-        img.src = signatureImageData;
-      } else {
-        finishSave();
-      }
+          lineY -= 25;
+
+          page.drawLine({
+            start: { x: x, y: lineY }, end: { x: x + 200, y: lineY },
+            thickness: 1, color: PDFLib.rgb(0, 0, 0)
+          });
+          page.drawText('Signature', {
+            x: x, y: lineY - 14, size: 8, font: helveticaFont,
+            color: PDFLib.rgb(0.5, 0.5, 0.5)
+          });
+          lineY -= 35;
+
+          var dateStr = signerDate.value || new Date().toLocaleDateString();
+          page.drawLine({
+            start: { x: x, y: lineY }, end: { x: x + 200, y: lineY },
+            thickness: 1, color: PDFLib.rgb(0, 0, 0)
+          });
+          page.drawText('Date: ' + dateStr, {
+            x: x, y: lineY - 14, size: 8, font: helveticaFont,
+            color: PDFLib.rgb(0.5, 0.5, 0.5)
+          });
+          lineY -= 30;
+
+          page.drawText(signerName.value.trim(), {
+            x: x, y: lineY, size: 12, font: helveticaBold,
+            color: PDFLib.rgb(0.1, 0.1, 0.1)
+          });
+          if (signerTitle.value.trim()) {
+            page.drawText(signerTitle.value.trim(), {
+              x: x, y: lineY - 16, size: 10, font: helveticaFont,
+              color: PDFLib.rgb(0.3, 0.3, 0.3)
+            });
+          }
+
+          return new Promise(function(resolve, reject) {
+            if (signatureImageData) {
+              var img = new Image();
+              img.onload = function() {
+                var canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                var imageData = canvas.toDataURL('image/png').split(',')[1];
+                var imageBytes = Uint8Array.from(atob(imageData), function(c) { return c.charCodeAt(0); });
+                var pngImage = pdfDoc.embedPng(imageBytes);
+                var maxWidth = 150;
+                var maxHeight = 50;
+                var scale = Math.min(maxWidth / pngImage.width, maxHeight / pngImage.height, 1);
+                page.drawImage(pngImage, {
+                  x: x + 210, y: lineY - 40,
+                  width: pngImage.width * scale, height: pngImage.height * scale
+                });
+                resolve();
+              };
+              img.src = signatureImageData;
+            } else {
+              resolve();
+            }
+          }).then(function() {
+            return pdfDoc.save().then(function(bytes) {
+              var blob = new Blob([bytes], { type: 'application/pdf' });
+              item.blob = blob;
+              item.outputName = item.file.name.replace(/\.pdf$/i, '') + '_signed.pdf';
+              item.status = 'done';
+            });
+          });
+        });
+      });
     }
 
-    function finishSave() {
-      pdfDocRef.save().then(function(bytes) {
-        var blob = new Blob([bytes], { type: 'application/pdf' });
-        var url = URL.createObjectURL(blob);
-        downloadBtn.onclick = function() {
-          var link = document.createElement('a');
-          link.href = url;
-          link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_signed.pdf';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        };
-        downloadBtn.style.display = 'inline-flex';
-        utils.hideProgress('progressBar');
-        utils.showSuccess('fileInfoContainer', 'Signature block added successfully!');
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === 'pending') {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === -1) {
         isProcessing = false;
         actionBtn.disabled = false;
-        actionBtn.textContent = '✍️ Add Signature Block';
+        utils.hideProgress('progressBar');
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = 'processing';
+      renderFileList();
+
+      var pageIdx = pageSelect.value ? parseInt(pageSelect.value) : 0;
+
+      addSignatureBlock(item, pageIdx).then(function() {
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', item.file.name + ' — Signature block added successfully!');
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error processing ' + item.file.name + ': ' + err.message);
+        item.status = 'error';
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
       });
     }
+
+    downloadAllBtn.addEventListener('click', function() {
+      if (typeof JSZip === 'undefined') {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === 'done' && filesList[i].blob) window.downloadSingle(i);
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === 'done' && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        window.triggerDownload(content, 'signed_files.zip');
+      });
+    });
   });
   </script>
 </body>

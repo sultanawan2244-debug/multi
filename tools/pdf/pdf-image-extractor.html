@@ -31,7 +31,16 @@
   </script>
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  </head>
+  <style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -59,7 +68,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose file(s)" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
@@ -76,14 +85,14 @@
             <div class="control-group">
               <label>Extracted Images</label>
               <div id="imagesContainer" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:8px;">
-                <p style="color:var(--gray-500);text-align:center;padding:20px;">Loading images...</p>
+                <p style="color:var(--gray-500);text-align:center;padding:20px;">Click "Extract Images" to process.</p>
               </div>
             </div>
           </div>
 
           <div class="tool-actions" id="toolActions" style="display:none;">
-            <button class="btn btn-primary" id="actionBtn" style="display:none;">Extract Images</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download All as ZIP</button>
+            <button class="btn btn-primary" id="actionBtn">Extract Images</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -217,8 +226,8 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
-    var extractedImages = [];
+    var filesList = [];
+    var isProcessing = false;
 
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
@@ -226,80 +235,142 @@
     const errorContainer = document.getElementById('errorContainer');
     const progressBar = document.getElementById('progressBar');
     const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
     var controlsContainer = document.getElementById('controlsContainer');
     var imagesContainer = document.getElementById('imagesContainer');
 
-    let isProcessing = false;
-
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    utils.initDropZone('dropZone', handleFile);
+    dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
     fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = '';
     });
 
-    function handleFile(file) {
-      if (!utils.validateFileType(file)) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
+    function addFiles(files) {
       errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      controlsContainer.style.display = 'block';
-      document.getElementById('toolActions').style.display = 'flex';
-      actionBtn.style.display = 'none';
-      downloadBtn.style.display = 'none';
-
-      extractImages(file);
-    }
-
-    async function extractImages(file) {
-      try {
-        var buffer = await utils.loadFileAsArrayBuffer(file);
-        var pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
-        var totalPages = pdf.numPages;
-        extractedImages = [];
-
-        imagesContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">Extracting images from ' + totalPages + ' page(s)...</p>';
-
-        for (var i = 1; i <= totalPages; i++) {
-          var page = await pdf.getPage(i);
-          var viewport = page.getViewport({ scale: 2 });
-          var canvas = document.createElement('canvas');
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          var ctx = canvas.getContext('2d');
-
-          await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-
-          var dataURL = canvas.toDataURL('image/png');
-          extractedImages.push({
-            dataURL: dataURL,
-            pageNum: i,
-            width: viewport.width,
-            height: viewport.height,
-          });
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError('errorContainer', 'Skipped: ' + file.name + ' - not a valid PDF file.');
+          continue;
         }
-
-        displayImages();
-        utils.hideProgress('progressBar');
-        utils.showSuccess('fileInfoContainer', extractedImages.length + ' image(s) extracted from ' + totalPages + ' page(s).');
-      } catch (err) {
-        utils.showError('errorContainer', 'Error extracting images: ' + err.message);
+        filesList.push({ file: file, status: 'pending', blob: null, outputName: null });
       }
+      renderFileList();
+      updateUI();
     }
 
-    function displayImages() {
-      if (extractedImages.length === 0) {
-        imagesContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">No images found in this PDF.</p>';
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById('toolActions').style.display = 'flex';
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === 'done'; });
+      downloadAllBtn.style.display = hasCompleted ? 'inline-flex' : 'none';
+      actionBtn.style.display = filesList.some(function(f) { return f.status === 'pending'; }) ? 'inline-flex' : 'none';
+    }
+
+    function renderFileList() {
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === 'done' ? '✅' : (f.status === 'error' ? '❌' : '⏳');
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + '...';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + '</span>';
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + '</span>';
+        if (f.status === 'done') {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">⬇️ Download ZIP</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">✕</button>';
+        html += '</div>';
+      }
+      document.getElementById('fileInfoContainer').innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.blob) window.triggerDownload(item.blob, item.outputName || item.file.name);
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
+    actionBtn.addEventListener('click', function() {
+      if (isProcessing) return;
+      isProcessing = true;
+      actionBtn.disabled = true;
+      controlsContainer.style.display = 'block';
+      next();
+    });
+
+    async function extractPageImages(item) {
+      var buffer = await utils.loadFileAsArrayBuffer(item.file);
+      var pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
+      var totalPages = pdf.numPages;
+      var images = [];
+
+      for (var i = 1; i <= totalPages; i++) {
+        var page = await pdf.getPage(i);
+        var viewport = page.getViewport({ scale: 2 });
+        var canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        var ctx = canvas.getContext('2d');
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+        var dataURL = canvas.toDataURL('image/png');
+        images.push({ dataURL: dataURL, pageNum: i, width: viewport.width, height: viewport.height });
+      }
+
+      var zip = new JSZip();
+      for (var j = 0; j < images.length; j++) {
+        var img = images[j];
+        var byteString = atob(img.dataURL.split(',')[1]);
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var k = 0; k < byteString.length; k++) {
+          ia[k] = byteString.charCodeAt(k);
+        }
+        zip.file('page_' + img.pageNum + '.png', ab);
+      }
+
+      var zipBlob = await zip.generateAsync({ type: 'blob' });
+      item.blob = zipBlob;
+      item.outputName = item.file.name.replace(/\.pdf$/i, '') + '_images.zip';
+      item.status = 'done';
+
+      displayImages(images);
+      return totalPages;
+    }
+
+    function displayImages(images) {
+      if (images.length === 0) {
+        imagesContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">No images found.</p>';
         return;
       }
-
       var html = '';
-      for (var i = 0; i < extractedImages.length; i++) {
-        var img = extractedImages[i];
+      for (var i = 0; i < images.length; i++) {
+        var img = images[i];
         html += '<div style="border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;background:var(--white);">';
         html += '<div style="padding:8px;font-size:0.8rem;color:var(--gray-600);border-bottom:1px solid var(--gray-100);">Page ' + img.pageNum + ' &middot; ' + img.width + 'x' + img.height + '</div>';
         html += '<img src="' + img.dataURL + '" alt="Page ' + img.pageNum + '" style="width:100%;display:block;aspect-ratio:' + img.width + '/' + img.height + ';object-fit:contain;background:#f5f5f5;">';
@@ -313,7 +384,7 @@
       for (var j = 0; j < singleBtns.length; j++) {
         singleBtns[j].addEventListener('click', function() {
           var idx = parseInt(this.getAttribute('data-idx'));
-          var img = extractedImages[idx];
+          var img = images[idx];
           var link = document.createElement('a');
           link.href = img.dataURL;
           link.download = 'page_' + img.pageNum + '.png';
@@ -322,40 +393,62 @@
           document.body.removeChild(link);
         });
       }
-
-      downloadBtn.style.display = 'inline-flex';
-      downloadBtn.textContent = '⬇️ Download All as ZIP';
-      downloadBtn.onclick = downloadAllAsZip;
     }
 
-    function downloadAllAsZip() {
-      try {
-        var zip = new JSZip();
-        for (var i = 0; i < extractedImages.length; i++) {
-          var img = extractedImages[i];
-          var byteString = atob(img.dataURL.split(',')[1]);
-          var ab = new ArrayBuffer(byteString.length);
-          var ia = new Uint8Array(ab);
-          for (var j = 0; j < byteString.length; j++) {
-            ia[j] = byteString.charCodeAt(j);
-          }
-          zip.file('page_' + img.pageNum + '.png', ab);
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === 'pending') {
+          idx = i;
+          break;
         }
-
-        zip.generateAsync({ type: 'blob' }).then(function(content) {
-          var url = URL.createObjectURL(content);
-          var link = document.createElement('a');
-          link.href = url;
-          link.download = 'extracted_images.zip';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-        });
-      } catch (e) {
-        utils.showError('errorContainer', 'ZIP download failed. Try downloading individually.');
       }
+      if (idx === -1) {
+        isProcessing = false;
+        actionBtn.disabled = false;
+        utils.hideProgress('progressBar');
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = 'processing';
+      renderFileList();
+      imagesContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">Extracting images from ' + item.file.name + '...</p>';
+
+      extractPageImages(item).then(function(totalPages) {
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', item.file.name + ' — Extracted ' + totalPages + ' page image(s).');
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error extracting images from ' + item.file.name + ': ' + err.message);
+        item.status = 'error';
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      });
     }
+
+    downloadAllBtn.addEventListener('click', function() {
+      if (typeof JSZip === 'undefined') {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === 'done' && filesList[i].blob) window.downloadSingle(i);
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === 'done' && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        window.triggerDownload(content, 'extracted_images_all.zip');
+      });
+    });
   });
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>

@@ -32,7 +32,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-</head>
+<style>
+.file-list-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; margin-bottom:6px; }
+.file-list-item .file-status { font-size:1rem; min-width:28px; text-align:center; }
+.file-list-item .file-name { flex:1; font-weight:500; font-size:0.9rem; color:var(--gray-800); }
+.file-list-item .file-size { font-size:0.8rem; color:var(--gray-500); white-space:nowrap; }
+.file-list-item .btn-dl-single { padding:4px 12px; font-size:0.8rem; white-space:nowrap; }
+.file-list-item .remove-file-single { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-400); padding:2px 6px; border-radius:4px; }
+.file-list-item .remove-file-single:hover { background:var(--gray-200); color:var(--gray-700); }
+</style>
+
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div id="header"></div>
@@ -60,7 +69,7 @@
       <div class="container">
         <div class="tool-box scroll-animate fade-in-up">
           <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file">
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" class="file-input" hidden aria-label="Choose a PDF file" multiple>
             <div class="drop-icon">📁</div>
             <p>Drag & drop PDF files here or click to browse</p>
             <p style="font-size:0.82rem;color:var(--gray-600);margin-top:8px;">Supports: PDF documents</p>
@@ -93,7 +102,7 @@
 
           <div class="tool-actions" id="toolActions" style="display:none;">
             <button class="btn btn-primary" id="actionBtn">Convert to Images</button>
-            <button class="btn btn-success" id="downloadBtn" style="display:none;">⬇️ Download as ZIP</button>
+            <button class="btn btn-success" id="downloadAllBtn" style="display:none;">⬇️ Download All as ZIP</button>
           </div>
         </div>
       </div>
@@ -187,7 +196,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-question">Can I download individual pages? <span class="faq-toggle">+</span></button>
-          <div class="faq-answer">Currently, all pages are downloaded together as a ZIP archive. Each page is saved as a separate image file named by page number.</div>
+          <div class="faq-answer">Each file's pages are downloaded together as a ZIP archive. Each page is saved as a separate image file named by page number.</div>
         </div>
         <div class="faq-item">
           <button class="faq-question">Is my data safe? <span class="faq-toggle">+</span></button>
@@ -228,7 +237,8 @@
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const utils = window.AlToolsUtils;
-    let loadedFile = null;
+    var filesList = [];
+    var isProcessing = false;
 
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
@@ -236,7 +246,7 @@
     const errorContainer = document.getElementById('errorContainer');
     const progressBar = document.getElementById('progressBar');
     const actionBtn = document.getElementById('actionBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
     const imageFormat = document.getElementById('imageFormat');
     const imageScale = document.getElementById('imageScale');
     const scaleValue = document.getElementById('scaleValue');
@@ -244,123 +254,186 @@
     const previewGroup = document.getElementById('previewGroup');
     const previewContainer = document.getElementById('previewContainer');
 
-    let isProcessing = false;
-    var imageDataUrls = [];
-
     imageScale.addEventListener('input', function() {
       scaleValue.textContent = parseFloat(this.value).toFixed(2) + 'x';
     });
 
-    utils.initDropZone('dropZone', handleFile);
+    dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+    });
     fileInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) handleFile(this.files[0]);
+      if (this.files && this.files.length > 0) addFiles(this.files);
+      this.value = '';
     });
 
-    function handleFile(file) {
-      if (!file.type.match('application/pdf')) {
-        utils.showError('errorContainer', 'Please select a valid PDF file.');
-        return;
-      }
+    function addFiles(files) {
       errorContainer.innerHTML = '';
-      utils.showFileInfo('fileInfoContainer', file);
-      loadedFile = file;
-      document.getElementById('toolActions').style.display = 'flex';
-      downloadBtn.style.display = 'none';
-      optionsGroup.style.display = 'block';
-      previewGroup.style.display = 'none';
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if (!utils.validateFileType(file)) {
+          utils.showError('errorContainer', 'Skipped: ' + file.name + ' - not a valid PDF file.');
+          continue;
+        }
+        filesList.push({ file: file, status: 'pending', blob: null, outputName: null });
+      }
+      renderFileList();
+      updateUI();
     }
 
+    function updateUI() {
+      if (filesList.length > 0) {
+        document.getElementById('toolActions').style.display = 'flex';
+      }
+      var hasCompleted = filesList.some(function(f) { return f.status === 'done'; });
+      downloadAllBtn.style.display = hasCompleted ? 'inline-flex' : 'none';
+      actionBtn.style.display = filesList.some(function(f) { return f.status === 'pending'; }) ? 'inline-flex' : 'none';
+    }
+
+    function renderFileList() {
+      var html = '';
+      for (var i = 0; i < filesList.length; i++) {
+        var f = filesList[i];
+        var statusIcon = f.status === 'done' ? '✅' : (f.status === 'error' ? '❌' : '⏳');
+        var fname = f.file.name;
+        if (fname.length > 35) fname = fname.substring(0, 32) + '...';
+        html += '<div class="file-list-item">';
+        html += '<span class="file-status">' + statusIcon + '</span>';
+        html += '<span class="file-name" title="' + f.file.name + '">' + utils.escapeHtml(fname) + '</span>';
+        html += '<span class="file-size">' + utils.formatFileSize(f.file.size) + '</span>';
+        if (f.status === 'done') {
+          html += '<button class="btn btn-sm btn-dl-single" onclick="downloadSingle(' + i + ')">⬇️ Download ZIP</button>';
+        }
+        html += '<button class="remove-file-single" onclick="removeFile(' + i + ')" title="Remove">✕</button>';
+        html += '</div>';
+      }
+      document.getElementById('fileInfoContainer').innerHTML = html;
+    }
+
+    window.removeFile = function(idx) {
+      filesList.splice(idx, 1);
+      renderFileList();
+      updateUI();
+    };
+    window.downloadSingle = function(idx) {
+      var item = filesList[idx];
+      if (item.blob) window.triggerDownload(item.blob, item.outputName || item.file.name);
+    };
+    window.triggerDownload = function(blob, filename) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
     actionBtn.addEventListener('click', function() {
-      if (!loadedFile || isProcessing) return;
+      if (isProcessing) return;
       isProcessing = true;
       actionBtn.disabled = true;
-      actionBtn.textContent = '⌛ Rendering...';
-      downloadBtn.style.display = 'none';
+      optionsGroup.style.display = 'block';
       previewGroup.style.display = 'none';
+      next();
+    });
 
+    async function convertToImages(item) {
       var scale = parseFloat(imageScale.value);
       var format = imageFormat.value;
+      var buffer = await utils.loadFileAsArrayBuffer(item.file);
+      var pdfData = new Uint8Array(buffer);
+      var pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+      var totalPages = pdf.numPages;
 
-      utils.simulateProgress('progressBar', 3000, function() {
-        utils.loadFileAsArrayBuffer(loadedFile).then(function(buffer) {
-          var pdfData = new Uint8Array(buffer);
-          pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
-            var totalPages = pdf.numPages;
-            imageDataUrls = [];
-            previewContainer.innerHTML = '';
+      previewContainer.innerHTML = '';
+      var zip = new JSZip();
+      var mimeType = format;
+      var ext = format === 'image/jpeg' ? 'jpg' : 'png';
 
-            function renderPage(pageNum) {
-              return pdf.getPage(pageNum).then(function(page) {
-                var viewport = page.getViewport({ scale: scale });
-                var canvas = document.createElement('canvas');
-                var ctx = canvas.getContext('2d');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
+      for (var i = 1; i <= totalPages; i++) {
+        var page = await pdf.getPage(i);
+        var viewport = page.getViewport({ scale: scale });
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
-                return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function() {
-                  var mimeType = format;
-                  var ext = format === 'image/jpeg' ? 'jpg' : 'png';
-                  var dataUrl = canvas.toDataURL(mimeType, 0.92);
+        var dataUrl = canvas.toDataURL(mimeType, 0.92);
+        zip.file('page_' + i + '.' + ext, dataUrl.split(',')[1], { base64: true });
 
-                  var thumb = document.createElement('div');
-                  thumb.style.cssText = 'border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;text-align:center;';
-                  thumb.innerHTML = '<img src="' + dataUrl + '" style="width:100%;display:block;" alt="Page ' + pageNum + '"><div style="padding:6px;font-size:11px;color:var(--gray-500);">Page ' + pageNum + '</div>';
-                  previewContainer.appendChild(thumb);
+        var thumb = document.createElement('div');
+        thumb.style.cssText = 'border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;text-align:center;';
+        thumb.innerHTML = '<img src="' + dataUrl + '" style="width:100%;display:block;" alt="Page ' + i + '"><div style="padding:6px;font-size:11px;color:var(--gray-500);">Page ' + i + '</div>';
+        previewContainer.appendChild(thumb);
+      }
 
-                  return { dataUrl: dataUrl, ext: ext, pageNum: pageNum };
-                });
-              });
-            }
+      var zipBlob = await zip.generateAsync({ type: 'blob' });
+      item.blob = zipBlob;
+      item.outputName = item.file.name.replace(/\.pdf$/i, '') + '_images.zip';
+      item.status = 'done';
 
-            var renderPromises = [];
-            for (var i = 1; i <= totalPages; i++) {
-              renderPromises.push(renderPage(i));
-            }
+      previewGroup.style.display = 'block';
+      return totalPages;
+    }
 
-            Promise.all(renderPromises).then(function(results) {
-              imageDataUrls = results;
-              previewGroup.style.display = 'block';
+    function next() {
+      var idx = -1;
+      for (var i = 0; i < filesList.length; i++) {
+        if (filesList[i].status === 'pending') {
+          idx = i;
+          break;
+        }
+      }
+      if (idx === -1) {
+        isProcessing = false;
+        actionBtn.disabled = false;
+        utils.hideProgress('progressBar');
+        renderFileList();
+        updateUI();
+        return;
+      }
+      var item = filesList[idx];
+      item.status = 'processing';
+      renderFileList();
+      previewContainer.innerHTML = '<p style="color:var(--gray-500);text-align:center;padding:20px;">Rendering ' + item.file.name + '...</p>';
 
-              utils.hideProgress('progressBar');
-              utils.showSuccess('fileInfoContainer', 'Rendered ' + totalPages + ' page(s) as images!');
+      convertToImages(item).then(function(totalPages) {
+        utils.hideProgress('progressBar');
+        utils.showSuccess('fileInfoContainer', item.file.name + ' — Rendered ' + totalPages + ' page(s) as images!');
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      }).catch(function(err) {
+        utils.showError('errorContainer', 'Error rendering ' + item.file.name + ': ' + err.message);
+        item.status = 'error';
+        renderFileList();
+        updateUI();
+        idx++;
+        next();
+      });
+    }
 
-              downloadBtn.onclick = function() {
-                var zip = new JSZip();
-                for (var j = 0; j < imageDataUrls.length; j++) {
-                  var imgData = imageDataUrls[j].dataUrl.split(',')[1];
-                  zip.file('page_' + imageDataUrls[j].pageNum + '.' + imageDataUrls[j].ext, imgData, { base64: true });
-                }
-                zip.generateAsync({ type: 'blob' }).then(function(blob) {
-                  var url = URL.createObjectURL(blob);
-                  var link = document.createElement('a');
-                  link.href = url;
-                  link.download = loadedFile.name.replace(/\.pdf$/i, '') + '_images.zip';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                  URL.revokeObjectURL(url);
-                });
-              };
-              downloadBtn.style.display = 'inline-flex';
-              downloadBtn.textContent = '⬇️ Download as ZIP (' + totalPages + ' images)';
-              isProcessing = false;
-              actionBtn.disabled = false;
-              actionBtn.textContent = 'Convert to Images';
-            });
-          }).catch(function(err) {
-            utils.showError('errorContainer', 'Error rendering PDF: ' + err.message);
-            isProcessing = false;
-            actionBtn.disabled = false;
-            actionBtn.textContent = 'Convert to Images';
-            utils.hideProgress('progressBar');
-          });
-        }).catch(function(err) {
-          utils.showError('errorContainer', 'Error reading file: ' + err.message);
-          isProcessing = false;
-          actionBtn.disabled = false;
-          actionBtn.textContent = 'Convert to Images';
-          utils.hideProgress('progressBar');
-        });
+    downloadAllBtn.addEventListener('click', function() {
+      if (typeof JSZip === 'undefined') {
+        for (var i = 0; i < filesList.length; i++) {
+          if (filesList[i].status === 'done' && filesList[i].blob) window.downloadSingle(i);
+        }
+        return;
+      }
+      var zip = new JSZip();
+      var completed = filesList.filter(function(f) { return f.status === 'done' && f.blob; });
+      for (var i = 0; i < completed.length; i++) {
+        zip.file(completed[i].outputName || completed[i].file.name, completed[i].blob);
+      }
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        window.triggerDownload(content, 'pdf_images_all.zip');
       });
     });
   });
