@@ -315,7 +315,7 @@
           return mammoth.convertToHtml({ arrayBuffer: buffer });
         }).then(function(result) {
           var container = document.createElement('div');
-          container.style.cssText = 'position:absolute;left:-9999px;top:0;width:794px;padding:40px;background:#fff;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;';
+          container.style.cssText = 'position:fixed;top:0;left:0;width:794px;padding:40px;background:#fff;font-family:Calibri,Arial,sans-serif;font-size:12pt;line-height:1.5;color:#000;z-index:99999;opacity:0;pointer-events:none;';
           container.innerHTML = result.value;
           document.body.appendChild(container);
           var opt = {
